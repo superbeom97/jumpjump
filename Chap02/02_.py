@@ -18,3 +18,18 @@ print(day)
 1124
 print(weather)
 'Cloudy'
+
+# 문자열 수정
+a="Pithon"
+print(a[:1])
+print(a[2:])
+print(a[:1]+'y'+a[2:])
+print(a)
+a=a[:1]+'y'+a[2:]
+print(a)
+
+# ☆문자열 삽입
+# ['Life', 'is', 'too', 'short']라는 리스트를 Life is too short라는 문자열로 만들어 출력해 보자.
+a=['Life', 'is', 'too', 'short']
+result=" ".join(a)
+print(result)
