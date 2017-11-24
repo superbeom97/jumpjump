@@ -33,3 +33,15 @@ print(a)
 a=['Life', 'is', 'too', 'short']
 result=" ".join(a)
 print(result)
+
+# 문자열 나누기
+a="Life is too short"
+a.split()
+print(a.split())
+
+a="Life is too short"
+print(a.split())
+
+a="a-b-c-d"
+a.split("-")
+print(a.split("-"))
