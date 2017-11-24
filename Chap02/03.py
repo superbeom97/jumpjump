@@ -31,4 +31,6 @@ print(a)
 # 리스트 요소 제거(remove)_ remove(x) : 리스트에서 첫 번째로 나오는 x를 삭제
 a=[1,2,3,1,2,3]
 a.remove(3)
-print(3)
+print(a)
+a.remove(3)
+print(a)
