@@ -31,4 +31,11 @@ result=a.pop('b')
 print(a)
 print(result)
 
-#
+# 집합
+a=[1,1,1,2,2,3,3,3,4,4,5]
+aSet=set(a)
+print(list(aSet))
+# 또는
+aSet=set(a)
+b=list(aSet)
+print(list(b))
