@@ -1,6 +1,6 @@
 coffee = 10
 money = 300
-while coffee:
+while money:
     print("돈을 받았으니 커피를 줍니다.")
     coffee = coffee - 1
     print("남은 커피의 양은 %d개입니다." % coffee)
