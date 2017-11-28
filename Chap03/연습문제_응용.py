@@ -5,3 +5,14 @@
 #        *       *****
 #                 ***
 #                  *
+
+i=0
+while True:
+    number = int(input("홀수를 입력하세요(프로그램 종료:0)"))
+    i+=1
+    if i>=1:
+        print("*"*i)
+    elif i / 2 ==0: continue
+    else:
+        print("마름모 연습프로그램을 이용해 주셔서 감사합니다.")
+        break
