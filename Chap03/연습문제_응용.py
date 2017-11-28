@@ -6,17 +6,18 @@
 #                 ***
 #                  *
 
+
+star='*'
+blank=" "
 while True:
-    number = int(input("홀수를 입력하세요(프로그램 종료:0):"))
-    if not number==0:
-        if number>=1 and number%2!=0:
-            print("%s %s %s" %(''*(number-2),'*',''*(number-2)))
-            print("%s" %'*'*number)
-        else: continue
+    customer = int(input("홀수를 입력하세요(프로그램 종료:0):"))
+    if customer>=1 and customer % 2 !=0:
+        blank-=1
+        star+=2
+        print(blank, end="")
+        print(star)
+    elif customer % 2 ==0: continue
     else:
-        if number==0:
+        if customer==0:
             print("마름모 연습프로그램을 이용해 주셔서 감사합니다.")
             break
-
-
-# i, i
