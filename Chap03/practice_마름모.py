@@ -14,9 +14,16 @@ while True:
     if customer>=1 and customer % 2 !=0:
         blank-=1
         star+=2
-        print(blank, end="")
+        print(blank*2, end="")
         print(star)
-    elif customer % 2 ==0: continue
+        print(blank, end="")
+        print(star*3)
+        print(star*5)
+        print(blank, end="")
+        print(star*3)
+        print(blank*2, end="")
+        print(star)
+    elif customer % 2 ==0 and customer % 2 !=0: continue
     else:
         if customer==0:
             print("마름모 연습프로그램을 이용해 주셔서 감사합니다.")
