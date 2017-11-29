@@ -16,12 +16,14 @@ while True:
             print(blank*blank_count, end="")
             print(star*star_count)
             if number == star_count:
-                while True:
-                    star_count -= 2
-                    blank_count += 1
-                    print(blank * blank_count, end="")
-                    print(star * star_count)
-                    if star_count == 1:
-                        break
+                break
             star_count += 2
             blank_count -= 1
+
+    while True:
+        star_count -= 2
+        blank_count += 1
+        print(blank * blank_count, end="")
+        print(star * star_count)
+        if star_count == 1:
+            break
