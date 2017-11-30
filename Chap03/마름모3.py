@@ -21,7 +21,7 @@ while True:
         print(horizontal_line*horizontal_line_count, end="")
         print(blank*blank_count)
 
-    if number == 1: # 별 하나일 때 양쪽에 수직선 하나씩 추가한 명령문
+    if number == 1: # 별 하나일 때 양쪽에 수직선 하나씩 & 사각형 밑부분 추가한 명령문
         vertical_line_count = 1
         horizontal_line_count = int(number*1)
         print(vertical_line*vertical_line_count, end="")
@@ -58,7 +58,7 @@ while True:
             if star_count == 1:
                 break
 
-    while True: # 사각형 밑부분
+    while True: # 별 3개 이상일 때 사각형 밑부분
             if number != 1:
                 horizontal_line_count = int(number * 1)
                 blank_count = 1
