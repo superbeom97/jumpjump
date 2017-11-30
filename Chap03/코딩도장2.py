@@ -13,7 +13,7 @@ str="""
 """  # \t 하면 탭(공백 4개)이고 \n 하면 줄바꿈(엔터)
      # 새롭게 알게 된 내용!!!
 
-str = str.replace('\t',space)
+str = str.replace('\t',space)   # replace 개념도 잘 알아두기!
 print(str)
 
 
