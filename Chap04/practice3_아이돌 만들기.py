@@ -1,5 +1,5 @@
 f = open("D:\Python_workspace\jumpjump\Chap04\연습생.txt", 'r')
-show_list = list(f.read())
+show_list = f.read()
 f.close()
 
 make_idol = show_list.split('\n')
