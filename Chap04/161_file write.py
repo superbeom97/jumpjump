@@ -6,6 +6,6 @@ for i in range(1, 11):
 f.close()
 
 
-for i in range(1, 11):
-    data = "%d번째 줄입니다.\n" % i
+for i in range(1, 12):
+    data = "%d번째 줄입니다." % i
     print(data)
