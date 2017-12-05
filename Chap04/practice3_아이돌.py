@@ -1,4 +1,4 @@
-f = open("D:\Python_workspace\jumpjump\Chap04\연습생.txt", 'r')
+f = open("D:\\Python_workspace\\jumpjump\\Chap04\\연습생.txt", 'r')
 show_list = f.read()
 print(show_list, "\n")
 f.close()
