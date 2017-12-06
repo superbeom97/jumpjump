@@ -21,6 +21,7 @@ class Service: #3
         result = a + b
         print("%s님 %s + %s = %s입니다." % (self.name, a, b, result))
 
+
 pey = Service()
 pey.setname("전수범") # 애들은 멤버함수니까 바로 print 없어도 바로 출력 됨
 pey.sum(3,6) # 애들은 멤버함수니까 바로 print 없어도 바로 출력 됨
