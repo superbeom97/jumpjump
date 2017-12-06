@@ -1,3 +1,7 @@
+#f = open("D:\\Python_workspace\\jumpjump\\Chap05\\고객서빙현황로그.txt", 'w')
+#f.close()
+
+
 class Restaurant:
     cuisine_type = "대구 전통의 맛"
     restaurant_name = "복복복을 먹자"
@@ -13,14 +17,28 @@ class Restaurant:
     def open_restaurant(self):
         print("저희 %s 레스토랑 오픈했습니다. 어서오세요" % self.restaurant_name)
 
-    def set_number_serced(self, number):
-        print("새로운 손님 %s명 들어오십니다." % number)
+    def set_number_served(self, number):
+        self.number_served = number
+        print("방문한 손님을 %s명으로 수정하였습니다." % self.number_served)
 
     def increment_number_served(self, number):
-        print("오늘의 총 손님 수는 %s명입니다." % number)
+        self.number_served += number
+        print("오늘의 총 손님 수는 %s명입니다." % self.number_served)
+
+    def __del__(self):
+        print("이용해 주셔서 감사감사요~")
+
 
 A_restaurant = Restaurant("'복복복을 먹자'", "'대구 전통의 맛'")
 A_restaurant.describe_restaurant()
 A_restaurant.open_restaurant()
-A_restaurant.set_number_serced(7)
-A_restaurant.increment_number_served(52)
+
+#A_restaurant.set_number_served(30)
+#print(A_restaurant.number_served)
+A_restaurant.increment_number_served(22)
+#print(A_restaurant.number_served)
+
+f = open("D:\\Python_workspace\\jumpjump\\Chap05\\고객서빙현황로그.txt", 'a')
+data = "%s" % A_restaurant.number_served
+f.write(data)
+f.close()
