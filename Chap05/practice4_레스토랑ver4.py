@@ -35,10 +35,14 @@ A_restaurant.open_restaurant()
 
 #A_restaurant.set_number_served(30)
 #print(A_restaurant.number_served)
-A_restaurant.increment_number_served(22)
+A_restaurant.increment_number_served(10)
 #print(A_restaurant.number_served)
 
+f = open("D:\\Python_workspace\\jumpjump\\Chap05\\고객서빙현황로그.txt", 'r')
+data = int(f.readline())
+
 f = open("D:\\Python_workspace\\jumpjump\\Chap05\\고객서빙현황로그.txt", 'a')
-data = "%s" % A_restaurant.number_served
-f.write(data)
+total = "\n%s" % (data+A_restaurant.number_served)
+please = str(total)
+f.write(please)
 f.close()
