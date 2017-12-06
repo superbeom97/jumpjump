@@ -1,10 +1,10 @@
-class Service:  # 3
+class Service:
     secret = "영구는 배꼽이 두 개다."
     name = ""
 
     def __init__(self, name):
         self.name = name
-        print("멤버변수 %s 를 초기화 하였습니다." % self.name)
+        print("멤버변수 '%s' 을/를 초기화 하였습니다." % self.name)
 
     def sum(self, a, b):
         result = a + b
