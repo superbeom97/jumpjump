@@ -1,4 +1,4 @@
-#f = open("D:\\Python_workspace\\jumpjump\\Chap05\\고객서빙현황로그.txt", 'w')
+#f = open("D:\\Python_workspace\\jumpjump\\Chap05\\05_클래스\\고객서빙현황로그.txt", 'w')
 #f.close()
 
 
@@ -35,11 +35,11 @@ A_restaurant.open_restaurant()
 
 #A_restaurant.set_number_served(30)
 #print(A_restaurant.number_served)
-A_restaurant.increment_number_served(50)
+A_restaurant.increment_number_served(70)
 #print(A_restaurant.number_served)
 
 
-f = open("D:\\Python_workspace\\jumpjump\\Chap05\\고객서빙현황로그.txt", 'r')
+f = open("D:\\Python_workspace\\jumpjump\\Chap05\\05_클래스\\고객서빙현황로그.txt", 'r')
 data = f.read() # f.read()로 읽었으니 하나의 문자열이야.
 #print(data, "\n")
 f.close()
@@ -47,7 +47,7 @@ f.close()
 make_data = data.split() # 문자열 함수 split을 사용해 각각 나눠주면 리스트 안에 들어가게 돼
 #print(make_data)
 
-f = open("D:\\Python_workspace\\jumpjump\\Chap05\\고객서빙현황로그.txt", 'a')
+f = open("D:\\Python_workspace\\jumpjump\\Chap05\\05_클래스\\고객서빙현황로그.txt", 'a')
 total = "\n%s" % (int(make_data[-1])+A_restaurant.number_served) # 리스트의 마지막 값을 정수화해서 더해주는
 #print(total)
 f.write(total)
