@@ -35,7 +35,7 @@ A_restaurant.open_restaurant()
 
 #A_restaurant.set_number_served(30)
 #print(A_restaurant.number_served)
-A_restaurant.increment_number_served(100)
+A_restaurant.increment_number_served(50)
 #print(A_restaurant.number_served)
 
 
@@ -52,3 +52,7 @@ total = "\n%s" % (int(make_data[-1])+A_restaurant.number_served) # 리스트의 
 #print(total)
 f.write(total)
 f.close()
+
+# a = f.read()로 불러오면 문자열이 돼 -> 이걸 어떻게 나눌 것인가? -> list(a) 사용하면 스튜핏!
+# b = a.split() 함수를 사용해 주면 -> 리스트로 저장되는 -> b는 리스트형이 되는 거야!
+# split() 함수를 사용하여! 문자열을 나누자!!
