@@ -4,15 +4,23 @@ while True:
     check = john.split()
 
     one = int(check[0])
-    two = int(check[1])
-    three = int(check[2])
 
-    if number == -1:
+    if one == -1:
         print("이용해 주셔서 감사합니다.")
         break
 
-    elif (one * two) % three == 0:
-        print("%s는 %s와 %s의 공배수입니다." % (three, one, two))
-
     else:
-        print("%s는 %s와 %s의 공배수가 아닙니다." % (three, one, two))
+        john = "".join(number)
+        check = john.split()
+
+        one = int(check[0])
+        two = int(check[1])
+        three = int(check[2])
+
+        if (one * two) % three == 0:
+            print("%s는 %s와 %s의 공배수입니다." % (three, one, two))
+            continue
+
+        elif (one * two) % three != 0:
+            print("%s는 %s와 %s의 공배수가 아닙니다." % (three, one, two))
+            continue
