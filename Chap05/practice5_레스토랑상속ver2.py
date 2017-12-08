@@ -25,9 +25,9 @@ korea.time_restaurant("am.1")
 korea.close_restaurant("일요일")
 
 
-class Daegu_Restaurant(Restaurant):
-    beverage = "대구 참소주"
-    child_beverage = "환타"
+class Daegu_Restaurant(Restaurant): # 속성과 행위 일치시킨 예
+    free_item = "사탕 한 봉지"
+    water = "시원한 생수 한 병"
     side_menu = "안지랑 곱창"
 
     def free_restaurant(self, free_item):
@@ -36,15 +36,19 @@ class Daegu_Restaurant(Restaurant):
     def hot_restaurant(self, water):
         print("저희 레스토랑 %s은 35도 이상의 날씨에 방문하는 손님들께 %s을 무료로 제공하고 있습니다." % (self.fullname, water))
 
+    def side_restaurant(self, side_menu):
+        print("저희 레스토랑 %s은 사이드 메뉴로 %s을 판매하고 있습니다." % (self.fullname, side_menu))
+
 daegu = Daegu_Restaurant("대구점")
 daegu.cuisine_restaurant("동인동 찜갈비")
 daegu.time_restaurant("am.2")
 daegu.close_restaurant("토요일")
 daegu.free_restaurant("사탕 한 봉지")
 daegu.hot_restaurant("시원한 생수 한 병")
+daegu.side_restaurant("안지랑 곱창")
 
 
-class Busan_Restaurant(Restaurant):
+class Busan_Restaurant(Restaurant): # 속성과 행위 불일치시킨 예
     re_cuisine = "한식과 양식의 퓨전"
     table = "광안대교 모형 식탁"
     special_menu = "부산 어묵"
