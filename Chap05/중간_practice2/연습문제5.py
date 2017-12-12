@@ -22,6 +22,7 @@ while True:
         berry = number.split()
         one = berry[0]
         two = berry[1]
+
         try:
             one and two
             print(sum(int(one), int(two)))
@@ -34,7 +35,10 @@ while True:
         except:
             pass
 
-
+        try:
+            int(one) / int(two)
+        except ZeroDivisionError:
+            print("이 녀석아! 두 번째 입력에서 0을 입력했다네. 분모는 0이 되어서는 안 돼!!!")
 
         try:
             int(one) and two
@@ -46,7 +50,3 @@ while True:
         except:
             print("죄송합니다. 두 번째 입력이 %s입니다. 숫자를 입력하세요" % two)
 
-        try:
-            int(two) != 0
-        except ZeroDivisionError:
-            print("이 녀석아! 두 번째 입력에서 0을 입력했다네. 분모는 0이 되어서는 안 돼!!!")
