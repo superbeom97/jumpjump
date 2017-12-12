@@ -66,7 +66,7 @@ print(isinstance(b, Person))
 print(isinstance(a, Person))
 
 # lambda
-myList = [lambda a,b:a+b, lambda a,b:a*b]
+myList = [lambda a, b: a+b, lambda a, b: a*b]
 print(myList)
 myList[0](3,4)
 print(myList[0](3,4))
@@ -96,3 +96,27 @@ def plus_one(x):
 
 print(list(map(plus_one, [6]))) # 그냥 map(plus_one, 6) 하면 안 돼 [6]으로 해줘야 하는
 print(list(map(plus_one, [1,2,3,4,5])))
+
+# pow(x, y) : x의 y 제곱한 결과값을 리턴
+pow(2, 4) # 2**4와 같다
+print(pow(2, 4))
+print(2**4)
+
+# sorted
+a = [3, 54, 1]
+print(a)
+a.sort() # sort는 리스트의 요소를 순서대로 정렬해 주는 리스트 함수
+print(a)
+print(sorted([3,55,1])) # sorted는 바로 정렬해 주는 내장 함수
+
+# str
+a = "hi"
+b = a.upper()
+print(a)
+print(b)
+
+# zip : 동일한 개수로 이루어진 자료형을 묶어 준다
+print(list(zip([1,2,3],['a','b','c'])))
+print(list(zip([1,2,3],['a','b',a]))) # 'a', 'b'는 문자열로, a는 변수로 사용
+print(list(zip([1,2,3],[a,b]))) # [a,b] 처럼 변수를 넣을 순 있지만, [e,d] 처럼 변수가 아닌
+print(list(zip([1,2,3],['e','d']))) # 문자열로 넣고 싶으면 ['e','d'] 처럼 따옴표를 사용해 줘야 한다!
