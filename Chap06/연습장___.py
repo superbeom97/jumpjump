@@ -1,35 +1,22 @@
 # while True:
-#     mos = {".-": "A", "-...": "B", "-.-.": "C", "-..": "D", ".": "E", "..-.": "F", "--.": "G", "....": "H", "..": "I",
-#            ".---": "J", "-.-": "K", ".-..": "L", "--": "M", "-.": "N", "---": "O", ".--.": "P", "--.-": "Q", ".-.": "R",
-#            "...": "S", "-": "T", "..-": "U", "...-": "V", ".--": "W", "-..-": "X", "-.--": "Y", "--..": "Z", " ":"\b",
-#            "  ":" "}
-#
-#     mos_inp = input("모스 부호를 입력하시오: ")
-#     mos_list = mos_inp.split()
-#     for i in mos_list:
-#         print(mos.get(i), end="")
-#     print("") # 중요!
+#     let = input("문자를 입력하세요: ")
+#     let_list = let.split()
+#     print(let)
+#     print(let_list)
+#     print(let_list[0])
+
+    # if
 
 
+# while True:
+#     let = "abbcccdddaaa"
+#     let_list = let.split("")
+#     print(let_list)
+    # while let
 
+let = "abbcccdddaaa"
+let_list = list(let)
+i = 0
+for j in let_list:
 
-mos = {".-": "A", "-...": "B", "-.-.": "C", "-..": "D", ".": "E", "..-.": "F", "--.": "G", "....": "H", "..": "I",
-           ".---": "J", "-.-": "K", ".-..": "L", "--": "M", "-.": "N", "---": "O", ".--.": "P", "--.-": "Q", ".-.": "R",
-           "...": "S", "-": "T", "..-": "U", "...-": "V", ".--": "W", "-..-": "X", "-.--": "Y", "--..": "Z", "": " "}
-
-mos_inp = "...  --- ..." # -> S OS로 출력이 되야 돼.. 공백을 리스트에 넣어야 하는데..
-# mos_list = ["...", "  ", "---", " ", "..."]
-# for i in mos_list: 하면
-#       i = "..."
-#       i = "  "
-#       i = "---"
-#       i = " "
-#       i = "..."
-#       print(mos.get(i), end="")
-#       -> S OS
-a = mos_inp.split()
-b = mos_inp.split(" ")
-for i in b:
-    print(mos.get(i))
-print(a)
-print(b)
+print(let_list)

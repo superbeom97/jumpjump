@@ -6,6 +6,6 @@ while True:
 
     mos_inp = input("모스 부호를 입력하시오: ")
     mos_list = mos_inp.split(" ") # 이게 키포인트!! split() 이 아닌, split(" ")!!!!!
-    for i in mos_total:
+    for i in mos_list:
         print(mos.get(i), end="")
     print("") # 중요!
