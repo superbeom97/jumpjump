@@ -1,8 +1,11 @@
 while True:
-    let = input("문자를 입력하세요: ")
-    let_list = let.split()
-    print(let)
-    print(let_list)
-    print(let_list[0])
+    let = input("문자를 입력하세요: ") # "aaabbcccccca"
+    let_list = list(let) # ['a', 'a', 'a', 'b', 'b', 'c', 'c', 'c', 'c', 'c', 'c', 'a']
 
-    # if
+    i = 0
+    for j in let_list:
+        if let_list[j] == let_list[j+1]:
+            b = let_list[j] + let_list[j+1]
+            print(b)
+        else:
+            continue
