@@ -1,3 +1,4 @@
+# 아직 미완성!!!!!!
 while True:
     let = input("문자를 입력하세요: ") # "aaabbcccccca"
     let_list = list(let) # ['a', 'a', 'a', 'b', 'b', 'c', 'c', 'c', 'c', 'c', 'c', 'a']
