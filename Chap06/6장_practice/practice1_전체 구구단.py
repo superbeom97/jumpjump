@@ -23,7 +23,7 @@ while True:
         print("이용해 주셔서 감사합니다.")
         break
 
-    else:
+    elif int(number) < -1:
         try:
             raise int(number) < -1
 
