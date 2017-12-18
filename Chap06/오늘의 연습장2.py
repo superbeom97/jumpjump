@@ -1,3 +1,4 @@
+## 공배수 개념 제대로 익히고 다시!!
 def Mul(rrange, one, two):
     print("0부터 %s이하의 범위를 선택하셨습니다. 이 중에서" % rrange)
 

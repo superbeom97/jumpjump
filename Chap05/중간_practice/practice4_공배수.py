@@ -1,3 +1,4 @@
+## 공배수 개념 제대로 익히고 다시 하기!!
 while True:
     number = str(input("세 개의 양수를 입력하세요\n종료를 원하시면 -1을 입력하세요: "))
     john = "".join(number)
