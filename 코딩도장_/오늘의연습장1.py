@@ -11,7 +11,7 @@ def Nature_Number():
                 continue
 
         pure_number = int(div_number / 2)
-        if pure_number == nat_number:
+        if pure_number == j:
             print(pure_number)
 
 while True:
