@@ -15,7 +15,7 @@
 
 def Count_Number(number):
     total_num = ""
-    for i in range(1, number+1):
+    for i in range(10, number+1):
         total_num += str(i)
 
     for j in range(10):
