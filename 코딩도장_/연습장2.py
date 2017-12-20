@@ -1,15 +1,12 @@
-n = 1330 # 몫
-rest = [] # 나머지
-binary_number = ""
+def is_palindrome(n):
+  s = str(n)
+  return s == s[::-1]
 
-while True:
-    if n != 0:
-        rest.append(n % 2)
-        n = n // 2
-
-    else:
-        for i in range(1, len(rest)+1):
-            binary_number += str(rest[-i])
-
-        print(binary_number)
-        break
+def main():
+  m = 0
+  for i in range(999, 99, -1):
+    for j in range(999, 99, -1):
+      n = i * j
+      if is_palindrome(n) and m < n:
+        m = n
+  print(m)
