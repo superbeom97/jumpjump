@@ -32,9 +32,9 @@ def Primary_Arithmetic():
     total_count = []    # [0, 0, 2, 3, 1]
     first_number = ""
     second_number = ""
-    print("두 수를 더해 한 자리 올림의 개수를 찾아주는 프로그램입니다.")
+    print("<<두 수를 더해 한 자리 올림의 개수를 찾아주는 프로그램입니다.")
     print("더하고자 하는 두 수를 입력해 주세요.")
-    print("입력을 다 하셨으면 '0 0'을 입력해 주세요.")
+    print("입력을 다 하셨으면 '0 0'을 입력해 주세요.>>")
 
     while True:
         total_count.append(count)
