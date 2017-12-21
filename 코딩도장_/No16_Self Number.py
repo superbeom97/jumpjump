@@ -12,14 +12,47 @@
 #
 # 1 이상이고 5000 보다 작은 모든 셀프 넘버들의 합을 구하라.
 
+
 def Self_Number():
     generator = []
-    self_number_group = []
+    real_generator = []
+    no_generator = []
     self_number = 0
 
-    for i in range(1, 5000):
-        for j in range(1, 5):
-            generator.append(i[i-j])
+    for i in range(1, 5001):
+        letter_i = str(i)
+
+        if len(letter_i) == 1:
+            i = i * 2
+            generator.append(i)
+
+        elif len(letter_i) == 2:
+            i = int(letter_i[0]) + int(letter_i[1]) + i
+            generator.append(i)
+
+        elif len(letter_i) == 3:
+            i = int(letter_i[0]) + int(letter_i[1]) + int(letter_i[2]) + i
+            generator.append(i)
+
+        elif len(letter_i) == 4:
+            i = int(letter_i[0]) + int(letter_i[1]) + int(letter_i[2]) + int(letter_i[3]) + i
+            generator.append(i)
+
+    for j in generator:
+        if j < 5000:
+            real_generator.append(j)
+        else:
+            continue
+
+    for z in range(1, 5000):
+        no_generator.append(z)
+
+    self_number_group = set(no_generator) - set(real_generator)
+
+    for x in self_number_group:
+        self_number += x
+
+    print(self_number)
 
 
 Self_Number()
