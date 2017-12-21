@@ -4,16 +4,19 @@
 # 예를들어 S={1, 3, 4, 8, 13, 17, 20} 이 주어졌다면, 결과값은 (3, 4)가 될 것이다.
 
 
-## 미완성!!!!!!!
+S = [1, 3, 4, 8, 13, 17, 20, 21, 101, 102]
+initial_value = 10000
+for i in range(len(S)-1):
+    sub_value = int(S[-(i+1)]) - int(S[-(i+2)])
+    if sub_value < initial_value:
+        initial_value = sub_value
+    else:
+        continue
 
-def Number():
-    num = input("알아보고 싶은 점들의 숫자를 입력하시오: ")
-    list_num = num.split()
-    sort_num = sorted(list_num)
 
-    return sort_num[0]
+for i in range(len(S)-1):
+    if int(S[-(i+1)]) - int(S[-(i+2)]) == initial_value:
+        print("(%s, %s)" % (S[-(i+2)], S[-(i+1)]))
 
-    blank_sth = []
-    # for i in sort_num:
-
-print(Number())
+    else:
+        continue
