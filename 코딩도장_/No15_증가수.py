@@ -13,10 +13,12 @@
 
 
 # 세 자리 자연수 -> 100 ~ 999
-    # 이 중에서 1. 일의 자리가 0이 아닌 것
-    # 2. 곱한 수 중 자릿수의 크기가 바뀌지 않은 것,,, 제외하기!
+    # 이 중에서 일의 자리가 0인 것 제외하기!
+    # 중간에 자릿수의 크기가 바뀌지 않는 것도 제외하는 줄 알았다...어쩐지 코드는 확실한데 안 나오더라ㅋㅋ
+    # 문제를 끝까지 잘 읽자!!!
 def Increase_Number():
     final_number = []
+    nat_number = []
     for i in range(100, 1000):
         reverse_letter = ""
         str_i = str(i)
@@ -27,19 +29,23 @@ def Increase_Number():
             reverse_number = int(reverse_letter)
             mul_number = str(i * reverse_number)    # 123 * 321 = 39483
             if len(mul_number) == 5: # 5자리 일 때
-                if mul_number[0] < mul_number[1] and mul_number[1] < mul_number[2] and mul_number[2] < mul_number[3] and mul_number[3] < mul_number[4]:
+                if mul_number[0] <= mul_number[1] and mul_number[1] <= mul_number[2] and mul_number[2] <= mul_number[3] and mul_number[3] <= mul_number[4]:
                     final_number.append(int(mul_number))
+                    nat_number.append(i)
                 else:
                     continue
             else: # 그 외, 6자리 일 때
-                if mul_number[0] < mul_number[1] and mul_number[1] < mul_number[2] and mul_number[2] < mul_number[3] and mul_number[3] < mul_number[4] and mul_number[4] < mul_number[5]:
+                if mul_number[0] <= mul_number[1] and mul_number[1] <= mul_number[2] and mul_number[2] <= mul_number[3] and mul_number[3] <= mul_number[4] and mul_number[4] <= mul_number[5]:
                     final_number.append(int(mul_number))
+                    nat_number.append(i)
                 else:
                     continue
 
         else:
             continue
 
+
+    print(nat_number)
     print(final_number)
     print(len(final_number))
 
