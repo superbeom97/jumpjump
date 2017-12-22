@@ -12,7 +12,45 @@
 
 
 # HH = 00 - 23, MM = 00 - 59, SS = 00 - 59
+def Check_people():
+    in_out_office_total = []
+    print("<< 사원들의 출근시간과 퇴근시간을 입력해 주세요. (모두 입력하셨으면 '종료'를 입력해 주세요) >>")
+    while True:
+        in_out_office = input()
+        if in_out_office != "종료":
+            in_out_office_total.append(in_out_office)
+        else:
+            break
 
-search_time = input("알아보고 싶은 시간을 입력하시오: ")
-div_search_time = search_time.split(":")
-print(div_search_time)
+    search_time = input("알아보고 싶은 시간을 입력하시오: ") # search_time이 출근시간보다 크고 퇴근시간보다 작으면 돼
+    div_search_time = search_time.split(":")
+    count = 0
+
+    for i in in_out_office_total:
+        in_out_time = i.split()
+        in_time = in_out_time[0].split(":")
+        out_time = in_out_time[1].split(":")
+
+        if in_time[0] < div_search_time[0]:
+            count += 1
+        elif in_time[0] == div_search_time[0]:
+            if in_time[1] < div_search_time[1]:
+                count += 1
+            elif in_time[1] == div_search_time[1]:
+                if in_time[2] <= div_search_time[2]:
+                    count += 1
+
+        if out_time[0] < div_search_time[0]:
+            count -= 1
+        elif out_time[0] == div_search_time[0]:
+            if out_time[1] < div_search_time[1]:
+                count -= 1
+            elif out_time[1] == div_search_time[1]:
+                if out_time[2] < div_search_time[2]:
+                    count -= 1
+
+    print("'%s'에 사무실에는 %s명의 인원이 있었습니다." % (search_time, count))
+
+
+while True:
+    Check_people()
