@@ -1,24 +1,24 @@
-# in_out_office_total = []
-# in_out_office = input("사원들의 출근시간과 퇴근시간을 입력해 주세요. (모두 입력하셨으면 '종료'를 입력해 주세요) : ")
-# if in_out_office != "종료":
-#     split_in_out = in_out_office.split()
+print("유쾌한 점퍼를 알아보고 싶은 수열을 입력하시오(첫 자리에는 개수를 입력하시오): ")
+while True:
+    original_jumper_str = input()
+    original_jumper = original_jumper_str.split()
+    range_check_jumper = original_jumper[0]
 
+    check_jumper = []
+    for i in range(1, len(original_jumper)):
+        try:
+            check_jumper.append(abs(int(original_jumper[i]) - int(original_jumper[i+1])))
+        except:
+            pass
 
-a = []
-b = "12:02:45 18:12:30"
-d = b.split()
-# print(d)
+    true_or_false = ""
+    for j in (1, len(check_jumper)):
+        if int(j) in check_jumper:
+            true_or_false += "o"
+        else:
+            true_or_false += "x"
 
-
-
-aaa = ["12:02:45 18:12:30", "10:12:45 13:12:30", "09:02:45 19:12:30"]
-# print(aaa[0])
-# print(type(aaa[0]))
-for i in aaa:
-    b = i.split()
-    in_time = b[0].split(":")
-    out_time = b[1].split(":")
-
-    # split_in_time =
-    print(in_time)
-    print(out_time)
+    if "x" in true_or_false:
+        print("Not Jolly")
+    else:
+        print("Jolly")
