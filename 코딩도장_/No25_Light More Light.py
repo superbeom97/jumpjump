@@ -36,21 +36,35 @@
 #
 # 3개의 전구, 3번 왕복
 # 전구 = 1 2 3
+# 처음에는 = off off off
 # 첫 번째 갈 때 = on on on
 # 두 번째 갈 때 = on off on
 # 세 번째 갈 때 = on off off
 #
 # n 번째 전구가 켜져 있나? 꺼져 있나?
 
-print("알아보고 싶은 전구와 왕복 횟수인 N을 입력하세요: ")
+## 마지막 전구만 알아보면 돼 -> n의 약수일 때마다 스위치를 눌러
+## => n의 약수를 구해야 돼
+## 나눴을 때, 나머지가 0이면 약수!!
+
+print("알아보고 싶은 전구와 왕복 횟수인 N을 입력하세요.")
+print("(입력을 다 하셨으면 '0'을 입력해 주세요.) : ")
 final_light = []
 while True:
-    light = []
-    n = input()
+    count = 0
+    n = int(input())
     if n != 0:
-        for i in range(int(n)):
-            light.append("off")
+        for i in range(1, n+1):  # 마지막(n번째) 전구만 알아보면 돼 -> n의 약수를 구하는 식
+            if n % i == 0:
+                count += 1  # 약수의 개수를 카운트
+            else:
+                continue
+
+        if count % 2 == 0:  # 약수의 개수가 짝수 이면 "OFF"
+            final_light.append("OFF")
+        else:               # 약수의 개수가 홀수이면 "ON"
+            final_light.append("ON")
     else:
-        for j in final_light:
-            print(j)
+        for i in final_light:
+            print(i)
         break
