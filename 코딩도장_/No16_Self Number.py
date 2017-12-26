@@ -13,6 +13,7 @@
 # 1 이상이고 5000 보다 작은 모든 셀프 넘버들의 합을 구하라.
 
 
+## 처음에 푼 코드
 def Self_Number():
     generator = []
     real_generator = []
@@ -56,3 +57,42 @@ def Self_Number():
 
 
 Self_Number()
+
+
+### 풀이 보고 한 수 배운 뒤,
+## Ver.1 sum 함수를 이용하여 바로 더한
+generator_group = []
+for i in range(1, 5000): # 123
+    generator_factor = 0
+    for j in str(i): # 입력 받은 i를 문자열로 만들어 준 후, 하나씩 j에 넣는 거야. 그걸 int로 더하면
+        generator_factor += int(j) # 각 자리 수를 더한 거야 -> 풀이 보고 배운 내용!!
+    generator_group.append((generator_factor+int(i))) # 각 자리 수 더한 거 + 원래 입력 받은 수 = 제너레이터
+
+total_group = []
+for z in range(1, 5000):
+    total_group.append(int(z))
+
+self_number_group = set(total_group) - set(generator_group) # 1~4999에서 제너레이터 제외한 수들
+sum_self_number = 0
+for x in self_number_group:
+    sum_self_number += int(x)
+print(sum_self_number)
+
+
+## Ver.2 sum 함수를 이용하여 바로 더한
+generator_group = []
+for i in range(1, 5000): # 123
+    generator_factor = 0
+    for j in str(i): # 입력 받은 i를 문자열로 만들어 준 후, 하나씩 j에 넣는 거야. 그걸 int로 더하면
+        generator_factor += int(j) # 각 자리 수를 더한 거야!
+    generator_group.append((generator_factor+int(i))) # 각 자리 수 더한 거 + 원래 입력 받은 수 = 제너레이터
+
+total_group = []
+for z in range(1, 5000):
+    total_group.append(int(z))
+
+self_number_group = set(total_group) - set(generator_group) # 1~4999에서 제너레이터 제외한 수들
+print(sum(self_number_group))
+# sum()은 정수형으로 저장되어 있는 수들을 더해 주는
+# 예) a = [1,2,3]
+# print(sum(a)) -> 1 + 2 + 3 = 6 이 된다.
