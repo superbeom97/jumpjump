@@ -1,5 +1,6 @@
 import csv
-##
+
+## 행의 입력 정의
 def get_csv_rowInstance(row_name):
     row_instance = []
     row_index = data[0].index(row_name)
@@ -9,15 +10,16 @@ def get_csv_rowInstance(row_name):
 
     return row_instance
 
-# def get_csv_columnInstance(primary_key):
-#     column_instance = []
-#     for column in data[1:]:
-#         if column[0] == primary_key:
-#             column_instance.append(column)
-#
-#     return column_instance[0][1:]
+## 열의 입력 정의
+def get_csv_columnInstance(primary_key):
+    column_instance = []
+    for column in data[1:]:
+        if column[0] == primary_key:
+            column_instance.append(column)
 
-##
+    return column_instance[0]
+
+## 행의 출력 정의
 def print_row(row_instance, type="int"):
     if type == "int":
         list(map(int, row_instance))
@@ -26,7 +28,8 @@ def print_row(row_instance, type="int"):
 
     for row_element in row_instance:
         print(row_element)
-##
+
+## 열의 출력 정의
 def print_column(column_instance):
     for column_element in column_instance:
         print(column_element)
@@ -43,15 +46,15 @@ with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:
 
 
 while True:
-    access = int(input("데이터 유형을 선택하시오 \n(행: 1, 열: 2, 종료: 3) : "))
+    access = int(input("데이터 유형을 선택하시오 \n(열: 1, 행: 2, 종료: 3) : "))
 
     if access == 1:
-        access_key = int(input("행의 Access Key를 입력하시오: "))
-        print_column(data[access_key])
+        access_key = int(input("열의 Access Key를 입력하시오: "))
+        print_column(get_csv_columnInstance("%s" % access_key))
         continue
 
     elif access == 2:
-        access_key = input("열의 Access Key를 입력하시오: ")
+        access_key = input("행의 Access Key를 입력하시오: ")
         print_row(get_csv_rowInstance("%s" % access_key))
         continue
 
