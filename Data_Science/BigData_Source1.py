@@ -17,6 +17,8 @@ countParticipants = []
 for row in data[1:]:
     countParticipants.append(int(row[countParticipantsIndex]))
 
+print("The contents of 'COUNT PARTICIPANTS': %s" % countParticipants)
+
 
 countCitizenStatusTotalIndex = data[0].index("COUNT CITIZEN STATUS TOTAL")
 print("The index of 'COUNT CITIZEN STATUS TOTAL': %s" % countCitizenStatusTotalIndex)
@@ -27,3 +29,14 @@ for row in data[1:]:
     countCitizenStatusTotal.append(int(row[countCitizenStatusTotalIndex]))
 
 print("The contents of 'COUNT CITIZEN STATUS TOTAL': %s" % countCitizenStatusTotal)
+
+
+countFemaleIndex = data[0].index("COUNT FEMALE")
+print("The index of 'COUNT FEMALE': %s" % countFemaleIndex)
+
+countFemale = []
+
+for row in data[1:]:
+    countFemale.append(int(row[countFemaleIndex]))
+
+print("The contents of 'COUNT FEMALE': %s" % countFemale)
