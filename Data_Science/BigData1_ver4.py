@@ -38,12 +38,6 @@ def print_column(column_instance):
 with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:
     data = list(csv.reader(infile))
 
-# print_row(get_csv_rowInstance("COUNT FEMALE"))
-# print_row(get_csv_rowInstance("PERCENT FEMALE"), "float")
-# print_row(get_csv_rowInstance("JURISDICTION NAME"), "str")
-# print_column(data[0])
-# print_column(data[1])
-
 
 while True:
     access = int(input("데이터 유형을 선택하시오 \n(열: 1, 행: 2, 종료: 3) : "))
