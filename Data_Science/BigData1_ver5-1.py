@@ -1,4 +1,4 @@
-import csv
+import csv          ## 데이터를 불러오는 소스 코드
 import math
 
 ## 행의 입력 정의
@@ -83,6 +83,7 @@ def my_Min(row_instance):
 ## 편차 함수 정의
 def my_Deviation(row_instance):
     print("편차(Deviation)의 공식 : 표본 - 평균")
+
     sum = 0
     for i in row_instance:
         sum += float(i)
@@ -93,34 +94,60 @@ def my_Deviation(row_instance):
         minus_average = float(j) - average
         print("%g           %g" % (float(j), minus_average))
 
-## 분산 함수 정의
-def my_Variance(row_instance):
+## 표준편차 함수 정의
+def my_Standard_Deviation(row_instance):
+    print("표준편차(Standard Deviation) 공식 : √분산")
+
     Row_instance_print(row_instance)
 
-    square_sum = 0
-    average_sum = 0
+    square_average_list = []
     for i in row_instance:
-        square_sum += float(i) * float(i)
-        average_sum += float(i)
+        square_i = 0
+        square_i = float(i) * float(i)
 
-    square_average = square_sum / len(row_instance)
-    average_square_first = average_sum / len(row_instance)
-    average_square = average_square_first * average_square_first
+        square_average_list.append(square_i)
+
+    square_sum = 0
+    for z in square_average_list:
+        square_sum += float(z)
+    square_average = square_sum / len(square_average_list)
+
+    sum = 0
+    for j in row_instance:
+        sum += float(j)
+    average = sum / len(row_instance)
+    average_square = average * average
+
+    variance_row = square_average - average_square
+    standard_deviation = math.sqrt(variance_row)
+
+    print("표준편차 : %g" % standard_deviation)
+
+
+## 분산 함수 정의
+def my_Variance(row_instance):
+    print("분산(Variance) 공식 : (제곱의 평균) - (평균의 제곱)")
+    Row_instance_print(row_instance)
+
+    square_average_list = []
+    for i in row_instance:
+        square_i = 0
+        square_i = float(i) * float(i)
+        square_average_list.append(square_i)
+
+    square_sum = 0
+    for z in square_average_list:
+        square_sum += float(z)
+    square_average = square_sum/len(square_average_list)
+
+    sum = 0
+    for j in row_instance:
+        sum += float(j)
+    average = sum / len(row_instance)
+    average_square = average * average
 
     variance_row = square_average - average_square
 
-    return variance_row
-
-## 표준편차 함수 정의
-def my_Standard_Deviation(variance_row):
-    print("표준편차(Standard Deviation) 공식 : √분산")
-
-    standard_deviation = math.sqrt(variance_row)
-    print("표준편차 : %g" % standard_deviation)
-
-## 분산 출력 함수 정의
-def my_Variance_print(variance_row):
-    print("분산(Variance) 공식 : (제곱의 평균) - (평균의 제곱)")
     print("분산 : %g" % variance_row)
 
 ## 오름차순 정렬 함수 정의
@@ -153,7 +180,7 @@ def my_Descendant(row_instance):
     print("")
 
 
-with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:
+with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:  ## 데이터를 불러오는 소스 코드
     data = list(csv.reader(infile))
 
 
@@ -163,46 +190,57 @@ while True:
     if access == 1:
         access_key = int(input("열의 Access Key를 입력하시오: "))
         print_column(get_csv_columnInstance("%s" % access_key))
+        continue
 
     elif access == 2:
         access_key = input("행의 Access Key를 입력하시오: ")    ## ex) COUNT FEMALE
         print_row(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 3:
         access_key = input("총합을 구하고자 하는 행의 Access Key를 입력하시오: ")
         my_Sum(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 4:
         access_key = input("평균을 구하고자 하는 행의 Access Key를 입력하시오: ")
         my_Average(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 5:
         access_key = input("최댓값을 구하고자 하는 행의 Access Key를 입력하시오: ")
         my_Max(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 6:
         access_key = input("최솟값을 구하고자 하는 행의 Access Key를 입력하시오: ")
         my_Min(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 7:
         access_key = input("편차를 구하고자 하는 행의 Access Key를 입력하시오: ")
         my_Deviation(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 8:
         access_key = input("표준편차를 구하고자 하는 행의 Access Key를 입력하시오: ")
-        my_Standard_Deviation(my_Variance(get_csv_rowInstance("%s" % access_key)))
+        my_Standard_Deviation(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 9:
         access_key = input("분산을 구하고자 하는 행의 Access Key를 입력하시오: ")
-        my_Variance_print(my_Variance(get_csv_rowInstance("%s" % access_key)))
+        my_Variance(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 10:
         access_key = input("오름차순 정렬하고자 하는 행의 Access Key를 입력하시오: ")
         my_Ascendant(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 11:
         access_key = input("내림차순 정렬하고자 하는 행의 Access Key를 입력하시오: ")
         my_Descendant(get_csv_rowInstance("%s" % access_key))
+        continue
 
     elif access == 12:
         print("이용해 주셔서 감사합니다!")

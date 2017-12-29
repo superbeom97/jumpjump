@@ -100,23 +100,15 @@ def my_Standard_Deviation(row_instance):
 
     Row_instance_print(row_instance)
 
-    square_average_list = []
-    for i in row_instance:
-        square_i = 0
-        square_i = float(i) * float(i)
-
-        square_average_list.append(square_i)
-
     square_sum = 0
-    for z in square_average_list:
-        square_sum += float(z)
-    square_average = square_sum / len(square_average_list)
+    average_sum = 0
+    for i in row_instance:
+        square_sum += float(i) * float(i)
+        average_sum += float(i)
 
-    sum = 0
-    for j in row_instance:
-        sum += float(j)
-    average = sum / len(row_instance)
-    average_square = average * average
+    square_average = square_sum / len(row_instance)
+    average_square_first = average_sum / len(row_instance)
+    average_square = average_square_first * average_square_first
 
     variance_row = square_average - average_square
     standard_deviation = math.sqrt(variance_row)
@@ -129,22 +121,15 @@ def my_Variance(row_instance):
     print("분산(Variance) 공식 : (제곱의 평균) - (평균의 제곱)")
     Row_instance_print(row_instance)
 
-    square_average_list = []
-    for i in row_instance:
-        square_i = 0
-        square_i = float(i) * float(i)
-        square_average_list.append(square_i)
-
     square_sum = 0
-    for z in square_average_list:
-        square_sum += float(z)
-    square_average = square_sum/len(square_average_list)
+    average_sum = 0
+    for i in row_instance:
+        square_sum += float(i) * float(i)
+        average_sum += float(i)
 
-    sum = 0
-    for j in row_instance:
-        sum += float(j)
-    average = sum / len(row_instance)
-    average_square = average * average
+    square_average = square_sum / len(row_instance)
+    average_square_first = average_sum / len(row_instance)
+    average_square = average_square_first * average_square_first
 
     variance_row = square_average - average_square
 
