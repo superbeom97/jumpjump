@@ -1,4 +1,4 @@
-import csv
+import csv          ## 데이터를 불러오는 소스 코드
 import math
 
 ## 행의 입력 정의
@@ -180,7 +180,7 @@ def my_Descendant(row_instance):
     print("")
 
 
-with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:
+with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:  ## 데이터를 불러오는 소스 코드
     data = list(csv.reader(infile))
 
 

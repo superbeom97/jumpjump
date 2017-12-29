@@ -2,9 +2,9 @@
 # print(os.getcwdb()) ## Demographic_Statistics_By_Zip_Code.csv 파일이 있어야 해!!
 
 
-import csv
+import csv          ## 데이터를 불러오는 소스 코드
 
-with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:
+with open("Demographic_Statistics_By_Zip_Code.csv", newline="") as infile:  ## 데이터를 불러오는 소스 코드
     data = list(csv.reader(infile))
 
 ## No1_COUNT PARTICIPANTS
