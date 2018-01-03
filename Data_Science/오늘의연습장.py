@@ -8,3 +8,6 @@ class Calculator:
 
 cal1 = Calculator()
 cal1.adder(5)
+cal1.adder(7)
+
+#
