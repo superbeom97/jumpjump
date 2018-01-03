@@ -67,7 +67,9 @@ def my_Deviation(row_instance):         # 편차 함수
 
     print("표본       편차")
     for element_row_j in row_instance:
-        print("%3g      %3g" % (float(element_row_j), (float(element_row_j)-average_row)))
+        print("%-3g      %3g" % (float(element_row_j), (float(element_row_j)-average_row)))
+        ## %3g는 전체 길이가 3개인 문자열 공간에서 오른쪽 정렬하고, 그 앞의 나머지는 공백으로
+        ## %-3g는 전체 길이가 3개인 문자열 공간에서 왼쪽 정렬하고, 그 뒤의 나머지는 공백으로
 
 def my_Variance(row_instance):      # 분산 입력 함수
     #제곱의 평균 - 평균의 제곱
