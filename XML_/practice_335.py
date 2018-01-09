@@ -27,9 +27,8 @@ author.text = "Eric"
 blog.append(subject)
 blog.append(author)
 
-SubElement(blog,"author").text = "58"
-# SubElement(author,"age").text = "58"      getitierator()로 출력하면 되는데 findall()로는 출력 안 됨!!
-SubElement(blog,"author").text = "USA"
+SubElement(author,"age").text = "58"
+SubElement(author,"nation").text = "USA"
 
 Agenda = Element("Agenda")
 blog.append(Agenda)
@@ -53,11 +52,9 @@ print("1. find()를 이용하여 subject 출력")
 print(subject_tag.text)
 print("\n", end="")
 
-# author_tag = blog.find("author")
-author_tags = blog.findall("author")
-# author_text = blog.findtext("author")
+author_tag = blog.find("author")
 print("2. findall()을 이용하여 author의 자식 노드 출력")
-for author_element in author_tags:
+for author_element in author_tag:
     print(author_element.text)
 print("\n", end="")
 # for author_element in author_tags:
