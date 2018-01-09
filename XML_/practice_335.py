@@ -57,9 +57,6 @@ print("2. findall()을 이용하여 author의 자식 노드 출력")
 for author_element in author_tag:
     print(author_element.text)
 print("\n", end="")
-# for author_element in author_tags:
-#     for element_au in author_element:
-#         print(element_au.text)
 
 Agenda_tags = blog.findall("Agenda")
 print("3. getieratior()을 이용하여 Agenda의 자식 노드 출력")
