@@ -1,6 +1,6 @@
-import urllib.request
-from bs4 import BeautifulSoup
-from pandas import DataFrame
+import urllib.request                       ## 소스 코드를 따기 위해 브라우저에 request 보내는
+from bs4 import BeautifulSoup               ## 따온 소스 코드는 XML 형식으로 저장 -> HTML로 바꿔 주는
+from pandas import DataFrame                ## HTML로 바꾼 코드를 테이블을 만들어 csv 파일로 저장해라
 
 html = urllib.request.urlopen('http://movie.naver.com/movie/sdb/rank/rmovie.nhn')
 soup = BeautifulSoup(html,'html.parser')        ## 모든 소스코드를 따오는
