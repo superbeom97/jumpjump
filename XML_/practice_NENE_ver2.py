@@ -1,3 +1,6 @@
+### 미완성!!
+
+
 ## py -m pip install pandas         ## pandas 설치 키워드
 print("Start")
 import urllib.request
