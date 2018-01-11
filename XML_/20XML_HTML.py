@@ -5,13 +5,13 @@ html='<td class="title"><div class="tit3"><a href="/movie/bi/mi/basic.nhn?code=1
 # <a title  마우스 타겟 시 설명 메세지 출력
 
 soup = BeautifulSoup(html,'html.parser')
-# print(soup)
+print(soup)
 tag = soup.td
-# print(tag)
+print(tag)
 tag = soup.div
 # print(tag)
 tag = soup.a
-print(tag)
+# print(tag)
 # print(tag.name)
 # print(tag.attrs)
 # print(tag.string)
