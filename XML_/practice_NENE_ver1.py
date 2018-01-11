@@ -28,7 +28,7 @@ try:
     count = 1
     while True:
         try:
-            f = open("D:\Python_workplace\super_test\V1_BigData/nene%s.csv" % count, 'r')
+            f = open("D:\Python_workspace\jumpjump\XML_\V1_BigData/nene%s.csv" % count, 'r')
             data = f.read()
             count += 1
         except:

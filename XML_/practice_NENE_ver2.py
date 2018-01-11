@@ -35,7 +35,7 @@ try:
             # if (count - 1) != record_limit:
             # if (count - 1) % record_limit != 0:
             if (count - 1) % record_limit != 0 or (count - 1) != record_limit:
-                f = open("D:\Python_workplace\super_test\V2_BigData\\Nene_Data%s/nene%s.csv" % (direct_count, folder_count), 'r')
+                f = open("D:\Python_workspace\jumpjump\XML_\V2_BigData\\Nene_Data%s/nene%s.csv" % (direct_count, folder_count), 'r')
                 data = f.read()
                 count += 1
                 folder_count += 1
