@@ -1,0 +1,11 @@
+<blog date="20180108">
+ <subject>Why python</subject>
+ <author>Eric<age>58</age>
+  <nation>USA</nation>
+  </author>
+ <Agenda>
+  <1.>Data Type</1.>
+  <2.>Control Flow</2.>
+  <3.>Function</3.>
+  </Agenda>
+ </blog>
