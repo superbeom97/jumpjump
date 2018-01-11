@@ -5,8 +5,8 @@ from pandas import DataFrame                ## HTML로 바꾼 코드를 테이�
 html = urllib.request.urlopen('http://movie.naver.com/movie/sdb/rank/rmovie.nhn')
 soup = BeautifulSoup(html,'html.parser')        ## 모든 소스코드를 따오는
 
-movie_names = soup.findAll('div', attrs={'class':'tit3'})
-movie_changes = soup.findAll('td', attrs={'class':'range ac'})
+movie_names = soup.find_all('div', attrs={'class':'tit3'})
+movie_changes = soup.find_all('td', attrs={'class':'range ac'})
 movie_changes_result = []
 for movie_change in movie_changes:
     td_movie_change = list(movie_change.strings)
