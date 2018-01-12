@@ -10,7 +10,8 @@ movie_changes = soup.findAll('td', attrs={'class':'range ac'})
 
 movie_changes_result = []
 for movie_change in movie_changes:
-    td_movie_change = list(movie_change.strings)
+    # td_movie_change = list(movie_change.strings)
+    td_movie_change = list(movie_change)    ## 이건 strings 필요 없는 듯!!
     movie_changes_result.append(td_movie_change[0])
 
 movie_name_result = []
