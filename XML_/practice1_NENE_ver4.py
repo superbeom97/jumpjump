@@ -1,38 +1,24 @@
-### 미완성!!
-
-
-#http://nenechicken.com/subpage/where/where_list.asp?target_step1=%EC%A0%84%EC%B2%B4&target_step2=%EC%A0%84%EC%B2%B4&proc_type=step1
-print("Start")
+print("START~")
 import urllib.request
 import os
-import csv
 from pandas import DataFrame
 import xml.etree.ElementTree as ET
 
 result = []
-split_nene_result = []
 dir_name = "V4_BigData"
-dir_delimiter = "\\"        ## delimiter : 구분자
-nene_dir = "Nene_Data"
-nene_file = "nene"
-nene_origin = "origin"
-csv = ".csv"
-record_limit = 3
+dir_rest = "\\"
+next_dir_name = "Nene1"
+file_name = "nene"
+csv_name = ".csv"
+text_name = "index_count.txt"
+record_limit = 100
 
-def make_dir(index) :
-    os.mkdir(dir_name + dir_delimiter + nene_dir+str(index))        ## os.mkdir 디렉터리 생성
-    return None
+def make_dir(dir_index):
+    os.mkdir(dir_name+dir_rest+next_dir_name+str(dir_index))
 
-def make_nene(dir_index, file_index) :
-    destination_csv = dir_name + dir_delimiter + nene_dir + str(dir_index) + dir_delimiter + nene_file + str(file_index) + csv
-    nene_table.to_csv(destination_csv,encoding="cp949", mode='w', index=True)
-    return None
-
-def make_nene_origin() :
-    destination_csv = dir_name + dir_delimiter + nene_origin + csv
-    nene_table.to_csv(destination_csv,encoding="cp949", mode='w', index=True)
-    return None
-
+def make_file(dir_index, file_index):
+    make_file_name = dir_name + dir_rest + next_dir_name + str(dir_index) + dir_rest + file_name + str(file_index) + csv_name
+    record_table.to_csv(make_file_name, encoding="cp949", mode='w', index=True)
 
 response = urllib.request.urlopen('http://nenechicken.com/subpage/where_list.asp?target_step2=%s&proc_type=step1&target_step1=%s'%(urllib.parse.quote('전체'),urllib.parse.quote('전체')))
 xml = response.read().decode('UTF-8')
@@ -45,16 +31,32 @@ for element in root.findall('item'):
     store_address = element.findtext('aname5')
     result.append([store_name]+[store_sido]+[store_gungu]+[store_address])
 
-nene_table = DataFrame(result,columns=('sotre','sido','gungu','store_address'))
+nene_table = DataFrame(result,columns=('store','sido','gungu','store_address'))
 
-try : os.mkdir(dir_name)
-except : pass
-with open(dir_name + dir_delimiter + "nene_index.txt", 'w') as file :
-    file.write('2')
-make_dir(1)
-make_nene_origin()
 
-with open("V4_BigData\\origin.csv", newline="") as infile:
-    data = list(csv.reader(infile))
+if os.path.isdir(dir_name):
+    make_dir()
+    count = 0
+    index_count = 0
+    change_result = []
+    for record_chg in result:
+        # count += 1
+        if count % 100 != 0:
+            change_result.append(record_chg)
+            count += 1
+        elif count % 100 == 0:
+            index_count += 1
+            record_table = DataFrame(change_result, columns=('store','sido','gungu','store_address'))
+            make_dir(index_count)
+            make_file(index_count, index_count)
+            change_result = []
+            count += 1
 
-print("End")
+elif not os.path.isdir(dir_name):
+    os.mkdir(dir_name)
+    with open(dir_name+dir_rest+text_name, 'w') as text:
+        text.write("1")
+        make_dir(1)
+        make_file(1, 1)
+
+print("END!!!!")
