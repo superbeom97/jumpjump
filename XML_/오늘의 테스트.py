@@ -1,53 +1,37 @@
-print("START~")
 import urllib.request
-import os
+from bs4 import BeautifulSoup
 from pandas import DataFrame
-import xml.etree.ElementTree as ET
 
-result = []
-dir_name = "V1_BigData"
-dir_rest = "\\"
-file_name = "nene"
-text_name = "index_count.txt"
-csv_name = ".csv"
+html = urllib.request.urlopen('http://movie.naver.com/movie/sdb/rank/rmovie.nhn')
+soup = BeautifulSoup(html,'html.parser')
 
-def make_dir():
-    make_dir_name = dir_name
-    os.mkdir(make_dir_name)
-    with open(dir_name + dir_rest + text_name, 'w') as text:
-        text.write("0")
+movie_name = soup.findAll('div', attrs={'class':'tit3'})
+change_rank = soup.findAll('td', attrs={'class':'range ac'})
 
-def make_file():
-    with open(dir_name + dir_rest + text_name, 'r') as text:
-        index_count = text.readline()
-        count = int(index_count) + 1
-        make_file_name = dir_name + dir_rest + file_name + str("%s" % count) + csv_name
-        nene_table.to_csv(make_file_name, encoding="cp949", mode='w', index=True)
+change_rank_result = []
+for change_rk in change_rank:
+    td_change_rank = list(change_rk)
+    change_rank_result.append(td_change_rank[0])
 
-    with open(dir_name + dir_rest + text_name, 'w') as text:
-        text.write(str(count))
+movie_name_result = []
+rank = 1
+change_rank_index = 0
+for movie_nm in movie_name:
+    td_movie_name = list(movie_nm.strings)
+    td_movie_name[0] = rank
+    # movie_chg = change_rank_result[change_rank_index]
+    td_movie_name[2] = change_rank_result[change_rank_index]
+    movie_name_result.append(td_movie_name)
+    rank += 1
+    change_rank_index += 1
 
-response = urllib.request.urlopen('http://nenechicken.com/subpage/where_list.asp?target_step2=%s&proc_type=step1&target_step1=%s'%(urllib.parse.quote('전체'),urllib.parse.quote('전체')))
-xml = response.read().decode('UTF-8')
-root = ET.fromstring(xml)
-
-for element in root.findall('item'):
-    store_name = element.findtext('aname1')
-    store_sido = element.findtext('aname2')
-    store_gungu = element.findtext('aname3')
-    store_address = element.findtext('aname5')
-    result.append([store_name]+[store_sido]+[store_gungu]+[store_address])
-
-nene_table = DataFrame(result,columns=('sotre','sido','gungu','store_address'))
+movie_table = DataFrame(movie_name_result, columns=('순위', '영화명', '변동폭'))
+movie_table.to_csv("movie_table.csv", encoding="cp949", mode='w', index=False)
 
 
-while True:
-    if os.path.isdir(dir_name):
-        make_file()
-        break
-    elif not os.path.isdir(dir_name):
-        make_dir()
-        make_file()
-        break
-
-print("END!!!!")
+# 과제
+# 네이버 영화 랭킹 웹페이지를 분석하여 아래 형식으로 csv 파일을 생성하시오
+# 순위 |      영화명       | 변동폭
+#  1   |       1987        |   0
+#  2   |  신과함께-죄와 벌 |  +1
+#  3   |쥬만지: 새로운세계 |  -1.

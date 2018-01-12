@@ -7,6 +7,7 @@ soup = BeautifulSoup(html,'html.parser')        ## 모든 소스코드를 따오
 
 movie_names = soup.findAll('div', attrs={'class':'tit3'})
 movie_changes = soup.findAll('td', attrs={'class':'range ac'})
+
 movie_changes_result = []
 for movie_change in movie_changes:
     td_movie_change = list(movie_change.strings)
