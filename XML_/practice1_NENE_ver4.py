@@ -1,3 +1,6 @@
+## 미완성
+
+
 print("START~")
 import urllib.request
 import os
