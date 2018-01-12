@@ -29,3 +29,10 @@ movie_table = DataFrame(movie_name_result, columns=('순위','영화명','변동
 movie_table.to_csv("movie_table.csv", encoding="cp949", mode='w', index=False)
 ## index=True 하면 csv 파일에서 첫 번째 열에 순서가 나오는 0~
 ## index=False 하면 순서 나오는 첫 번째 열을 없애 줌
+
+# 과제
+# 네이버 영화 랭킹 웹페이지를 분석하여 아래 형식으로 csv 파일을 생성하시오
+# 순위 |      영화명       | 변동폭
+#  1   |       1987        |   0
+#  2   |  신과함께-죄와 벌 |  +1
+#  3   |쥬만지: 새로운세계 |  -1.
