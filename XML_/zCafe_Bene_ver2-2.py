@@ -132,7 +132,7 @@ extract_result.append(["경남"] + ["%s개" % GyeongsangSouth_number] + ["%0.2f%
 CafeBene_table = DataFrame(store_result, columns=('store_name','store_address','store_tel'))
 CafeBene_table.to_csv("CafeBene_table_ver2.csv", encoding="cp949", mode='w', index=True)
 
-Extract_CafeBene_table = DataFrame(extract_result, columns=('전국 단위별', '매장 갯수', '카페베네 점유율'))
+Extract_CafeBene_table = DataFrame(extract_result, columns=('전국 단위별', '지점수', '점유율'))
 Extract_CafeBene_table.to_csv("Extract_CafeBene_table_ver2.csv", encoding="cp949", mode='w', index=False)
 
 print("END!!!!!")
