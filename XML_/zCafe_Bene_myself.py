@@ -37,7 +37,6 @@ for page_idx in range(1, max_page+1):
         store_result.append(str_store_nm)
         index_num += 1
 
-
 CafeBene_table = DataFrame(store_result, columns=('store_name','store_address','store_tel'))
 CafeBene_table.to_csv("CafeBene_table.csv", encoding="cp949", mode='w', index=True)
 
