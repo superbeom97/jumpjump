@@ -7,6 +7,8 @@ import csv
 
 store_result = []
 extract_result = []
+
+store_address_result = []
 max_page = 63
 
 for page_idx in range(1, max_page+1):
@@ -19,7 +21,6 @@ for page_idx in range(1, max_page+1):
     store_address = soup.findAll('address', attrs={'class':'addr'})
     store_tel = soup.findAll('span', attrs={'class':'tel'})
 
-    store_address_result = []
     for store_addr in store_address:
         str_store_addr = list(store_addr)
         store_address_result.append(str_store_addr[0])
@@ -39,125 +40,25 @@ for page_idx in range(1, max_page+1):
         store_result.append(str_store_nm)
         index_num += 1
 
-print("웹 스크롤링을 시작합니다잉~")
-print("Destination : %s" % CafeBene_URL)
-print("%-30s|" % "Store_Name" + "%-80s|" % "store_Address" + "%-17s|" % "Store-Telephone")
-for store_rt in store_result:
-    print("%-30s%s%37s" % (store_rt[0], store_rt[1], store_rt[2]))
 
-Seoul_number = 0
-Busan_number = 0
-Daegu_number = 0
-Daejeon_number = 0
-Incheon_number = 0
-Goangju_number = 0
-Ulsan_number = 0
-Jeju_number = 0
-Gyeonggi_number = 0
-Gangwon_number = 0
-ChungcheongNorth_number = 0
-ChungcheongSouth_number = 0
-JeonlaNorth_number = 0
-JeonlaSouth_number = 0
-GyeongsangNorth_number = 0
-GyeongsangSouth_number = 0
+# local_count = [i[0]+i[1]+i[2]+i[3] for i in store_address_result]
 
-for local_nm in store_result:
-    address_local = local_nm[1]
-    if '서울' in address_local:
-        Seoul_number += 1
-    elif '부산' in address_local:
-        Busan_number += 1
-    elif '대구' in address_local:
-        Daegu_number += 1
-    elif '대전' in address_local:
-        Daejeon_number += 1
-    elif '인천' in address_local:
-        Incheon_number += 1
-    elif '광주' in address_local:
-        Goangju_number += 1
-    elif '울산' in address_local:
-        Ulsan_number += 1
-    elif '제주' in address_local:
-        Jeju_number += 1
-    elif '경기' in address_local:
-        Gyeonggi_number += 1
-    elif '강원' in address_local:
-        Gangwon_number += 1
-    elif '충청북도' in address_local:
-        ChungcheongNorth_number += 1
-    elif '충청남도' in address_local:
-        ChungcheongSouth_number += 1
-    elif '전라북도' in address_local:
-        JeonlaNorth_number += 1
-    elif '전라남도' in address_local:
-        JeonlaSouth_number += 1
-    elif '경상북도' in address_local:
-        GyeongsangNorth_number += 1
-    elif '경상남도' in address_local:
-        GyeongsangSouth_number += 1
+Seoul_number = store_address_result.count("서울")
+Busan_number = store_address_result.count("부산")
+Daegu_number = store_address_result.count("대구")
+Daejeon_number = store_address_result.count("대전")
+Incheon_number = store_address_result.count("인천")
+Goangju_number = store_address_result.count("광주")
+Ulsan_number = store_address_result.count("울산")
+Jeju_number = store_address_result.count("제주")
+Gyeonggi_number = store_address_result.count("경기")
+Gangwon_number = store_address_result.count("강원")
+ChungcheongNorth_number = store_address_result.count("충청북도")
+ChungcheongSouth_number = store_address_result.count("충청남도")
+JeonlaNorth_number = store_address_result.count("전라북도")
+JeonlaSouth_number = store_address_result.count("전라남도")
+GyeongsangNorth_number = store_address_result.count("경상북도")
+GyeongsangSouth_number = store_address_result.count("경상남도")
 
-Seoul_percent = Seoul_number/len(store_result) * 100
-Busan_percent = Busan_number/len(store_result) * 100
-Daegu_percent = Daegu_number/len(store_result) * 100
-Daejeon_percert = Daejeon_number/len(store_result) * 100
-Incheon_percert = Incheon_number/len(store_result) * 100
-Goangju_percert = Goangju_number/len(store_result) * 100
-Ulsan_percert = Ulsan_number/len(store_result) * 100
-Jeju_percert = Jeju_number/len(store_result) * 100
-Gyeonggi_percert = Gyeonggi_number/len(store_result) * 100
-Gangwon_percert = Gangwon_number/len(store_result) * 100
-ChungcheongNorth_percert = ChungcheongNorth_number/len(store_result) * 100
-ChungcheongSouth_percert = ChungcheongSouth_number/len(store_result) * 100
-JeonlaNorth_percert = JeonlaNorth_number/len(store_result) * 100
-JeonlaSouth_percert = JeonlaSouth_number/len(store_result) * 100
-GyeongsangNorth_percert = GyeongsangNorth_number/len(store_result) * 100
-GyeongsangSouth_percert = GyeongsangSouth_number/len(store_result) * 100
-
-extract_result.append(["서울"] + ["%s개" % Seoul_number] + ["%0.2f%%" % Seoul_percent])
-extract_result.append(["부산"] + ["%s개" % Busan_number] + ["%0.2f%%" % Busan_percent])
-extract_result.append(["대구"] + ["%s개" % Daegu_number] + ["%0.2f%%" % Daegu_percent])
-extract_result.append(["대전"] + ["%s개" % Daejeon_number] + ["%0.2f%%" % Daejeon_percert])
-extract_result.append(["인천"] + ["%s개" % Incheon_number] + ["%0.2f%%" % Incheon_percert])
-extract_result.append(["광주"] + ["%s개" % Goangju_number] + ["%0.2f%%" % Goangju_percert])
-extract_result.append(["울산"] + ["%s개" % Ulsan_number] + ["%0.2f%%" % Ulsan_percert])
-extract_result.append(["제주"] + ["%s개" % Jeju_number] + ["%0.2f%%" % Jeju_percert])
-extract_result.append(["경기"] + ["%s개" % Gyeonggi_number] + ["%0.2f%%" % Gyeonggi_percert])
-extract_result.append(["강원"] + ["%s개" % Gangwon_number] + ["%0.2f%%" % Gangwon_percert])
-extract_result.append(["충북"] + ["%s개" % ChungcheongNorth_number] + ["%0.2f%%" % ChungcheongNorth_percert])
-extract_result.append(["충남"] + ["%s개" % ChungcheongSouth_number] + ["%0.2f%%" % ChungcheongNorth_percert])
-extract_result.append(["전북"] + ["%s개" % JeonlaNorth_number] + ["%0.2f%%" % JeonlaNorth_percert])
-extract_result.append(["전남"] + ["%s개" % JeonlaSouth_number] + ["%0.2f%%" % JeonlaSouth_percert])
-extract_result.append(["경북"] + ["%s개" % GyeongsangNorth_number] + ["%0.2f%%" % GyeongsangNorth_percert])
-extract_result.append(["경남"] + ["%s개" % GyeongsangSouth_number] + ["%0.2f%%" % GyeongsangSouth_percert])
-
-record_number = []
-record_number.append(Seoul_number)
-record_number.append(Busan_number)
-record_number.append(Daegu_number)
-record_number.append(Daejeon_number)
-record_number.append(Incheon_number)
-record_number.append(Goangju_number)
-record_number.append(Ulsan_number)
-record_number.append(Jeju_number)
-Gyeonggi_number = 0
-Gangwon_number = 0
-ChungcheongNorth_number = 0
-ChungcheongSouth_number = 0
-JeonlaNorth_number = 0
-JeonlaSouth_number = 0
-GyeongsangNorth_number = 0
-GyeongsangSouth_number = 0
-
-for array_result in extract_result:
-
-
-
-
-CafeBene_table = DataFrame(store_result, columns=('store_name','store_address','store_tel'))
-CafeBene_table.to_csv("CafeBene_table_ver3.csv", encoding="cp949", mode='w', index=True)
-
-Extract_CafeBene_table = DataFrame(extract_result, columns=('지역', '지점수', '비율'))
-Extract_CafeBene_table.to_csv("Extract_CafeBene_table_ver3.csv", encoding="cp949", mode='w', index=False)
-
-print("END!!!!!")
+print(Seoul_number)
+print(Busan_number)
