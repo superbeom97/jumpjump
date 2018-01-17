@@ -5,9 +5,10 @@ json_big_data = []
 
 def Start_Student():
     while True:
-        student_data_values = {}
+        student_data = {}
         total_course_info = {}
-        now_course_info = []
+        now_course_info_list = []
+        now_course_info_dict = {}
 
         print("<<json기반 주소록 관리 프로그램>>".center(33))  ## .center(30) 하면 총 글자 수 30칸에서 가운데 정렬
         select_number = int(input("===원하는 서비스의 번호를 눌러주세요~ 찡긋;)===\n1. 학생 정보입력\n2. 학생 정보조회\n3. 학생 정보수정"
@@ -15,23 +16,32 @@ def Start_Student():
         if select_number == 1:
             print("<<학생 정보 입력을 진행하겠습니다.>>".center(30))
             student_name = input("이름을 입력해 주세요 : ")
-            student_data_values["이름"] = student_name
+            student_data["이름"] = student_name
             student_age = int(input("나이를 입력해 주세요 : "))
-            student_data_values["나이"] = student_age
+            student_data["나이"] = student_age
             student_address = input("주소를 입력해 주세요 : ")
-            student_data_values["주소"] = student_address
-            Class_Code(student_name, student_data_values, json_big_data)  ## 강의 코드 - 강의명 - 강사 이름 - 개강일 - 종료일.. 입력 함수
+            student_data["주소"] = student_address
+            Class_Code(student_name, student_data, json_big_data, total_course_info, now_course_info_list, now_course_info_dict)  ## 강의 코드 - 강의명 - 강사 이름 - 개강일 - 종료일.. 입력 함수
 
         elif select_number == 2:
             print("<<학생 정보를 조회하겠습니다.>>".center(30))
             search_student = input("조회를 원하는 학생의 정보를 입력해 주세요 : ")
-            for search in json_big_data:
-                search_name = search.get('이름')
-                course_name = search.get('강의명')
-                instructor_name = search.get('강사 이름')
-                if search_student == search_name or course_name or instructor_name:
-                    print(search)
-                    break
+            for search_info in json_big_data:
+                if search_info.get('이름') == search_student:
+                    print("조회한 학생의 이름 : %s" % search_info.get('이름'))
+                    print("조회한 학생의 나이 : %s" % search_info.get('나이'))
+                    print("조회한 학생의 주소 : %s" % search_info.get('주소'))
+                    print("")
+                    print("조회한 학생의 현재 수강 과목은 다음과 같습니다.")
+                    for now_course_info in search_info.get('수강 정보').get('현재 수강 과목'):
+                        print("강사 이름 : %s" % now_course_info.get('강사 이름'))
+                        print("강의 코드 : %s" % now_course_info.get('강의 코드'))
+                        print("강의명 : %s" % now_course_info.get('강의명'))
+                        print("개강일 : %s" % now_course_info.get('개강일'))
+                        print("종료일 : %s" % now_course_info.get('종료일'))
+
+
+
 
 
         elif select_number == 5:
@@ -39,20 +49,27 @@ def Start_Student():
             break
 
 
-def Class_Code(student_name, student_data_values, json_big_data, course_info, now_course_info):           ## 강의 코드 입력 함수
+def Class_Code(student_name, student_data, json_big_data, total_course_info, now_course_info_list, now_course_info_dict):           ## 강의 코드 입력 함수
+    student_past_class = int(input("과거 수강 횟수를 입력해 주세요 : "))
+    total_course_info["과거 수강 횟수"] = student_past_class
     while True:
-        student_past_class = int(input("과거 수강 횟수를 입력해 주세요 : "))
-        course_info["과거 수강 횟수"] = student_past_class
-        class_code = input("현재 수강 중인 과목 코드를 입력해 주세요 : ")
-
-
-
-
         print("현재 수강 중인 과목 코드를 입력해 주세요:)\n입력을 모두 다 하셨으면 '종료'를 입력해 주세요!!")
-        class_code_input = input(" : ")
-        if class_code_input != '종료':
-            student_data_values.get("강의 코드").append(class_code_input)
-        elif class_code_input == '종료':
+        class_code = input(" : ")
+        if class_code != '종료':
+            now_course_info_dict['강의 코드'] = class_code
+            class_name = input("강의명을 입력해 주세요 : ")
+            now_course_info_dict['강의명'] = class_name
+            instructor_name = input("강사 이름을 입력해 주세요 : ")
+            now_course_info_dict['강사 이름'] = instructor_name
+            open_day = input("개강일을 입력해 주세요 : ")
+            now_course_info_dict['개강일'] = open_day
+            close_day = input("종료일을 입력해 주세요 : ")
+            now_course_info_dict['종료일'] = close_day
+            now_course_info_list.append(now_course_info_dict)
+        elif class_code == '종료':
+            total_course_info['현재 수강 과목'] = now_course_info_list
+            student_data['수강 정보'] = total_course_info
+
             if os.path.isfile("Student_ID_info.txt"):
                 with open('Student_ID_info.txt', 'r') as numbering:
                     id_number = numbering.readline()
@@ -60,12 +77,12 @@ def Class_Code(student_name, student_data_values, json_big_data, course_info, no
                     int_split_numbering = int(split_numbering)
                     int_split_numbering += 1
                 with open('Student_ID_info.txt', 'w') as student_id_info:
-                    student_id_info.write("ITT"+"{0:0>3}".format(str(int_split_numbering)))
-                                                                ## p.65 글자수 3, 오른쪽 정렬, 나머지 0으로
+                    student_id_info.write("ITT" + "{0:0>3}".format(str(int_split_numbering)))
+                    ## p.65 글자수 3, 오른쪽 정렬, 나머지 0으로
                 with open('Student_ID_info.txt', 'r') as student_id_info:
                     student_id = student_id_info.readline()
-                    student_data_values[student_id] = student_name
-                    json_big_data.append(student_data_values)
+                    student_data['student_ID'] = student_id
+                    json_big_data.append(student_data)
 
                 with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
                     readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
@@ -74,16 +91,18 @@ def Class_Code(student_name, student_data_values, json_big_data, course_info, no
 
             elif not os.path.isfile("Student_ID_info.txt"):
                 with open('Student_ID_info.txt', 'w') as student_id_info:
-                    student_id_info.write("ITT"+"001")
+                    student_id_info.write("ITT" + "001")
                 with open('Student_ID_info.txt', 'r') as student_id_info:
                     student_id = student_id_info.readline()
-                    student_data_values[student_id] = student_name
-                    json_big_data.append(student_data_values)
+                    student_data['student_ID'] = student_id
+                    json_big_data.append(student_data)
                 with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
                     readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
                     outfile.write(readable_result)
                     print("ITT_Student.json SAVED")
+
             break
+
 
 
 
