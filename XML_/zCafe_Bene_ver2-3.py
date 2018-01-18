@@ -41,24 +41,27 @@ for page_idx in range(1, max_page+1):
         index_num += 1
 
 
-# local_count = [i[0]+i[1]+i[2]+i[3] for i in store_address_result]
+local_count = [i[0]+i[1]+i[2] for i in store_address_result]     ## 처음 배우게 된 코드!!
 
-Seoul_number = store_address_result.count("서울")
-Busan_number = store_address_result.count("부산")
-Daegu_number = store_address_result.count("대구")
-Daejeon_number = store_address_result.count("대전")
-Incheon_number = store_address_result.count("인천")
-Goangju_number = store_address_result.count("광주")
-Ulsan_number = store_address_result.count("울산")
-Jeju_number = store_address_result.count("제주")
-Gyeonggi_number = store_address_result.count("경기")
-Gangwon_number = store_address_result.count("강원")
-ChungcheongNorth_number = store_address_result.count("충청북도")
-ChungcheongSouth_number = store_address_result.count("충청남도")
-JeonlaNorth_number = store_address_result.count("전라북도")
-JeonlaSouth_number = store_address_result.count("전라남도")
-GyeongsangNorth_number = store_address_result.count("경상북도")
-GyeongsangSouth_number = store_address_result.count("경상남도")
+Seoul_number = local_count.count("서울특")
+Busan_number = local_count.count("부산광")
+Daegu_number = local_count.count("대구광")
+Daejeon_number = local_count.count("대전광") + local_count.count("대전시")
+Incheon_number = local_count.count("인천광")
+Goangju_number = local_count.count("광주광")
+Ulsan_number = local_count.count("울산광")
+Jeju_number = local_count.count("제주특")
+Sejong_number = local_count.count("세종특")
+Gyeonggi_number = local_count.count("경기도")
+Gangwon_number = local_count.count("강원도")
+ChungcheongNorth_number = local_count.count("충청북")
+ChungcheongSouth_number = local_count.count("충청남")
+JeonlaNorth_number = local_count.count("전라북")
+JeonlaSouth_number = local_count.count("전라남")
+GyeongsangNorth_number = local_count.count("경상북")
+GyeongsangSouth_number = local_count.count("경상남")
 
-print(Seoul_number)
-print(Busan_number)
+print(Seoul_number+Busan_number+Daegu_number+Daejeon_number+Incheon_number+Goangju_number+Ulsan_number+Jeju_number+Sejong_number
+      +Gyeonggi_number+Gangwon_number+ChungcheongNorth_number+ChungcheongSouth_number+JeonlaNorth_number+JeonlaSouth_number
+      +GyeongsangNorth_number+GyeongsangSouth_number)
+print(len(store_address_result))
