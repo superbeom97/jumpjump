@@ -27,9 +27,6 @@ def Start_Student(json_big_data):
             break
         else: print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
 
-
-
-
 def Create_Student(json_big_data):
     print("<<학생 정보 입력을 진행하겠습니다. (돌아가기 : Enter)>>".center(50))
     total_student_list = []
@@ -43,12 +40,16 @@ def Create_Student(json_big_data):
     create_student['수강 정보'] = create_student_course_info = {}       ## depth 2
     create_student_course_info['과거 수강 횟수'] = input("과거 수강 횟수를 입력해 주세요(예, 0) : ")
     if create_student_course_info['과거 수강 횟수'] == "": return None
+    print("현재 수강 정보를 입력하시겠습니까? (y/n)")
+    create_student_course_info_now = {}         ## depth 3
+    create_student_course_info['현재 수강 과목'] = create_student_course_info_now_list = []
     while True:
-        now_course_exist = input("현재 수강 정보를 입력하시겠습니까? (Y/N) : ")
+        now_course_exist = input(" : ")
         if now_course_exist == 'Y' or now_course_exist == 'y':
-            Create_Course(create_student, create_student_course_info, json_big_data)
+            Create_Course(create_student_course_info_now, create_student_course_info_now_list, create_student, create_student_course_info, json_big_data)
+            print("추가 수강 정보를 입력하시겠습니까? (y/n)")
         elif now_course_exist == 'N' or now_course_exist == 'n':
-            if os.path.isfile("Student_ID_info.txt"):  ## 고유 아이디 생성 후 배정
+            if os.path.isfile("Student_ID_info.txt"):  ## 고유 아이디 생성 후 배정_아이디 배정 txt 파일이 있을 경우
                 with open('Student_ID_info.txt', 'r') as numbering:
                     id_number = numbering.readline()
                     split_numbering = id_number[3:]
@@ -67,25 +68,37 @@ def Create_Student(json_big_data):
                     outfile.write(readable_result)
                     print("학생 정보 입력이 완료되었습니다!!\n")
 
-            elif not os.path.isfile("Student_ID_info.txt"):
-                with open('Student_ID_info.txt', 'w') as student_id_info:
-                    student_id_info.write("ITT" + "001")
-                with open('Student_ID_info.txt', 'r') as student_id_info:
-                    student_id = student_id_info.readline()
-                    create_student['student_ID'] = student_id
-                    json_big_data.append(create_student)
-                with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
-                    readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
-                    outfile.write(readable_result)
-                    print("학생 정보 입력이 완료되었습니다!!\n")
+            elif not os.path.isfile("Student_ID_info.txt"):     ## 아이디 배정 txt 파일이 없을 경우
+                if len(json_big_data) > 0:      ## 입력값이 이미 있고, 추가로 작성할 경우
+                    id_index_add = len(json_big_data)
+                    with open('Student_ID_info.txt', 'w') as student_id_info:
+                        student_id_info.write("ITT" + "{0:0>3}".format(str(len(json_big_data)+1)))
+                    with open('Student_ID_info.txt', 'r') as student_id_info:
+                        student_id = student_id_info.readline()
+                        create_student['student_ID'] = student_id
+                        json_big_data.append(create_student)
+                    with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
+                        readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
+                        outfile.write(readable_result)
+                        print("학생 정보 입력이 완료되었습니다!!\n")
+                else:       ## 처음부터 입력할 경우
+                    with open('Student_ID_info.txt', 'w') as student_id_info:
+                        student_id_info.write("ITT" + "001")
+                    with open('Student_ID_info.txt', 'r') as student_id_info:
+                        student_id = student_id_info.readline()
+                        create_student['student_ID'] = student_id
+                        json_big_data.append(create_student)
+                    with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
+                        readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
+                        outfile.write(readable_result)
+                        print("학생 정보 입력이 완료되었습니다!!\n")
             break
         elif now_course_exist == "": return None
         else:
-            print("입력을 잘못하셨습니다. Y 또는 N을 선택해 주세요:)")
+            print("입력을 잘못하셨습니다. y 또는 n을 입력해 주세요:)")
 
-def Create_Course(create_student, create_student_course_info, json_big_data):
+def Create_Course(create_student_course_info_now, create_student_course_info_now_list, create_student, create_student_course_info, json_big_data):
     create_student_course_info_now = {}         ## depth 3
-    create_student_course_info['현재 수강 과목'] = create_student_course_info_now_list = []
     create_student_course_info_now['강의 코드'] = input("강의 코드를 입력해 주세요(예, PY171106) : ")
     if create_student_course_info_now['강의 코드'] == "": return None       ## 엔터시 '돌아가기' 기능
     create_student_course_info_now['강의명'] = input("강의명을 입력해 주세요(예, 점프투 파이썬) : ")
@@ -97,6 +110,7 @@ def Create_Course(create_student, create_student_course_info, json_big_data):
     create_student_course_info_now['종료일'] = input("종료일을 입력해 주세요(예, 2018-09-05) : ")
     if create_student_course_info_now['종료일'] == "": return None
     create_student_course_info_now_list.append(create_student_course_info_now)
+    create_student.get('수강 정보')['현재 수강 과목'] = create_student_course_info_now_list
 
 def Select_Student(json_big_data):
     print("<<학생 정보 조회를 진행하겠습니다.>>".center(30))
@@ -217,13 +231,14 @@ def Personal_Student_Print(total_print):        ## 학생 정보 출력 함수
     print("주소 : %s" % total_print.get('주소'))
     print("수강 정보")
     print("  >> 과거 수강 횟수 : %s" % total_print.get('수강 정보').get('과거 수강 횟수'))
-    print("  >> 현재 수강 과목")
-    for now_course in total_print.get('수강 정보').get('현재 수강 과목'):
-        print("    +강의 코드 : %s" %now_course.get('강의 코드'))
-        print("    +강의명 : %s" %now_course.get('강의명'))
-        print("    +강사명 : %s" %now_course.get('강사명'))
-        print("    +개강일 : %s" %now_course.get('개강일'))
-        print("    +종료일 : %s \n" %now_course.get('종료일'))
+    if total_print.get('수강 정보').get('현재 수강 과목'):
+        print("  >> 현재 수강 과목")
+        for now_course in total_print.get('수강 정보').get('현재 수강 과목'):
+            print("    +강의 코드 : %s" %now_course.get('강의 코드'))
+            print("    +강의명 : %s" %now_course.get('강의명'))
+            print("    +강사명 : %s" %now_course.get('강사명'))
+            print("    +개강일 : %s" %now_course.get('개강일'))
+            print("    +종료일 : %s \n" %now_course.get('종료일'))
     print("")
 
 def Find_ID(search_id, json_big_data):      ## 학생 정보 수정 전, ID 조회 함수
@@ -355,3 +370,5 @@ elif not os.path.isfile("ITT_Student.json"):        ## 파일이 없을 시
             Start_Student(json_big_data)
     elif path_number == 2:
         Start_Student(json_big_data)
+    else:
+        print("입력을 잘못하셨습니다. 프로그램을 종료합니다:)\n")

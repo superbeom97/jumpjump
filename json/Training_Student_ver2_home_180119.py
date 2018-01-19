@@ -1,13 +1,14 @@
 import json
 import os
 
-def Start_Student(json_big_data):
+def Start_Student(path_number, json_big_data):
     while True:
         print("<<json기반 주소록 관리 프로그램>>".center(33))  ## .center(30) 하면 총 글자 수 30칸에서 가운데 정렬
         initial_number = int(input("===원하는 서비스의 번호를 눌러주세요~ 찡긋;)===\n1. 학생 정보 입력\n2. 학생 정보 조회\n3. 학생 정보 수정"
                                   "\n4. 학생 정보 삭제\n5. 프로그램 종료\n-> "))
         if initial_number == 1:      ## 학생 정보 입력
-            Create_Student(json_big_data)
+            Create_Student(path_number, json_big_data)
+            path_number = 0     ## 처음부터 신규 생성할 때와, 신규 생성할 때 이미 txt 파일이 존재할 때 아이디 고유번호 선정을 위해
         elif initial_number == 2:       ## 학생 정보 조회
             Select_Student(json_big_data)
         elif initial_number == 3:        ## 학생 정보 수정
@@ -27,7 +28,7 @@ def Start_Student(json_big_data):
             break
         else: print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
 
-def Create_Student(json_big_data):
+def Create_Student(path_number, json_big_data):
     print("<<학생 정보 입력을 진행하겠습니다. (돌아가기 : Enter)>>".center(50))
     total_student_list = []
     create_student = {}         ## depth 1
@@ -50,18 +51,30 @@ def Create_Student(json_big_data):
             print("추가 수강 정보를 입력하시겠습니까? (y/n)")
         elif now_course_exist == 'N' or now_course_exist == 'n':
             if os.path.isfile("Student_ID_info.txt"):  ## 고유 아이디 생성 후 배정_아이디 배정 txt 파일이 있을 경우
-                with open('Student_ID_info.txt', 'r') as numbering:
-                    id_number = numbering.readline()
-                    split_numbering = id_number[3:]
-                    int_split_numbering = int(split_numbering)
-                    int_split_numbering += 1
-                with open('Student_ID_info.txt', 'w') as student_id_info:
-                    student_id_info.write("ITT" + "{0:0>3}".format(str(int_split_numbering)))
-                    ## p.65 글자수 3, 오른쪽 정렬, 나머지 0으로
-                with open('Student_ID_info.txt', 'r') as student_id_info:
-                    student_id = student_id_info.readline()
-                    create_student['student_ID'] = student_id
-                    json_big_data.append(create_student)
+                if path_number == 2:            ## json 파일을 신규 생성하는데, 아이디 배정 txt 파일이 있으면 001부터가 아닌
+                    with open('Student_ID_info.txt', 'w') as student_id_info:   ## 파일에 있는 아이디 고유번호 +1 증가된 것을 부여하므로, 001부터 부여하도록!
+                        student_id_info.write("ITT" + "001")
+                    with open('Student_ID_info.txt', 'r') as student_id_info:
+                        student_id = student_id_info.readline()
+                        create_student['student_ID'] = student_id
+                        json_big_data.append(create_student)
+                    with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
+                        readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
+                        outfile.write(readable_result)
+                        print("학생 정보 입력이 완료되었습니다!!\n")
+                else:
+                    with open('Student_ID_info.txt', 'r') as numbering:
+                        id_number = numbering.readline()
+                        split_numbering = id_number[3:]
+                        int_split_numbering = int(split_numbering)
+                        int_split_numbering += 1
+                    with open('Student_ID_info.txt', 'w') as student_id_info:
+                        student_id_info.write("ITT" + "{0:0>3}".format(str(int_split_numbering)))
+                        ## p.65 글자수 3, 오른쪽 정렬, 나머지 0으로
+                    with open('Student_ID_info.txt', 'r') as student_id_info:
+                        student_id = student_id_info.readline()
+                        create_student['student_ID'] = student_id
+                        json_big_data.append(create_student)
 
                 with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
                     readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
@@ -69,10 +82,19 @@ def Create_Student(json_big_data):
                     print("학생 정보 입력이 완료되었습니다!!\n")
 
             elif not os.path.isfile("Student_ID_info.txt"):     ## 아이디 배정 txt 파일이 없을 경우
-                if len(json_big_data) > 0:      ## 입력값이 이미 있고, 추가로 작성할 경우
-                    id_index_add = len(json_big_data)
+                if len(json_big_data) > 0:           ## 입력값이 이미 있고, 추가로 작성할 경우
+                    search_id_index = []            ## json_big_data에서 ID만 뽑아서 리스트로 저장
+                    for id_idx in json_big_data:
+                        search_id_index.append(id_idx.get('student_ID'))
+                    last_id_number = search_id_index[-1][3:]    ## 마지막으로 입력된 아이디의 고유번호 3자리를 가져 옴
+                                                                ## 아이디의 고유번호 3자리를 str로 받기 때문에
+                    first_number = int(last_id_number[0]) * 100     ## 계산을 위해 100의 자리에 100을 곱해줌
+                    second_number = int(last_id_number[1]) * 10     ## 계산을 위해 10의 자리에 10을 곱해줌
+                    third_number = int(last_id_number[2])
+                    total_id_number = first_number + second_number + third_number
+
                     with open('Student_ID_info.txt', 'w') as student_id_info:
-                        student_id_info.write("ITT" + "{0:0>3}".format(str(len(json_big_data)+1)))
+                        student_id_info.write("ITT" + "{0:0>3}".format(str(total_id_number+1)))     ## 마지막 아이디 고유번호 + 1 해서 아이디 배정
                     with open('Student_ID_info.txt', 'r') as student_id_info:
                         student_id = student_id_info.readline()
                         create_student['student_ID'] = student_id
@@ -95,7 +117,7 @@ def Create_Student(json_big_data):
             break
         elif now_course_exist == "": return None
         else:
-            print("입력을 잘못하셨습니다. Y 또는 N을 선택해 주세요:)")
+            print("입력을 잘못하셨습니다. y 또는 n을 입력해 주세요:)")
 
 def Create_Course(create_student_course_info_now, create_student_course_info_now_list, create_student, create_student_course_info, json_big_data):
     create_student_course_info_now = {}         ## depth 3
@@ -354,11 +376,12 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
 ## Entry Point~~
 json_big_data = []
 if os.path.isfile("ITT_Student.json"):      ## 프로그램 시작 시 소스코드가 있는 경로에 'ITT_Student.json' 파일을 읽어 들인다
+    path_number = 0
     with open("ITT_Student.json", encoding='UTF8') as json_file:
         json_object = json.load(json_file)
         json_string = json.dumps(json_object)
         json_big_data = json.loads(json_string)
-        Start_Student(json_big_data)
+        Start_Student(path_number, json_big_data)
 elif not os.path.isfile("ITT_Student.json"):        ## 파일이 없을 시
     path_number = int(input("<<파일이 존재하지 않습니다.>>\n1. 경로 선택\n2. 신규 생성\n-> "))
     if path_number == 1:
@@ -367,8 +390,8 @@ elif not os.path.isfile("ITT_Student.json"):        ## 파일이 없을 시
             json_object = json.load(json_file)
             json_string = json.dumps(json_object)
             json_big_data = json.loads(json_string)
-            Start_Student(json_big_data)
+            Start_Student(path_number, json_big_data)
     elif path_number == 2:
-        Start_Student(json_big_data)
+        Start_Student(path_number, json_big_data)
     else:
         print("입력을 잘못하셨습니다. 프로그램을 종료합니다:)\n")
