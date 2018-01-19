@@ -266,14 +266,14 @@ def Personal_Student_Print(total_print):        ## 학생 정보 출력 함수
 def Find_ID(search_id, json_big_data):      ## 학생 정보 수정 전, ID 조회 함수
     for total_print in json_big_data:  ## ID 조회
         if total_print.get('student_ID') == search_id:
-            Update_Student(total_print, json_big_data)
+            Update_Student(search_id, total_print, json_big_data)
             return None
     print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")  ## ID 조회 -> 일치하는 ID가 없을 경우
 
-def Update_Student(total_print, json_big_data):     ## 학생 정보 수정 함수
+def Update_Student(search_id, total_print, json_big_data):     ## 학생 정보 수정 함수
     print("입력하신 ID의 학생 정보는 다음과 같습니다.")
     Personal_Student_Print(total_print)
-    update_code = int(input("수정을 원하는 서비스의 번호를 입력해 주세요\n1. 이름\n2. 나이\n3. 주소\n4. 수강 정보\n0. 돌아가기\n-> "))
+    update_code = int(input("수정을 원하는 서비스의 번호를 입력해 주세요\n1. 이름\n2. 나이\n3. 주소\n4. 수강 정보 수정\n5. 수강 정보 추가\n0. 돌아가기\n-> "))
     if update_code == 1 or update_code == 2 or update_code == 3:
         if update_code == 1:
             update_content = input("현재 이름은 '%s'입니다. 무엇으로 바꾸시겠습니까? : " % total_print['이름'])
@@ -324,6 +324,41 @@ def Update_Student(total_print, json_big_data):     ## 학생 정보 수정 함�
             else:
                 print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
                 return None
+    elif update_code == 5:
+        yes_no = input("현재 수강 과목을 추가하시겠습니까? (y/n)")
+        if yes_no == 'Y' or yes_no =='y':
+            print("\n<<'%s'의 현재 수강 과목을 추가하겠습니다.>>".center(40) % search_id)
+            while True:
+                if yes_no == 'Y' or yes_no == 'y':
+                    add_course_info = {}
+                    add_course_info['강의 코드'] = input("강의 코드를 입력해 주세요(예, PY171106) : ")
+                    if add_course_info['강의 코드'] == "": return None  ## 엔터시 '돌아가기' 기능
+                    add_course_info['강의명'] = input("강의명을 입력해 주세요(예, 점프투 파이썬) : ")
+                    if add_course_info['강의명'] == "": return None
+                    add_course_info['강사명'] = input("강사명을 입력해 주세요(예, 이현구) : ")
+                    if add_course_info['강사명'] == "": return None
+                    add_course_info['개강일'] = input("개강일을 입력해 주세요(예, 2017-11-06) : ")
+                    if add_course_info['개강일'] == "": return None
+                    add_course_info['종료일'] = input("종료일을 입력해 주세요(예, 2018-09-05) : ")
+                    if add_course_info['종료일'] == "": return None
+                    total_print.get('수강 정보').get('현재 수강 과목').append(add_course_info)
+                    print("수강 과목 추가를 완료했습니다!!\n")
+                    add_cancel = input("수강 과목 추가를 계속하시겠습니까? (y/n)")
+                    if add_cancel == 'Y' or add_cancel =='y':
+                        break
+                    elif add_cancel == 'N' or add_cancel == 'n':
+                        print("수강 과목 추가를 했습니다!!")
+                        break
+                else:
+                    print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                    return None
+        elif yes_no == 'N' or yes_no == 'n':
+            print("수강 과목 추가를 취소하셨습니다.\n")
+            return None
+        else:
+            print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+            return None
+
     elif update_code == 0:
         return None
     else:
