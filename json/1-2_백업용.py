@@ -10,12 +10,8 @@ def Start_Student(json_big_data):
             Create_Student(json_big_data)
         elif initial_number == 2:
             Select_Student(json_big_data)
-        elif initial_number == 3:        ## 학생 정보 수정
-            search_id = input("정보 수정을 원하는 학생의 ID를 입력해 주세요 : ")
-            for search_id_info in json_big_data:       ## ID 조회
-                if search_id_info.get('student_ID') == search_id:
-                    Update_Student(search_id_info)
-
+        # elif initial_number == 3:
+        #     Update_Student(json_big_data)
         # elif initial_number == 4:
         #     Delete_Student(json_big_data)
         elif initial_number == 5:
