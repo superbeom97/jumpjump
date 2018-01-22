@@ -1,3 +1,17 @@
+## [ver2(_ver1에서 업데이트)]
+## 1. json 파일을 새로 생성하지만, ID 부여 index txt가 있을 때에도 ITT001부터 부여되게 함
+## 2. '학생 정보 수정' 항목 하위에 '수강 정보 추가' 항목을 추가함
+
+## [ver3(_ver2에서 업데이트)]
+## 1. '학생 정보 삭제' 항목을 '학생 정보 삭제'와 '과목 삭제(예, 폐강으로 인한)'로 세분화 함
+
+## [ver4(_ver3에서 업데이트)]
+## 빈 값 입력 등으로 인한 프로그램 모든 오류를 없앰
+
+## [ver5(ver4에서 업데이트)]
+## json 파일 읽는 것과 쓰는 것을 함수로 처리
+
+
 import json
 import os
 
@@ -71,25 +85,18 @@ def Create_Student(path_number, json_big_data):         ## 학생 정보 입력 
                 if path_number == 2:            ## json 파일을 신규 생성하는데, 아이디 배정 txt 파일이 있으면 001부터가 아닌
                     with open('Student_ID_info.txt', 'w') as student_id_info:   ## 파일에 있는 아이디 고유번호 +1 증가된 것을 부여하므로, 001부터 부여하도록!
                         student_id_info.write("ITT" + "001")
-                    with open('Student_ID_info.txt', 'r') as student_id_info:
-                        student_id = student_id_info.readline()
-                        create_student['student_ID'] = student_id
-                        json_big_data.append(create_student)
+                    Read_Json(create_student, json_big_data)        ## json 파일 읽는 함수로
                     Make_Json(json_big_data)        ## json 파일 만드는 함수로
                     print("학생 정보 입력이 완료되었습니다!!\n")
                 else:
                     with open('Student_ID_info.txt', 'r') as numbering:
                         id_number = numbering.readline()
                         split_numbering = id_number[3:]
-                        int_split_numbering = int(split_numbering)
-                        int_split_numbering += 1
+                        int_split_numbering = int(split_numbering) + 1
                     with open('Student_ID_info.txt', 'w') as student_id_info:
                         student_id_info.write("ITT" + "{0:0>3}".format(str(int_split_numbering)))
                         ## p.65 글자수 3, 오른쪽 정렬, 나머지 0으로
-                    with open('Student_ID_info.txt', 'r') as student_id_info:
-                        student_id = student_id_info.readline()
-                        create_student['student_ID'] = student_id
-                        json_big_data.append(create_student)
+                    Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
 
                 Make_Json(json_big_data)        ## json 파일 생성하는 함수로
                 print("학생 정보 입력이 완료되었습니다!!\n")
@@ -104,19 +111,13 @@ def Create_Student(path_number, json_big_data):         ## 학생 정보 입력 
 
                     with open('Student_ID_info.txt', 'w') as student_id_info:
                         student_id_info.write("ITT" + "{0:0>3}".format(str(last_id_number)))
-                    with open('Student_ID_info.txt', 'r') as student_id_info:
-                        student_id = student_id_info.readline()
-                        create_student['student_ID'] = student_id
-                        json_big_data.append(create_student)
+                    Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
                     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
                     print("학생 정보 입력이 완료되었습니다!!\n")
                 else:       ## 처음부터 입력할 경우
                     with open('Student_ID_info.txt', 'w') as student_id_info:
                         student_id_info.write("ITT" + "001")
-                    with open('Student_ID_info.txt', 'r') as student_id_info:
-                        student_id = student_id_info.readline()
-                        create_student['student_ID'] = student_id
-                        json_big_data.append(create_student)
+                    Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
                     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
                     print("학생 정보 입력이 완료되었습니다!!\n")
             break
@@ -458,6 +459,12 @@ def Delete_Class(json_big_data, delete_class):      ## 과목 삭제 함수
     else:
         print("일치하는 강의 코드가 없습니다. 강의 코드를 확인해 주세요!!\n")
         return None
+
+def Read_Json(create_student, json_big_data):       ## json 파일 읽는 함수
+    with open('Student_ID_info.txt', 'r') as student_id_info:
+        student_id = student_id_info.readline()
+        create_student['student_ID'] = student_id
+        json_big_data.append(create_student)
 
 def Make_Json(json_big_data):       ## json 파일 생성하는 함수
     with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
