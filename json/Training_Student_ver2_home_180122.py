@@ -1,3 +1,8 @@
+## [ver1에서 업데이트]
+## 1. json 파일을 새로 생성하지만, ID 부여 index txt가 있을 때에도 ITT001부터 부여되게 함
+## 2. '학생 정보 수정' 항목 하위에 '수강 정보 추가' 항목을 추가함
+
+
 import json
 import os
 
@@ -342,12 +347,15 @@ def Update_Student(search_id, total_print, json_big_data):     ## 학생 정보 
                     add_course_info['종료일'] = input("종료일을 입력해 주세요(예, 2018-09-05) : ")
                     if add_course_info['종료일'] == "": return None
                     total_print.get('수강 정보').get('현재 수강 과목').append(add_course_info)
-                    print("수강 과목 추가를 완료했습니다!!\n")
+                    print("추가 수강 과목 정보 입력을 완료했습니다!!\n")
                     add_cancel = input("수강 과목 추가를 계속하시겠습니까? (y/n)")
                     if add_cancel == 'Y' or add_cancel =='y':
                         break
                     elif add_cancel == 'N' or add_cancel == 'n':
-                        print("수강 과목 추가를 했습니다!!")
+                        print("수강 과목 추가를 완료했습니다!!")
+                        break
+                    else:
+                        print("입력을 잘못하셨습니다. 다시 확인해 주세요:)")
                         break
                 else:
                     print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
