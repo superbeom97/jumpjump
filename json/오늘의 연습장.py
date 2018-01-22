@@ -8,8 +8,8 @@ def Start_Student(path_number, json_big_data):
                                  "3. 학생 정보 수정\n4. 학생 정보 삭제\n5. 프로그램 종료\n-> "))
         if start_number == 1:
             Create_Student(path_number, json_big_data)
-        elif start_number == 2:
-            Select_Student(json_big_data)
+        # elif start_number == 2:
+        #     Select_Student(json_big_data)
         elif start_number == 5:
             print("이용해 주셔서 감사합니다. 프로그램을 종료합니다:)\n")
             break
@@ -59,11 +59,11 @@ def Create_Student(path_number, json_big_data):
     Make_Json(json_big_data)
     print("학생 정보 입력을 완료했습니다!!\n")
 
-def Select_Student(json_big_data):
-    print("<<학생 정보 조회를 실행하겠습니다!! (돌아가기 : Enter)>>".center(50))
-    select_num = int(input("===원하는 서비스의 번호를 입력해 주세요===\n1. 전체 학생 정보 조회\n2. 개별 학생 정보 조회\n-> "))
-    if select_num == 1:
-        Total_Student_Print(json_big_data)
+# def Select_Student(json_big_data):
+#     print("<<학생 정보 조회를 실행하겠습니다!! (돌아가기 : Enter)>>".center(50))
+#     select_num = int(input("===원하는 서비스의 번호를 입력해 주세요===\n1. 전체 학생 정보 조회\n2. 개별 학생 정보 조회\n-> "))
+#     if select_num == 1:
+#         Total_Student_Print(json_big_data)
 
 def New_ID(path_number, json_big_data):     ## ID_index txt 만드는 함수
     if os.path.isfile("ID_index.txt"):      ## ID_index txt가 있을 경우
@@ -74,7 +74,9 @@ def New_ID(path_number, json_big_data):     ## ID_index txt 만드는 함수
             new_id.write("ITT"+"{0:0>3}".format(str(new_id_number)))
     elif not os.path.isfile("ID_index.txt"):            ## ID_index txt가 없을 경우
         if path_number == 0 or path_number == 1:      ## json 파일이 있을 경우
-            last_id_number = json_big_data[-1][3:]          ## json 파일의 마지막에 있는 아이디 번호를 가져와서
+            last_id_number = json_big_data[-1]          ## json 파일의 마지막에 있는 아이디 번호를 가져와서
+            last_id_number = last_id_number.get('student_ID')
+            last_id_number = last_id_number[3:]
             new_id_number = int(last_id_number) + 1         ## +1 한 뒤,
             with open("ID_index.txt", 'w') as new_id:
                 new_id.write("ITT"+"{0:0>3}".format(str(new_id_number)))    ## ID 부여
@@ -92,7 +94,7 @@ def Make_Json(json_big_data):       ## json 파일 생성하는 함수
         readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
         outfile.write(readable_result)
 
-def Total_Student_Print(json_big_data):
+# def Total_Student_Print(json_big_data):
 
 
 
