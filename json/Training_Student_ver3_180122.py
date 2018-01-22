@@ -401,12 +401,21 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
                     Personal_Student_Print(total_print)     ## 입력한 ID의 학생 정보 출력
             del_number = int(input("'%s' 학생의 삭제 내용을 선택해 주세요\n1. 모든 정보 삭제\n2. 수강 강의 정보만 삭제\n0. 돌아가기\n-> " % delete_info))
             if del_number == 1:
-                del json_big_data[del_index]
-                with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
-                    readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
-                    outfile.write(readable_result)
-                    print("ID '%s' 학생 정보가 모두 삭제 되었습니다!!\n" % delete_info)
+                recheck_que = input("정말 '%s' 학생의 모든 정보를 삭제하시겠습니까? (y/n)" % delete_info)
+                if recheck_que == 'Y' or recheck_que == 'y':
+                    del json_big_data[del_index]
+                    with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
+                        readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
+                        outfile.write(readable_result)
+                        print("ID '%s' 학생 정보가 모두 삭제 되었습니다!!\n" % delete_info)
+                        return None
+                elif recheck_que == 'N' or recheck_que == 'n':
+                    print("모든 정보 삭제가 취소되었습니다.\n")
                     return None
+                else:
+                    print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                    return None
+
             elif del_number == 2:
                 del_class_code = input("삭제를 원하시는 수강 강의 코드를 입력해 주세요 : ")
                 class_code_list = del_info.get('수강 정보').get('현재 수강 과목')
@@ -414,12 +423,24 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
                 for del_code in class_code_list:
                     code_list_index += 1
                     if del_code['강의 코드'] == del_class_code:
-                        del class_code_list[code_list_index]
-                        with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
-                            readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
-                            outfile.write(readable_result)
-                            print("ID '%s' 학생의 수강 강의 중 '%s' 강의가 삭제되었습니다!!\n" % (delete_info, del_class_code))
+                        recheck_que = input("'%s' 학생의 수강 강의 중 '%s' 강의를 정말 삭제하시겠습니까? (y/n)" % (delete_info, del_class_code))
+                        if recheck_que == 'Y' or recheck_que == 'y':
+                            del class_code_list[code_list_index]
+                            with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
+                                readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
+                                outfile.write(readable_result)
+                                print("ID '%s' 학생의 수강 강의 중 '%s' 강의가 삭제되었습니다!!\n" % (delete_info, del_class_code))
+                                return None
+                        elif recheck_que == 'N' or recheck_que == 'n':
+                            print("강의 정보 삭제가 취소되었습니다.\n")
                             return None
+                        else:
+                            print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                            return None
+                    else:
+                        print("일치하는 강의 코드가 없습니다. 강의 코드를 확인해 주세요!!\n")
+                        return None
+
             elif del_number == 0:
                 return None
 
@@ -428,7 +449,35 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
         return None
 
 def Delete_Class(json_big_data, delete_class):
+    for exist_del in json_big_data:
+        dl_exist = exist_del.get('수강 정보').get('현재 수강 과목')
+        for fnd in dl_exist:
+            if fnd.get('강의 코드') == delete_class:
+                for del_cl in json_big_data:
+                    class_list = del_cl.get('수강 정보').get('현재 수강 과목')
+                    del_index = -1
+                    for find_del_cl in class_list:
+                        del_index += 1
+                        if find_del_cl.get('강의 코드') == delete_class:
+                                del class_list[del_index]
 
+                recheck_del = input("정말 강의 코드 '%s' 과목을 삭제하시겠습니까? (y/n)" % delete_class)
+                if recheck_del == 'Y' or recheck_del == 'y':
+                    with open('ITT_Student.json', 'w', encoding='utf8') as outfile:
+                        readable_result = json.dumps(json_big_data, indent=4, sort_keys=True, ensure_ascii=False)
+                        outfile.write(readable_result)
+                        print("강의 코드 '%s' 과목이 삭제되었습니다!!\n" % delete_class)
+                        return None
+                elif recheck_del == 'N' or recheck_del == 'n':
+                    print("과목 삭제가 취소되었습니다.\n")
+                    return None
+                else:
+                    print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                    return None
+
+    else:
+        print("일치하는 강의 코드가 없습니다. 강의 코드를 확인해 주세요!!\n")
+        return None
 
 
 ## Entry Point~~
