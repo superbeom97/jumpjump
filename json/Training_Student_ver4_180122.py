@@ -35,10 +35,10 @@ def Start_Student(path_number, json_big_data):
             elif initial_number == 4:         ## 학생 정보 삭제
                 delete_number = int(input("===삭제를 원하는 서비스의 번호를 눌러주세요~ 찡긋;)===\n"
                                           "1. 학생 정보 삭제\n2. 과목 삭제\n0. 돌아가기\n-> "))
-                if delete_number == 1:
+                if delete_number == 1:      ## 학생 정보 삭제
                     delete_info = input("정보 삭제를 원하는 학생의 ID를 입력해 주세요 : ")
                     Delete_Student(json_big_data, delete_info)
-                elif delete_number == 2:
+                elif delete_number == 2:    ## 과목 삭제
                     delete_class = input("삭제를 원하는 과목의 강의 코드를 입력해 주세요 : ")
                     Delete_Class(json_big_data, delete_class)
                 elif delete_number == 0:
@@ -56,7 +56,7 @@ def Start_Student(path_number, json_big_data):
         print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
         Start_Student(path_number, json_big_data)
 
-def Create_Student(path_number, json_big_data):
+def Create_Student(path_number, json_big_data):         ## 학생 정보 입력 함수
     print("<<학생 정보 입력을 진행하겠습니다. (돌아가기 : Enter)>>".center(50))
     total_student_list = []
     create_student = {}         ## depth 1
@@ -162,7 +162,7 @@ def Create_Course(create_student_course_info_now, create_student_course_info_now
     create_student_course_info_now_list.append(create_student_course_info_now)
     create_student.get('수강 정보')['현재 수강 과목'] = create_student_course_info_now_list
 
-def Select_Student(json_big_data):
+def Select_Student(json_big_data):      ## 학생 정보 조회 함수
     print("<<학생 정보 조회를 진행하겠습니다.>>".center(30))
     select_number = int(input("===원하는 조회 서비스의 번호를 눌러주세요~ 찡긋;)===\n"
                                   "1. 전체 학생 조회\n2. 개별 학생 조회\n0. 돌아가기\n-> "))
@@ -459,7 +459,7 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
         print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")
         return None
 
-def Delete_Class(json_big_data, delete_class):
+def Delete_Class(json_big_data, delete_class):      ## 과목 삭제 함수
     for exist_del in json_big_data:
         dl_exist = exist_del.get('수강 정보').get('현재 수강 과목')
         for fnd in dl_exist:
