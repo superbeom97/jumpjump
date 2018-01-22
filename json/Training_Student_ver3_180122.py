@@ -25,8 +25,21 @@ def Start_Student(path_number, json_big_data):
                                                  ## 함수로 만들지 않고, 여기에 바로 적으면
                                                 ## print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")가 무조건 출력되는!!
         elif initial_number == 4:         ## 학생 정보 삭제
-            delete_info = input("정보 삭제를 원하는 학생의 ID를 입력해 주세요 : ")
-            Delete_Student(json_big_data, delete_info)
+            delete_number = int(input("===삭제를 원하는 서비스의 번호를 눌러주세요~ 찡긋;)===\n"
+                                      "1. 학생 정보 삭제\n2. 과목 삭제\n0. 돌아가기\n-> "))
+            if delete_number == 1:
+                delete_info = input("정보 삭제를 원하는 학생의 ID를 입력해 주세요 : ")
+                Delete_Student(json_big_data, delete_info)
+            elif delete_number == 2:
+                delete_class = input("삭제를 원하는 과목의 강의 코드를 입력해 주세요 : ")
+                Delete_Class(json_big_data, delete_class)
+            elif delete_number == 0:
+                print("정보 삭제 서비스를 취소하셨습니다.\n")
+                continue
+            else:
+                print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                continue
+
         elif initial_number == 5:           ## 프로그램 종료
             print("이용해 주셔서 감사합니다!! 찡긋;)")
             break
@@ -413,6 +426,9 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
     else:
         print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")
         return None
+
+def Delete_Class(json_big_data, delete_class):
+
 
 
 ## Entry Point~~

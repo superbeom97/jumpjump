@@ -38,14 +38,22 @@ def Create_Student(path_number, json_big_data):
     total_student_list = []
     create_student = {}         ## depth 1
     create_student['이름'] = input("이름을 입력해 주세요(예, 홍길동) : ")
-    if create_student['이름'] == "": return None      ## 엔터시 '돌아가기' 기능
+    if create_student['이름'] == "":
+        print("학생 정보 입력을 취소하셨습니다.\n")
+        return None      ## 엔터시 '돌아가기' 기능
     create_student['나이'] = input("나이를 입력해 주세요(예, 29) : ")
-    if create_student['나이'] == "": return None
+    if create_student['나이'] == "":
+        print("학생 정보 입력을 취소하셨습니다.\n")
+        return None
     create_student['주소'] = input("주소를 입력해 주세요(예, 대구광역시 달서구 성지로 14안길 17) : ")
-    if create_student['주소'] == "": return None
+    if create_student['주소'] == "":
+        print("학생 정보 입력을 취소하셨습니다.\n")
+        return None
     create_student['수강 정보'] = create_student_course_info = {}       ## depth 2
     create_student_course_info['과거 수강 횟수'] = input("과거 수강 횟수를 입력해 주세요(예, 0) : ")
-    if create_student_course_info['과거 수강 횟수'] == "": return None
+    if create_student_course_info['과거 수강 횟수'] == "":
+        print("학생 정보 입력을 취소하셨습니다.\n")
+        return None
     print("현재 수강 정보를 입력하시겠습니까? (y/n)")
     create_student_course_info_now = {}         ## depth 3
     create_student_course_info['현재 수강 과목'] = create_student_course_info_now_list = []
@@ -120,7 +128,9 @@ def Create_Student(path_number, json_big_data):
                         outfile.write(readable_result)
                         print("학생 정보 입력이 완료되었습니다!!\n")
             break
-        elif now_course_exist == "": return None
+        elif now_course_exist == "":
+            print("학생 정보 입력을 취소하셨습니다.\n")
+            return None
         else:
             print("입력을 잘못하셨습니다. y 또는 n을 입력해 주세요:)")
 
