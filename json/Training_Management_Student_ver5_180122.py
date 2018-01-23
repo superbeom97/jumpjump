@@ -457,7 +457,7 @@ def Delete_Class(json_big_data, delete_class):      ## 과목 삭제 함수
         print("일치하는 강의 코드가 없습니다. 강의 코드를 확인해 주세요!!\n")
         return None
 
-def Read_Json(create_student, json_big_data):       ## json 파일 읽는 함수
+def Read_Json(create_student, json_big_data):      ## ID_info txt에서 ID를 읽어, ID를 부여하는 함수
     with open('Student_ID_info.txt', 'r') as student_id_info:
         student_id = student_id_info.readline()
         create_student['student_ID'] = student_id
