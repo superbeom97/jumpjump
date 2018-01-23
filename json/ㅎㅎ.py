@@ -13,12 +13,7 @@ def Start_Student(path_number, json_big_data):
             elif initial_number == 2:       ## 학생 정보 조회
                 Select_Student(json_big_data)
             elif initial_number == 3:        ## 학생 정보 수정
-                search_id = input("정보 수정을 원하는 학생의 ID를 입력해 주세요(예, ITT001) (돌아가기 : Enter)\n"
-                                  "-> ")
-                if search_id == "":     ## 엔터시 '돌아가기' 기능
-                    continue
-                else:
-                    Find_ID(search_id, json_big_data)   ## 학생 정보 수정 전, ID 조회 함수
+                Find_ID(json_big_data)   ## 학생 정보 수정 전, ID 조회 함수
                                                      ## 함수로 만들지 않고, 여기에 바로 적으면
                                                     ## print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")가 무조건 출력되는!!
             elif initial_number == 4:         ## 학생 정보 삭제
@@ -33,31 +28,33 @@ def Start_Student(path_number, json_big_data):
         print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
         Start_Student(path_number, json_big_data)
 
-def Create_Student(path_number, json_big_data):         ## 학생 정보 입력 함수
+def Create_Student(path_number, json_big_data):  ## 학생 정보 입력 함수
     print("<<학생 정보 입력을 진행하겠습니다. (돌아가기 : Enter)>>".center(50))
     total_student_list = []
-    create_student = {}         ## depth 1
+    create_student = {}  ## depth 1
     create_student['이름'] = input("이름을 입력해 주세요(예, 홍길동) : ")
-    if create_student['이름'] == "": return None      ## 엔터시 '돌아가기' 기능
+    if create_student['이름'] == "": return None  ## 엔터시 '돌아가기' 기능
     create_student['나이'] = input("나이를 입력해 주세요(예, 29) : ")
     if create_student['나이'] == "": return None
     create_student['주소'] = input("주소를 입력해 주세요(예, 대구광역시 달서구 성지로 14안길 17) : ")
     if create_student['주소'] == "": return None
-    create_student['수강 정보'] = create_student_course_info = {}       ## depth 2
+    create_student['수강 정보'] = create_student_course_info = {}  ## depth 2
     create_student_course_info['과거 수강 횟수'] = input("과거 수강 횟수를 입력해 주세요(예, 0) : ")
     if create_student_course_info['과거 수강 횟수'] == "": return None
     print("현재 수강 정보를 입력하시겠습니까? (y/n)")
-    create_student_course_info_now = {}         ## depth 3
     create_student_course_info['현재 수강 과목'] = create_student_course_info_now_list = []
+    create_student_course_info_now = {}  ## depth 3
     while True:
         now_course_exist = input(" : ")
         if now_course_exist == 'Y' or now_course_exist == 'y':
-            Create_Course(create_student_course_info_now, create_student_course_info_now_list, create_student, create_student_course_info, json_big_data)
+            Create_Course(create_student_course_info_now, create_student_course_info_now_list, create_student,
+                          create_student_course_info, json_big_data)
             print("추가 수강 정보를 입력하시겠습니까? (y/n)")
         elif now_course_exist == 'N' or now_course_exist == 'n':
             if os.path.isfile("Student_ID_info.txt"):  ## 고유 아이디 생성 후 배정_아이디 배정 txt 파일이 있을 경우
-                if path_number == 2:            ## json 파일을 신규 생성하는데, 아이디 배정 txt 파일이 있으면 001부터가 아닌
-                    with open('Student_ID_info.txt', 'w') as student_id_info:   ## 파일에 있는 아이디 고유번호 +1 증가된 것을 부여하므로, 001부터 부여하도록!
+                if path_number == 2:  ## json 파일을 신규 생성하는데, 아이디 배정 txt 파일이 있으면 001부터가 아닌
+                    with open('Student_ID_info.txt',
+                              'w') as student_id_info:  ## 파일에 있는 아이디 고유번호 +1 증가된 것을 부여하므로, 001부터 부여하도록!
                         student_id_info.write("ITT" + "001")
                 else:
                     with open('Student_ID_info.txt', 'r') as numbering:
@@ -69,37 +66,37 @@ def Create_Student(path_number, json_big_data):         ## 학생 정보 입력 
                         ## p.65 글자수 3, 오른쪽 정렬, 나머지 0으로
 
                 Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
-                Make_Json(json_big_data)        ## json 파일 생성하는 함수로
+                Make_Json(json_big_data)  ## json 파일 생성하는 함수로
                 print("학생 정보 입력이 완료되었습니다!!\n")
 
-            elif not os.path.isfile("Student_ID_info.txt"):     ## 아이디 배정 txt 파일이 없을 경우
-                if len(json_big_data) > 0:           ## 입력값이 이미 있고, 추가로 작성할 경우
-                    search_id_index = []            ## json_big_data에서 ID만 뽑아서 리스트로 저장
-                    for id_idx in json_big_data:
-                        search_id_index.append(id_idx.get('student_ID'))
-                    last_id_number = search_id_index[-1][3:]
-                    last_id_number = int(last_id_number) + 1    ## 마지막 아이디 고유번호 + 1 해서 아이디 배정
+            elif not os.path.isfile("Student_ID_info.txt"):  ## 아이디 배정 txt 파일이 없을 경우
+                if len(json_big_data) > 0:  ## 입력값이 이미 있고, 추가로 작성할 경우
+                    last_id = json_big_data[-1].get('student_ID')
+                    last_id_number = last_id[3:]
+                    last_id_number = int(last_id_number) + 1  ## 마지막 아이디 고유번호 + 1 해서 아이디 배정
 
                     with open('Student_ID_info.txt', 'w') as student_id_info:
                         student_id_info.write("ITT" + "{0:0>3}".format(str(last_id_number)))
                     Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
                     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
                     print("학생 정보 입력이 완료되었습니다!!\n")
-                else:       ## 처음부터 입력할 경우
+                else:  ## 처음부터 입력할 경우
                     with open('Student_ID_info.txt', 'w') as student_id_info:
                         student_id_info.write("ITT" + "001")
                     Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
                     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
                     print("학생 정보 입력이 완료되었습니다!!\n")
             break
-        elif now_course_exist == "": return None
+        elif now_course_exist == "":
+            return None
         else:
             print("입력을 잘못하셨습니다. y 또는 n을 입력해 주세요:)")
 
-def Create_Course(create_student_course_info_now, create_student_course_info_now_list, create_student, create_student_course_info, json_big_data):
-    create_student_course_info_now = {}         ## depth 3
+def Create_Course(create_student_course_info_now, create_student_course_info_now_list, create_student,
+                  create_student_course_info, json_big_data):
+    create_student_course_info_now = {}  ## depth 3
     create_student_course_info_now['강의 코드'] = input("강의 코드를 입력해 주세요(예, PY171106) : ")
-    if create_student_course_info_now['강의 코드'] == "": return None       ## 엔터시 '돌아가기' 기능
+    if create_student_course_info_now['강의 코드'] == "": return None  ## 엔터시 '돌아가기' 기능
     create_student_course_info_now['강의명'] = input("강의명을 입력해 주세요(예, 점프투 파이썬) : ")
     if create_student_course_info_now['강의명'] == "": return None
     create_student_course_info_now['강사명'] = input("강사명을 입력해 주세요(예, 이현구) : ")
@@ -200,6 +197,8 @@ def Low_Persoanl_Student(key_name, personal_select_number, json_big_data):     #
         elif len(search_index) > 1:
             print("'%s'이/가 포함된 '%s'을/를 가진 학생은 %s명입니다." % (key_name, personal_select_number, len(search_index)))
             Mul_ID_Print(search_index, key_name, json_big_data)
+        else:
+            print("일치하는 정보가 없습니다. 다시 확인해 주세요!!\n")
     else:       ## depth 3_ 현재 수강 과목(강의 코드, 강의명, 강사명) 조회
         for search in json_big_data:
             index_number += 1
@@ -212,6 +211,8 @@ def Low_Persoanl_Student(key_name, personal_select_number, json_big_data):     #
         elif len(search_index) > 1:
             print("'%s'이/가 포함된 '%s'을/를 가진 학생은 %s명입니다." % (key_name, personal_select_number, len(search_index)))
             Mul_ID_Print(search_index, key_name, json_big_data)
+        else:
+            print("일치하는 정보가 없습니다. 다시 확인해 주세요!!\n")
 
 def Personal_Student_Index(personal_select_number, search_index, key_name, json_big_data):     ## 학생 정보 조회 -> ID가 하나일 경우 출력 전 함수
     total_print = json_big_data[search_index[0]]
@@ -240,17 +241,22 @@ def Personal_Student_Print(total_print):        ## 학생 정보 출력 함수
             print("    +종료일 : %s \n" %now_course.get('종료일'))
     print("")
 
-def Find_ID(search_id, json_big_data):      ## 학생 정보 수정 전, ID 조회 함수
-    for total_print in json_big_data:  ## ID 조회
-        if total_print.get('student_ID') == search_id:
-            Update_Student(search_id, total_print, json_big_data)
-            return None
-    print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")  ## ID 조회 -> 일치하는 ID가 없을 경우
+def Find_ID(json_big_data):      ## 학생 정보 수정 전, ID 조회 함수
+    search_id = input("정보 수정을 원하는 학생의 ID를 입력해 주세요(예, ITT001) (돌아가기 : Enter)\n"
+                      "-> ")
+    if search_id == "":  ## 엔터시 '돌아가기' 기능
+        return None
+    else:
+        for total_print in json_big_data:  ## ID 조회
+            if total_print.get('student_ID') == search_id:
+                Update_Student(search_id, total_print, json_big_data)
+                return None
+        print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")  ## ID 조회 -> 일치하는 ID가 없을 경우
 
 def Update_Student(search_id, total_print, json_big_data):     ## 학생 정보 수정 함수
     print("입력하신 ID의 학생 정보는 다음과 같습니다.")
     Personal_Student_Print(total_print)
-    update_code = int(input("수정을 원하는 서비스의 번호를 입력해 주세요\n1. 이름\n2. 나이\n3. 주소\n4. 수강 정보 수정\n0. 돌아가기\n-> "))
+    update_code = int(input("수정을 원하는 서비스의 번호를 입력해 주세요\n1. 이름\n2. 나이\n3. 주소\n4. 수강 정보\n0. 돌아가기\n-> "))
     if update_code == 1 or update_code == 2 or update_code == 3:
         if update_code == 1:
             update_content = input("현재 이름은 '%s'입니다. 무엇으로 바꾸시겠습니까? : " % total_print['이름'])
@@ -310,60 +316,6 @@ def Update_Student(search_id, total_print, json_big_data):     ## 학생 정보 
 
     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
     print("학생 정보 입력이 수정되었습니다!!\n")
-
-def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 함수
-    del_index = -1
-    for del_info in json_big_data:
-        del_index += 1
-        if del_info.get('student_ID') == delete_info:
-            print("입력하신 ID의 학생 정보는 다음과 같습니다.")
-            for total_print in json_big_data:  ## ID 조회
-                if total_print.get('student_ID') == delete_info:
-                    Personal_Student_Print(total_print)     ## 입력한 ID의 학생 정보 출력
-            del_number = int(input("'%s' 학생의 삭제 내용을 선택해 주세요\n1. 모든 정보 삭제\n2. 수강 강의 정보만 삭제\n0. 돌아가기\n-> " % delete_info))
-            if del_number == 1:
-                recheck_que = input("정말 '%s' 학생의 모든 정보를 삭제하시겠습니까? (y/n)" % delete_info)
-                if recheck_que == 'Y' or recheck_que == 'y':
-                    del json_big_data[del_index]
-                    Make_Json(json_big_data)  ## json 파일 생성하는 함수로
-                    print("ID '%s' 학생 정보가 모두 삭제 되었습니다!!\n" % delete_info)
-                    return None
-                elif recheck_que == 'N' or recheck_que == 'n':
-                    print("모든 정보 삭제가 취소되었습니다.\n")
-                    return None
-                else:
-                    print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
-                    return None
-
-            elif del_number == 2:
-                del_class_code = input("삭제를 원하시는 수강 강의 코드를 입력해 주세요 : ")
-                class_code_list = del_info.get('수강 정보').get('현재 수강 과목')
-                code_list_index = -1
-                for del_code in class_code_list:
-                    code_list_index += 1
-                    if del_code['강의 코드'] == del_class_code:
-                        recheck_que = input("'%s' 학생의 수강 강의 중 '%s' 강의를 정말 삭제하시겠습니까? (y/n)" % (delete_info, del_class_code))
-                        if recheck_que == 'Y' or recheck_que == 'y':
-                            del class_code_list[code_list_index]
-                            Make_Json(json_big_data)  ## json 파일 생성하는 함수로
-                            print("ID '%s' 학생의 수강 강의 중 '%s' 강의가 삭제되었습니다!!\n" % (delete_info, del_class_code))
-                            return None
-                        elif recheck_que == 'N' or recheck_que == 'n':
-                            print("강의 정보 삭제가 취소되었습니다.\n")
-                            return None
-                        else:
-                            print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
-                            return None
-                    else:
-                        print("일치하는 강의 코드가 없습니다. 강의 코드를 확인해 주세요!!\n")
-                        return None
-
-            elif del_number == 0:
-                return None
-
-    else:
-        print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")
-        return None
 
 def Read_Json(create_student, json_big_data):       ## json 파일 읽는 함수
     with open('Student_ID_info.txt', 'r') as student_id_info:
