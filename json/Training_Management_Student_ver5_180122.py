@@ -85,9 +85,6 @@ def Create_Student(path_number, json_big_data):         ## 학생 정보 입력 
                 if path_number == 2:            ## json 파일을 신규 생성하는데, 아이디 배정 txt 파일이 있으면 001부터가 아닌
                     with open('Student_ID_info.txt', 'w') as student_id_info:   ## 파일에 있는 아이디 고유번호 +1 증가된 것을 부여하므로, 001부터 부여하도록!
                         student_id_info.write("ITT" + "001")
-                    Read_Json(create_student, json_big_data)        ## json 파일 읽는 함수로
-                    Make_Json(json_big_data)        ## json 파일 만드는 함수로
-                    print("학생 정보 입력이 완료되었습니다!!\n")
                 else:
                     with open('Student_ID_info.txt', 'r') as numbering:
                         id_number = numbering.readline()
@@ -96,8 +93,8 @@ def Create_Student(path_number, json_big_data):         ## 학생 정보 입력 
                     with open('Student_ID_info.txt', 'w') as student_id_info:
                         student_id_info.write("ITT" + "{0:0>3}".format(str(int_split_numbering)))
                         ## p.65 글자수 3, 오른쪽 정렬, 나머지 0으로
-                    Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
 
+                Read_Json(create_student, json_big_data)  ## json 파일 읽는 함수로
                 Make_Json(json_big_data)        ## json 파일 생성하는 함수로
                 print("학생 정보 입력이 완료되었습니다!!\n")
 
