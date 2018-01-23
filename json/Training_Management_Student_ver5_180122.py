@@ -9,7 +9,9 @@
 ## 빈 값 입력 등으로 인한 프로그램 모든 오류를 없앰
 
 ## [ver5(ver4에서 업데이트)]
-## json 파일 읽는 것과 쓰는 것을 함수로 처리
+## 1. json 파일 읽는 것과 쓰는 것을 함수로 처리
+## 2. json 파일 읽고 쓰는 함수 중복 -> 하나로 처리
+## 3. 학생 정보 조회시 일치하는 정보 없을 때, 안내 메시지 출력되게 처리
 
 
 import json
@@ -212,6 +214,8 @@ def Personal_Student(key_name, personal_select_number, json_big_data):     ## de
     elif len(search_index) > 1:
         print("'%s'이/가 포함된 '%s'을/를 가진 학생은 %s명입니다." % (key_name, personal_select_number, len(search_index)))
         Mul_ID_Print(search_index, key_name, json_big_data)
+    else:
+        print("일치하는 정보가 없습니다. 다시 확인해 주세요!!\n")
 
 def Low_Persoanl_Student(key_name, personal_select_number, json_big_data):     ## depth 2_ 개별 학생 정보 조회 함수
     search_index = []
@@ -226,6 +230,8 @@ def Low_Persoanl_Student(key_name, personal_select_number, json_big_data):     #
         elif len(search_index) > 1:
             print("'%s'이/가 포함된 '%s'을/를 가진 학생은 %s명입니다." % (key_name, personal_select_number, len(search_index)))
             Mul_ID_Print(search_index, key_name, json_big_data)
+        else:
+            print("일치하는 정보가 없습니다. 다시 확인해 주세요!!\n")
     else:       ## depth 3_ 현재 수강 과목(강의 코드, 강의명, 강사명) 조회
         for search in json_big_data:
             index_number += 1
@@ -238,6 +244,8 @@ def Low_Persoanl_Student(key_name, personal_select_number, json_big_data):     #
         elif len(search_index) > 1:
             print("'%s'이/가 포함된 '%s'을/를 가진 학생은 %s명입니다." % (key_name, personal_select_number, len(search_index)))
             Mul_ID_Print(search_index, key_name, json_big_data)
+        else:
+            print("일치하는 정보가 없습니다. 다시 확인해 주세요!!\n")
 
 def Personal_Student_Index(personal_select_number, search_index, key_name, json_big_data):     ## 학생 정보 조회 -> ID가 하나일 경우 출력 전 함수
     total_print = json_big_data[search_index[0]]
