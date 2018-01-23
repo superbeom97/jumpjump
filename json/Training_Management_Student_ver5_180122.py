@@ -388,7 +388,7 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
                     Personal_Student_Print(total_print)     ## 입력한 ID의 학생 정보 출력
             del_number = int(input("'%s' 학생의 삭제 내용을 선택해 주세요\n1. 모든 정보 삭제\n2. 수강 강의 정보만 삭제\n0. 돌아가기\n-> " % delete_info))
             if del_number == 1:
-                recheck_que = input("정말 '%s' 학생의 모든 정보를 삭제하시겠습니까? (y/n)" % delete_info)
+                recheck_que = input("정말 '%s' 학생의 모든 정보를 삭제하시겠습니까? (y/n) : " % delete_info)
                 if recheck_que == 'Y' or recheck_que == 'y':
                     del json_big_data[del_index]
                     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
@@ -408,7 +408,7 @@ def Delete_Student(json_big_data, delete_info):         ## 학생 정보 삭제 
                 for del_code in class_code_list:
                     code_list_index += 1
                     if del_code['강의 코드'] == del_class_code:
-                        recheck_que = input("'%s' 학생의 수강 강의 중 '%s' 강의를 정말 삭제하시겠습니까? (y/n)" % (delete_info, del_class_code))
+                        recheck_que = input("'%s' 학생의 수강 강의 중 '%s' 강의를 정말 삭제하시겠습니까? (y/n) : " % (delete_info, del_class_code))
                         if recheck_que == 'Y' or recheck_que == 'y':
                             del class_code_list[code_list_index]
                             Make_Json(json_big_data)  ## json 파일 생성하는 함수로
@@ -444,7 +444,7 @@ def Delete_Class(json_big_data, delete_class):      ## 과목 삭제 함수
                         if find_del_cl.get('강의 코드') == delete_class:
                                 del class_list[del_index]
 
-                recheck_del = input("정말 강의 코드 '%s' 과목을 삭제하시겠습니까? (y/n)" % delete_class)
+                recheck_del = input("정말 강의 코드 '%s' 과목을 삭제하시겠습니까? (y/n) : " % delete_class)
                 if recheck_del == 'Y' or recheck_del == 'y':
                     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
                     print("강의 코드 '%s' 과목이 삭제되었습니다!!\n" % delete_class)
