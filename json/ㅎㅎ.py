@@ -17,8 +17,7 @@ def Start_Student(path_number, json_big_data):
                                                      ## 함수로 만들지 않고, 여기에 바로 적으면
                                                     ## print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")가 무조건 출력되는!!
             elif initial_number == 4:         ## 학생 정보 삭제
-                delete_info = input("정보 삭제를 원하는 학생의 ID를 입력해 주세요 : ")
-                Delete_Student(json_big_data, delete_info)
+                Delete_Student(json_big_data)
 
             elif initial_number == 5:           ## 프로그램 종료
                 print("이용해 주셔서 감사합니다!! 찡긋;)")
@@ -317,7 +316,64 @@ def Update_Student(search_id, total_print, json_big_data):     ## 학생 정보 
     Make_Json(json_big_data)  ## json 파일 생성하는 함수로
     print("학생 정보 입력이 수정되었습니다!!\n")
 
-def Read_Json(create_student, json_big_data):       ## json 파일 읽는 함수
+def Delete_Student(json_big_data):         ## 학생 정보 삭제 함수
+    delete_info = input("정보 삭제를 원하는 학생의 ID를 입력해 주세요 : ")
+    del_index = -1
+    for del_info in json_big_data:
+        del_index += 1
+        if del_info.get('student_ID') == delete_info:
+            print("입력하신 ID의 학생 정보는 다음과 같습니다.")
+            total_print = json_big_data[del_index]
+            Personal_Student_Print(total_print)     ## 입력한 ID의 학생 정보 출력
+            del_number = int(input("'%s' 학생의 삭제 내용을 선택해 주세요\n1. 모든 정보 삭제\n2. 수강 강의 정보만 삭제\n0. 돌아가기\n-> " % delete_info))
+            if del_number == 1:
+                recheck_que = input("정말 '%s' 학생의 모든 정보를 삭제하시겠습니까? (y/n)" % delete_info)
+                if recheck_que == 'Y' or recheck_que == 'y':
+                    del json_big_data[del_index]
+                    Make_Json(json_big_data)  ## json 파일 생성하는 함수로
+                    print("ID '%s' 학생 정보가 모두 삭제 되었습니다!!\n" % delete_info)
+                    return None
+                elif recheck_que == 'N' or recheck_que == 'n':
+                    print("모든 정보 삭제가 취소되었습니다.\n")
+                    return None
+                else:
+                    print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                    return None
+
+            elif del_number == 2:
+                del_class_code = input("삭제를 원하시는 수강 강의 코드를 입력해 주세요 : ")
+                class_code_list = del_info.get('수강 정보').get('현재 수강 과목')
+                code_list_index = -1
+                for del_code in class_code_list:
+                    code_list_index += 1
+                    if del_code['강의 코드'] == del_class_code:
+                        recheck_que = input("'%s' 학생의 수강 강의 중 '%s' 강의를 정말 삭제하시겠습니까? (y/n)" % (delete_info, del_class_code))
+                        if recheck_que == 'Y' or recheck_que == 'y':
+                            del class_code_list[code_list_index]
+                            Make_Json(json_big_data)  ## json 파일 생성하는 함수로
+                            print("ID '%s' 학생의 수강 강의 중 '%s' 강의가 삭제되었습니다!!\n" % (delete_info, del_class_code))
+                            return None
+                        elif recheck_que == 'N' or recheck_que == 'n':
+                            print("강의 정보 삭제가 취소되었습니다.\n")
+                            return None
+                        else:
+                            print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                            return None
+                    else:
+                        print("일치하는 강의 코드가 없습니다. 강의 코드를 확인해 주세요!!\n")
+                        return None
+
+            elif del_number == 0:
+                return None
+            else:
+                print("입력을 잘못하셨습니다. 다시 입력해 주세요!!\n")
+                return None
+
+    else:
+        print("일치하는 ID가 없습니다. ID를 확인해 주세요!!\n")
+        return None
+
+def Read_Json(create_student, json_big_data):       ## ID_info txt에서 ID를 읽어, ID를 부여하는 함수
     with open('Student_ID_info.txt', 'r') as student_id_info:
         student_id = student_id_info.readline()
         create_student['student_ID'] = student_id
@@ -337,7 +393,7 @@ if os.path.isfile("ITT_Student.json"):      ## 프로그램 시작 시 소스코
         json_object = json.load(json_file)
         json_string = json.dumps(json_object)
         json_big_data = json.loads(json_string)
-        Start_Student(path_number, json_big_data)
+    Start_Student(path_number, json_big_data)
 elif not os.path.isfile("ITT_Student.json"):        ## 파일이 없을 시
     path_number = int(input("<<파일이 존재하지 않습니다.>>\n1. 경로 선택\n2. 신규 생성\n-> "))
     if path_number == 1:
@@ -346,7 +402,7 @@ elif not os.path.isfile("ITT_Student.json"):        ## 파일이 없을 시
             json_object = json.load(json_file)
             json_string = json.dumps(json_object)
             json_big_data = json.loads(json_string)
-            Start_Student(path_number, json_big_data)
+        Start_Student(path_number, json_big_data)
     elif path_number == 2:
         Start_Student(path_number, json_big_data)
     else:
