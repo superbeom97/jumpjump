@@ -1,3 +1,6 @@
+### facebook jtbc news를 긁어봐 json 파일로 저장하는 코드
+
+
 import sys
 import urllib.request
 import json

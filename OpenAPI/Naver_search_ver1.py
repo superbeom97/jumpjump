@@ -1,3 +1,8 @@
+### 네이버에서 검색해서 json 파일로 저장하는 코드
+
+## [ver1]   json 파일에서 따옴표가 &quot;로 출력돼서 다시 따옴표로 바꿔주는 작업
+
+
 ## [참고 사항]
 ## - API 호출 수 25,000회/일로 제한
 ## - 한 번 호출에 최대 100개 검색
@@ -9,6 +14,7 @@ import json
 
 app_id = "4fLRRIHMFwAI53sYeHJu"
 app_pw = "gvsFISGKOs"
+
 
 def get_request_url(url):
     req = urllib.request.Request(url)
@@ -23,6 +29,8 @@ def get_request_url(url):
     except Exception as e:
         print(e)
         print("[%s] Error for URL : %s" % (datetime.datetime.now(), url))
+        return None
+
 
 def getNaverSearchResult(sNode, search_text, page_start, display):
     base = "https://openapi.naver.com/v1/search"
@@ -37,17 +45,18 @@ def getNaverSearchResult(sNode, search_text, page_start, display):
     else:
         return json.loads(retData)
 
-def getPostData(post, jsonResult):
 
+def getPostData(post, jsonResult):
     title = post['title']
     description = post['description']
     org_link = post['originallink']
     link = post['link']
 
-    pDate = datetime.datetime.strptime(post['pubDate'], '%a, %d %b %Y %H:%M:%S+0900')
+    pDate = datetime.datetime.strptime(post['pubDate'], '%a, %d %b %Y %H:%M:%S +0900')
     pDate = pDate.strftime('%Y-%m-%d %H:%M:%S')
 
-    jsonResult.append({'title':title, 'description':description, 'org_link':org_link, 'pDate':pDate})
+    jsonResult.append({'title': title, 'description': description, 'org_link': org_link, 'pDate': pDate})
+
 
 def main():
     jsonResult = []
@@ -58,19 +67,28 @@ def main():
 
     jsonSearch = getNaverSearchResult(sNode, search_text, 1, display_count)
 
-    index = 1   ## 1번 루프를 돌 때마다 100건이 조회되기 때문에 1000번을 넘기지 않게 하기 위한 인덱스임
+    index = 1  ## 1번 루프를 돌 때마다 100건이 조회되기 때문에 1000번을 넘기지 않게 하기 위한 인덱스임
     while ((jsonSearch != None) and (jsonSearch['display'] != 0) and index < 9):
         for post in jsonSearch['items']:
+            if '&quot;' in post.get('title'):  ## 따옴표가 &quot;로 출력돼서 다시 따옴표로 바꿔주는 작업
+                new_npercend = post.get('title').replace("&quot;", "'")
+                post['title'] = new_npercend
+            if '&quot;' in post.get('description'):
+                new_npercend = post.get('description').replace('&quot;', "'")
+                post['description'] = new_npercend
             getPostData(post, jsonResult)
-            nStart = jsonSearch['start']+jsonSearch['display']
-            jsonSearch = getNaverSearchResult(sNode, search_text, nStart, display_count)
-            index += 1
+
+        nStart = jsonSearch['start'] + jsonSearch['display']
+        jsonSearch = getNaverSearchResult(sNode, search_text, nStart, display_count)
+        # index += 1
+        index = index + 1
 
         with open('%s_naver_%s.json' % (search_text, sNode), 'w', encoding='utf8') as outfile:
             retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
             outfile.write(retJson)
 
         print("%s_naver_%s.json SAVED" % (search_text, sNode))
+
 
 if __name__ == '__main__':
     main()
