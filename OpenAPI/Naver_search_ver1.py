@@ -7,8 +7,8 @@ import urllib.request
 import datetime
 import json
 
-app_id = ""
-app_pw = ""
+app_id = "4fLRRIHMFwAI53sYeHJu"
+app_pw = "gvsFISGKOs"
 
 def get_request_url(url):
     req = urllib.request.Request(url)
@@ -59,4 +59,18 @@ def main():
     jsonSearch = getNaverSearchResult(sNode, search_text, 1, display_count)
 
     index = 1   ## 1번 루프를 돌 때마다 100건이 조회되기 때문에 1000번을 넘기지 않게 하기 위한 인덱스임
-    while (())
+    while ((jsonSearch != None) and (jsonSearch['display'] != 0) and index < 9):
+        for post in jsonSearch['items']:
+            getPostData(post, jsonResult)
+            nStart = jsonSearch['start']+jsonSearch['display']
+            jsonSearch = getNaverSearchResult(sNode, search_text, nStart, display_count)
+            index += 1
+
+        with open('%s_naver_%s.json' % (search_text, sNode), 'w', encoding='utf8') as outfile:
+            retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
+            outfile.write(retJson)
+
+        print("%s_naver_%s.json SAVED" % (search_text, sNode))
+
+if __name__ == '__main__':
+    main()
