@@ -1,6 +1,5 @@
 import os
 import json
-from pprint import pprint
 
 def Jtbc_News(data):
     link_num_ls = []

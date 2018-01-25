@@ -1,7 +1,6 @@
 ### 출력에서, 전화번호 숫자에 따른 증가식 출력을 제외하고 완성
 ### 증가식 출력이 되도록 코딩해야 함!!!
 
-
 def Check_Number(compa_num):
     two = 'ABC2'
     three = 'DEF3'
@@ -75,8 +74,21 @@ for step_by in change_num_ls:
         elif mul_count == 1:
             mul_count_ls.append("%s     No duplicates" % step_by)
 
-for prn in mul_count_ls:
-    print(prn)
+print(mul_count_ls)
+print("")
+mul_count_ls.sort()
+print(mul_count_ls)
+
+# sort_num_ls = []
+# index_count = -1
+# for sort_num in mul_count_ls:
+#     index_count += 1
+#     if index_count == len(mul_count_ls) - 1:
+#         break
+#     for next_sort_num in mul_count_ls[(index_count+1):]:
+#         if sort_num[0] < next_sort_num[0]:
+#             sort_num_ls.append(sort_num)
+#             break
 
 
 
