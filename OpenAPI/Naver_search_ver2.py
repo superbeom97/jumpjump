@@ -72,40 +72,15 @@ def main():
     jsonSearch = getNaverSearchResult(sNode, search_text, 1, display_count)
 
     index = 1  ## 1번 루프를 돌 때마다 100건이 조회되기 때문에 1000번을 넘기지 않게 하기 위한 인덱스임
-    address_ls = []
     while ((jsonSearch != None) and (jsonSearch['display'] != 0) and index < 9):
         for post in jsonSearch['items']:
-            if '&quot;' in post.get('title') or '&lt;' in post.get('title') or '&gt;' in post.get('title') or '<b>' in post.get('title') or '</b>' in post.get('title') :  ## 따옴표가 &quot;로 출력돼서 다시 따옴표로 바꿔주는 작업
+            if '&quot;' in post.get('title'):  ## 따옴표가 &quot;로 출력돼서 다시 따옴표로 바꿔주는 작업
                 new_npercend = post.get('title').replace("&quot;", "'")
                 post['title'] = new_npercend
-                new_npercend = post.get('title').replace("&lt;", "<")
-                post['title'] = new_npercend
-                new_npercend = post.get('title').replace("&gt;", ">")
-                post['title'] = new_npercend
-                new_npercend = post.get('title').replace("<b>", "")
-                post['title'] = new_npercend
-                new_npercend = post.get('title').replace("</b>", "")
-                post['title'] = new_npercend
-            if '&quot;' in post.get('description') or '&lt;' in post.get('description') or '&gt;' in post.get('description') or '<b>' in post.get('description') or '</b>' in post.get('description') :  ## 따옴표가 &quot;로 출력돼서 다시 따옴표로 바꿔주는 작업
+            if '&quot;' in post.get('description'):
                 new_npercend = post.get('description').replace('&quot;', "'")
                 post['description'] = new_npercend
-                new_npercend = post.get('description').replace('&lt;', "<")
-                post['description'] = new_npercend
-                new_npercend = post.get('description').replace('&gt;', ">")
-                post['description'] = new_npercend
-                new_npercend = post.get('description').replace('<b>', "")
-                post['description'] = new_npercend
-                new_npercend = post.get('description').replace('</b>', "")
-                post['description'] = new_npercend
             getPostData(post, jsonResult)
-
-            try:
-                address = post.get('originallink')
-                point_address = address.split('/')
-                if point_address[2]:
-                    address_ls.append(point_address[2])
-            except:
-                pass
 
         nStart = jsonSearch['start'] + jsonSearch['display']
         jsonSearch = getNaverSearchResult(sNode, search_text, nStart, display_count)
@@ -117,46 +92,69 @@ def main():
             outfile.write(retJson)
 
         print("%s_naver_%s.json SAVED" % (search_text, sNode))
+        Sort_Print(search_text, sNode)
 
-    print("\n[[도메인별 기사건수 분석]]")
-    new_address = []
-    index_count = -1
-    for compa in address_ls:
-        personal_address = []
-        index_count += 1
-        if index_count == len(address_ls) - 1:
-            break
-        count_num = 0
-        for next_compa in address_ls[(index_count):]:
-            if compa == next_compa:
-                count_num += 1
-                if (index_count+1) == len(address_ls):
-                    break
-                del address_ls[(index_count + 1)]
-        personal_address.append(count_num)
-        personal_address.append(compa)
-        new_address.append(personal_address)
+def Sort_Print(search_text, sNode):
+    total_news = []
+    with open("%s_naver_%s.json" % (search_text, sNode), encoding='UTF8') as json_file:
+        json_object = json.load(json_file)
+        json_string = json.dumps(json_object)
+        total_news = json.loads(json_string)
 
-    new_address.sort()
-    new_address.reverse()
+    for change_str in total_news:
+        if '&quot;' in change_str.get('title') or '&lt;' in change_str.get('title') or '&gt;' in change_str.get('title') or '<b>' in change_str.get(
+                'title') or '</b>' in change_str.get('title'):  ## 따옴표가 &quot;로 출력돼서 다시 따옴표로 바꿔주는 작업
+            change_str['title'] = change_str.get('title').replace("&quot;", "'")
+            change_str['title'] = change_str.get('title').replace("&lt;", "<")
+            change_str['title'] = change_str.get('title').replace("&gt;", ">")
+            change_str['title'] = change_str.get('title').replace("<b>", "")
+            change_str['title'] = change_str.get('title').replace("</b>", "")
+        if '&quot;' in change_str.get('description') or '&lt;' in change_str.get('description') or '&gt;' in change_str.get(
+                'description') or '<b>' in change_str.get('description') or '</b>' in change_str.get(
+                'description'):  ## 따옴표가 &quot;로 출력돼서 다시 따옴표로 바꿔주는 작업
+            change_str['description'] = change_str.get('description').replace('&quot;', "'")
+            change_str['description'] = change_str.get('description').replace('&lt;', "<")
+            change_str['description'] = change_str.get('description').replace('&gt;', ">")
+            change_str['description'] = change_str.get('description').replace('<b>', "")
+            change_str['description'] = change_str.get('description').replace('</b>', "")
 
-    change_num_index = -1
-    for step_by in new_address:
-        change_num_index += 1
-        if change_num_index == len(new_address) - 1:  ## step_by가 리스트 change_num_ls의 마지막 자릿 수인지 확인
-            break  ## step_by가 리스트 change_num_ls의 마지막 자릿 수 일 때는 비교 대상이 없으니, 종료해라
-        del_index = 0
-        for next_step_by in new_address[(change_num_index + 1):]:  ## step_by 다음 인덱스들을 가져오는 코드 ↴
-            del_index += 1
-            if step_by[1] == next_step_by[1]:
-                step_by[0] = step_by[0] + next_step_by[0]
-                del new_address[del_index]
+    with open('change_이명박_naver_news.json', 'w', encoding='utf8') as outfile:
+        readable_result = json.dumps(total_news, indent=4, sort_keys=True, ensure_ascii=False)
+        outfile.write(readable_result)
 
-    total_news = 0
-    for prn in new_address:
-        total_news += prn[0]
-        print(">> '%s' : %s 건" % (prn[1], prn[0]))
-    print("\n>> 총 뉴스 건수 : %s" % total_news)
+    address_ls = []
+    for address_get in total_news:
+        address = address_get.get('org_link')
+        point_address = address.split('/')
+        if len(point_address) >= 3:
+            address_ls.append(point_address[2])
+
+    address_number  = []
+    only_one = set()
+    for check_address in address_ls:
+        each_ls = []
+        each_ls.append(address_ls.count(check_address))
+        each_ls.append(check_address)
+        address_number.append(each_ls)
+        only_one.add(check_address)
+
+    final_ls = []
+    for check_mul in only_one:
+        for mul in address_number:
+            if check_mul in mul:
+                final_ls.append(mul)
+                break
+
+    final_ls.sort()
+    final_ls.reverse()
+
+    news_count = 0
+    for prnt in final_ls:
+        news_count += prnt[0]
+        print(">> '%s' : %s 건" % (prnt[1], prnt[0]))
+    print("\n>> 실제 뉴스 총 건수 : %s" % len(address_number))     ## 받아들인 뉴스가 모아져 있는 리스트 내의 갯수를 통해
+    print(">> 검색한 뉴스 총 건수 : %s" % news_count)   ## 중복 도메인의 수의 총합을 통해 확인
+
 
 if __name__ == '__main__':
     main()
