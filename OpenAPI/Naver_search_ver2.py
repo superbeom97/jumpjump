@@ -136,7 +136,7 @@ def Sort_Print(search_text, sNode):
         each_ls.append(address_ls.count(check_address))
         each_ls.append(check_address)
         address_number.append(each_ls)
-        only_one.add(check_address)
+        only_one.add(check_address)   ## set형은 .add()를 통해 추가함
 
     final_ls = []
     for check_mul in only_one:
