@@ -66,8 +66,8 @@ def main():
 
     for year in range(nStartYear, nEndYear):
         for month in range(1, 13):
-            yyyymm = "{0}{1:0>2}".format(str(year), str(month))
-            nPagenum = 1
+            yyyymm = "{0}{1:0>2}".format(str(year), str(month))     ## {0} : 첫 번째 인덱스는 str(year)로 채우고
+            nPagenum = 1                                            ## {1:0>2} : 두 번째 인덱스는 str(month)로 채워라
 
             # [CODE 3]
             while True:

@@ -84,10 +84,12 @@ def main():
             else:
                 break
 
-            with open('전 세계_방문객_%d_%d.json' % (nSearchYear, nSearchMonth), 'w', encoding='utf8') as outfile:
-                retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
+    jsonReult.sort(data.items(), key=lambda x: x[0][0], reverse=False)
 
-                outfile.write(retJson)
+    with open('전 세계_방문객_%d_%d.json' % (nSearchYear, nSearchMonth), 'w', encoding='utf8') as outfile:
+        retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
+
+        outfile.write(retJson)
 
     print('전 세계_방문객_%d_%d.json SAVED' % (nSearchYear, nSearchMonth))
 
