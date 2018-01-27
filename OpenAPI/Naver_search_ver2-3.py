@@ -1,5 +1,6 @@
 ## [ver2]   도메인별 기사건수 분석 - 내림차순으로
 ## [ver2-2] 이미 있는 json 파일을 읽어봐 정렬, 출력하는 버전
+## [ver2-3] 리스트 내에서 int가 첫 번째가 아닌 다른 자리에 있어도, 정렬하는 법 적용
 
 ## 출력 예시)
 ## [도메인별 기사건수 분석]
@@ -47,8 +48,8 @@ address_number  = []
 only_one = set()
 for check_address in address_ls:
     each_ls = []
-    each_ls.append(address_ls.count(check_address))
     each_ls.append(check_address)
+    each_ls.append(address_ls.count(check_address))
     address_number.append(each_ls)
     only_one.add(check_address)     ## set형은 .add()를 통해 추가함
 
@@ -59,12 +60,22 @@ for check_mul in only_one:
             final_ls.append(mul)
             break
 
-final_ls.sort()
-final_ls.reverse()
+########################## 리스트 내에서의 정렬
+# score = [("개", 50), ("기린", 100), ("고양이", 30)]
+# score.sort(key=lambda x: x[1])
+# print(score)
+# >> [("고양이", 30), ("개", 50), ("기린", 100)]
+
+
+# final_ls.sort(key=lambda k: k[1])                 ## final_ls를 오름차순으로 정렬
+final_ls.sort(key=lambda k: k[1], reverse=True)     ## reverse=True를 붙여 주면, 내림차순으로 정렬
 
 news_count = 0
 for prnt in final_ls:
-    news_count += prnt[0]
-    print(">> '%s' : %s 건" % (prnt[1], prnt[0]))
+    news_count += prnt[1]
+    print(">> '%s' : %s 건" % (prnt[0], prnt[1]))
 print("\n>> 실제 뉴스 총 건수 : %s" % len(address_number))     ## 받아들인 뉴스가 모아져 있는 리스트 내의 갯수를 통해
 print(">> 검색한 뉴스 총 건수 : %s" % news_count)   ## 중복 도메인의 수의 총합을 통해 확인
+
+
+# sorted_num_of_domain_info = sorted(domain_info_list, key=lambda k: k[1],reverse=True)
