@@ -128,6 +128,14 @@ score.sort(key=lambda x: x[1])
 print(score)
 ##>> [("고양이", 30), ("개", 50), ("기린", 100)]
 
+mul_count_ls = [['123-4567', 2], ['987-6542', 'No duplicates'], ['456-8792', 'No duplicates'], ['321-5487', 'No duplicates']]
+mul_count_ls.sort(key=lambda x: x[0])   ## 리스트 내에서 첫 번째 인덱스로 정렬해라
+print(mul_count_ls)
+## >> [['123-4567', 2], ['321-5487', 'No duplicates'], ['456-8792', 'No duplicates'], ['987-6542', 'No duplicates']]
+mul_count_ls.sort(key=lambda x: x[0], reverse=True)     ## 리스트 내에서 첫 번째 인덱스로 내림차순 정렬해라
+print(mul_count_ls)
+## >> [['987-6542', 'No duplicates'], ['456-8792', 'No duplicates'], ['321-5487', 'No duplicates'], ['123-4567', 2]]
+
 ############################### [ver1]
 import os
 import json

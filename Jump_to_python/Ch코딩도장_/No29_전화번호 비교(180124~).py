@@ -69,28 +69,29 @@ for step_by in change_num_ls:
                 mul_count += 1
                 change_num_ls[del_index] = x + "%s" % del_index
 
+        each_ls = []
         if mul_count > 1:
-            mul_count_ls.append("%s     %s" % (step_by, mul_count))
+            each_ls.append("%s" % step_by)
+            each_ls.append(mul_count)
+            mul_count_ls.append(each_ls)
         elif mul_count == 1:
-            mul_count_ls.append("%s     No duplicates" % step_by)
+            each_ls.append("%s" % step_by)
+            each_ls.append("No duplicates")
+            mul_count_ls.append(each_ls)
 
 print(mul_count_ls)
+## >> [['123-4567', 2], ['987-6542', 'No duplicates'], ['456-8792', 'No duplicates'], ['321-5487', 'No duplicates']]
+mul_count_ls.sort(key=lambda x: x[0])   ## 리스트 내에서 첫 번째 인덱스로 정렬해라
+print(mul_count_ls)
+## >> [['123-4567', 2], ['321-5487', 'No duplicates'], ['456-8792', 'No duplicates'], ['987-6542', 'No duplicates']]
 print("")
-mul_count_ls.sort()
-print(mul_count_ls)
 
-# sort_num_ls = []
-# index_count = -1
-# for sort_num in mul_count_ls:
-#     index_count += 1
-#     if index_count == len(mul_count_ls) - 1:
-#         break
-#     for next_sort_num in mul_count_ls[(index_count+1):]:
-#         if sort_num[0] < next_sort_num[0]:
-#             sort_num_ls.append(sort_num)
-#             break
-
-
+for number_prn in mul_count_ls:
+    print("%s       %s" % (number_prn[0], number_prn[1]))
+print("")
+mul_count_ls.sort(key=lambda x: x[0], reverse=True)     ## 리스트 내에서 첫 번째 인덱스로 내림차순 정렬해라
+for number_prn in mul_count_ls:
+    print("%s       %s" % (number_prn[0], number_prn[1]))
 
 
 # 487-3229

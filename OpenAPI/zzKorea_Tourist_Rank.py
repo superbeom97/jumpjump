@@ -5,8 +5,9 @@ import urllib.request
 import datetime
 import json
 import math
+from pprint import pprint
 
-access_key = "svU%2Bw%2F5D%2FL7%2Fc0g4YKdOsn20gs%2BSXBxCuYXGQFL9IvIWGEQxHEXrhIM1zu%2BeqXP%2B7VIJPPvsANnm8AOgIXN2Jg%3D%3D"
+access_key = "mCMm44itfuyVU%2BFbA2UfUkg5e0mhiGe8cfc9MeGkjna99yT90ezvAOPMqZnYBczZRSliXsaBpyfIV9ic1Bpjmw%3D%3D"
 
 def get_request_url(url):
     req = urllib.request.Request(url)
@@ -84,7 +85,8 @@ def main():
             else:
                 break
 
-    jsonReult.sort(data.items(), key=lambda x: x[0][0], reverse=False)
+    # jsonResult.sort(key=lambda x: x['num'], reverse=True)
+    jsonResult.sort(key=lambda x: x['natCd'])
 
     with open('전 세계_방문객_%d_%d.json' % (nSearchYear, nSearchMonth), 'w', encoding='utf8') as outfile:
         retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
@@ -92,6 +94,7 @@ def main():
         outfile.write(retJson)
 
     print('전 세계_방문객_%d_%d.json SAVED' % (nSearchYear, nSearchMonth))
+    pprint(jsonResult)
 
 if __name__ == '__main__':
     main()
