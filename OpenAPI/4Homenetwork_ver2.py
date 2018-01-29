@@ -109,7 +109,7 @@ def update_scheduler():
         if g_AI_Mode == False:
             continue
         else:
-            time.sleep(10)
+            time.sleep(5)
             get_realtime_weather_info()
 
 def smart_mode():
@@ -131,7 +131,6 @@ def smart_mode():
         print("현재 인공지능 모드 : ", end="")
         if g_AI_Mode == True: print("작동")
         else: print("정지")
-
 
     elif menu_num == 3:
         get_realtime_weather_info()
