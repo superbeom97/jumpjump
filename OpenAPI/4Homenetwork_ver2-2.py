@@ -20,33 +20,30 @@ day_time = time.strftime("%H%M", time.localtime(time.time()))
 check_time = time.strftime("%M%S", time.localtime(time.time()))
 x_coodinate = "89"
 y_coodinate = "91"
-
-def print_device_status(device_name, devcie_status):
-    print("%s 상태: " % device_name, end="")
-    if devcie_status == True: print("작동")
-    else: print("정지")
+device_dic = {'g_Radiator':[g_Radiator, '난방기'], 'g_Gas_Valve':[g_Gas_Valve, '가스밸브'], 'g_Balcony_Windows':[g_Balcony_Windows, '발코니(베란다) 창문'],
+              'g_Door':[g_Door, '출입문']}
 
 def check_device_status():
-    print_device_status('난방기', g_Radiator)
-    print_device_status('가스밸브', g_Gas_Valve)
-    print_device_status('발코니(베란다) 창문', g_Balcony_Windows)
-    print_device_status('출입문 상태', g_Door)
+    for prn_device in device_dic:
+        print("%s 상태 : " % device_dic.get(prn_device)[1], end="")
+        if device_dic.get(prn_device)[0] == True: print("작동")
+        else: print("정지")
     print("")
 
 def control_device():
-    global  g_Radiator, g_Gas_Valve, g_Balcony_Windows, g_Door      ## 전역 변수를 비교나 어사인 하려면 함수 안에서 설정해 줘야 해!!
+    global  device_dic      ## 전역 변수를 비교나 어사인 하려면 함수 안에서 설정해 줘야 해!!
     check_device_status()
     menu_num = int(input("<<상태 변경할 기기의 번호를 입력하세요>>\n"
                          "1. 난방기\n2. 가스밸브\n3. 발코니(베란다)창\n4. 출입문\n-> "))
 
     if menu_num == 1:
-        g_Radiator = not g_Radiator
+        device_dic.get('g_Radiator')[g_Radiator] = not g_Radiator
     elif menu_num == 2:
-        g_Gas_Valve = not g_Gas_Valve
+        device_dic.get('g_Gas_Valve')[g_Gas_Valve] = not g_Gas_Valve
     elif menu_num == 3:
-        g_Balcony_Windows = not g_Balcony_Windows
+        device_dic.get('g_Balcony_Windows')[g_Balcony_Windows] = not g_Balcony_Windows
     elif menu_num == 4:
-        g_Door = not g_Door
+        device_dic.get('g_Door')[g_Door] = not g_Door
     print("")
 
     check_device_status()

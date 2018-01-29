@@ -60,12 +60,12 @@ def get_realtime_weather_info():
                                'nx':prn_data.get('nx'),
                                'ny':prn_data.get('ny')})
 
-    with open('동구_신암동_초단기예보조회_%s_%s.json' % (yyyymmdd, day_time), 'w', encoding='utf8') as outfile:
+    with open('동구_신암동_초단기예보조회_%s.json' % yyyymmdd, 'w', encoding='utf8') as outfile:
         retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
 
         outfile.write(retJson)
 
-    print('동구_신암동_초단기예보조회_%s_%s.json SAVED' % (yyyymmdd, day_time))
+    print('동구_신암동_초단기예보조회_%s.json SAVED' % yyyymmdd)
 
 if __name__ == '__main__':
     get_realtime_weather_info()
