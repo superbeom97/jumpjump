@@ -1,14 +1,12 @@
 ### 출입국관광자원통계서비스에서 긁어오는
 ## 중국인 방문객 빅데이터 수집
 
-
 import urllib.request
 import datetime
 import json
 import math
 
-access_key = "mCMm44itfuyVU%2BFbA2UfUkg5e0mhiGe8cfc9MeGkjna99yT90ezvAOPMqZnYBczZRSliXsaBpyfIV9ic1Bpjmw%3D%3D"
-# total_info_ls = []
+access_key = "svU%2Bw%2F5D%2FL7%2Fc0g4YKdOsn20gs%2BSXBxCuYXGQFL9IvIWGEQxHEXrhIM1zu%2BeqXP%2B7VIJPPvsANnm8AOgIXN2Jg%3D%3D"
 
 def get_request_url(url):
     req = urllib.request.Request(url)
@@ -25,6 +23,7 @@ def get_request_url(url):
 
 # [CODE 1]
 def getTourPointVisitor(yyyymm, natCd, edCd, nItems):
+
     end_point = "http://openapi.tour.go.kr/openapi/service/EdrcntTourismStatsService/getEdrcntTourismStatsList"
 
     parameters = "?_type=json&serviceKey=" + access_key
@@ -55,51 +54,54 @@ def getTourPointData(sort_data, yyyymm, jsonResult):
 def main():
     jsonResult = []
 
-    natKorNm = ''
-    natCd = 0
+    natKorNm = '중국'
+    natCd = 112
     edCd = 'E'
     nPagenum = 1
     nTotal = 0
     nItems = 100
 
-    nSearchYear = 2016
-    nSearchMonth = 12
+    nStartYear = 2011
+    nEndYear = 2017
 
-    yyyymm = str(nSearchYear) + str(nSearchMonth)
-    nPagenum = 1
+    for year in range(nStartYear, nEndYear):
+        for month in range(1, 13):
+            yyyymm = "{0}{1:0>2}".format(str(year), str(month))     ## {0} : 첫 번째 인덱스는 str(year)로 채우고
+            nPagenum = 1                                            ## {1:0>2} : 두 번째 인덱스는 str(month)로 채워라
 
-    # [CODE 3]
-    while True:
-        for One_of_Nat_Cd in range(100, 901):
-            jsonData = getTourPointVisitor(yyyymm, natCd, edCd, nItems)
+            # [CODE 3]
+            while True:
+                jsonData = getTourPointVisitor(yyyymm, natCd, edCd, nItems)
 
-            if (jsonData['response']['header']['resultMsg'] == 'OK'):
-                nTotal = jsonData['response']['body']['totalCount']
-                if nTotal == 0:
-                    continue
+                if (jsonData['response']['header']['resultMsg'] == 'OK'):
+                    nTotal = jsonData['response']['body']['totalCount']
 
+                    if nTotal == 0:
+                        break
 
-                if jsonData['response']['body']['items']['item']['natCd']:
+## jsonData['response']['body']['items']['item']가 Tourist_Site에서는 여러 개의 딕셔너리 셋트가 리스트로 들어와서 for문을 돌렸지만
+## 여기에서는 하나의 딕셔너리로 받기 때문에 바로 getTourPointData() 함수에 넣어 줘야 하는!!
                     sort_data = jsonData['response']['body']['items']['item']
                     getTourPointData(sort_data, yyyymm, jsonResult)
-                else: continue
+                    # for item in jsonData['response']['body']['items']['item']:
+                    #     getTourPointData(item, yyyymm, jsonResult)
 
-            else:
-                break
+                    nPage = math.ceil(nTotal/100)
 
-        nPage = math.ceil(nTotal / 100)
+                    if (nPagenum == nPage):
+                        break
 
-        if (nPagenum == nPage):
-            break
+                    nPagenum += 1
 
-        nPagenum += 1
+                else:
+                    break
 
-        with open('%s인_방문객_%d_%d.json' % (natKorNm, nSearchYear, nSearchMonth), 'w', encoding='utf8') as outfile:
-            retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
+    with open('%s인_방문객_%d_%d.json' % (natKorNm, nStartYear, nEndYear-1), 'w', encoding='utf8') as outfile:
+        retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
 
-            outfile.write(retJson)
+        outfile.write(retJson)
 
-        print('%s인_방문객_%d_%d.json SAVED' % (natKorNm, nSearchYear, nSearchMonth))
+    print('%s인_방문객_%d_%d.json SAVED' % (natKorNm, nStartYear, nEndYear-1))
 
 if __name__ == '__main__':
     main()

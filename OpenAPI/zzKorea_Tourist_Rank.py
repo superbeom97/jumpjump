@@ -1,11 +1,11 @@
 ### 출입국관광자원통계서비스에서 긁어오는
-## 중국인 방문객 빅데이터 수집
-
+## 2016년 12월 우리나라 방문객 Top 10개국 정보 수집
 
 import urllib.request
 import datetime
 import json
 import math
+from pprint import pprint
 
 access_key = "mCMm44itfuyVU%2BFbA2UfUkg5e0mhiGe8cfc9MeGkjna99yT90ezvAOPMqZnYBczZRSliXsaBpyfIV9ic1Bpjmw%3D%3D"
 
@@ -50,59 +50,51 @@ def getTourPointData(sort_data, yyyymm, jsonResult):
 
     jsonResult.append({'yyyymm':yyyymm, 'ed':ed, 'natKorNm':natKorNm, 'num':num, 'natCd':natCd, 'edCd':edCd, 'rnum':rnum})
 
-    return
-
 def main():
     jsonResult = []
 
-    natKorNm = '중국'
-    natCd = 112
     edCd = 'E'
     nPagenum = 1
     nTotal = 0
     nItems = 100
 
-    nStartYear = 2011
-    nEndYear = 2017
+    nSearchYear = 2016
+    nSearchMonth = 12
 
-    for year in range(nStartYear, nEndYear):
-        for month in range(1, 13):
-            yyyymm = "{0}{1:0>2}".format(str(year), str(month))
-            nPagenum = 1
+    yyyymm = str(nSearchYear) + str(nSearchMonth)
 
-            # [CODE 3]
-            while True:
-                jsonData = getTourPointVisitor(yyyymm, natCd, edCd, nItems)
+    # [CODE 3]
+    natCd = 99
+    while True:
+        nPage = 0
+        natCd += 1
+        if natCd < 1000:
+            jsonData = getTourPointVisitor(yyyymm, natCd, edCd, nItems)
 
-                if (jsonData['response']['header']['resultMsg'] == 'OK'):
-                    nTotal = jsonData['response']['body']['totalCount']
+            if (jsonData['response']['header']['resultMsg'] == 'OK'):
+                nTotal = jsonData['response']['body']['totalCount']
 
-                    if nTotal == 0:
-                        break
+                if nTotal == 0:
+                    continue
 
-## jsonData['response']['body']['items']['item']가 Tourist_Site에서는 여러 개의 딕셔너리 셋트가 리스트로 들어와서 for문을 돌렸지만
-## 여기에서는 하나의 딕셔너리로 받기 때문에 바로 getTourPointData() 함수에 넣어 줘야 하는!!
-                    sort_data = jsonData['response']['body']['items']['item']
-                    getTourPointData(sort_data, yyyymm, jsonResult)
-                    # for item in jsonData['response']['body']['items']['item']:
-                    #     getTourPointData(item, yyyymm, jsonResult)
+                sort_data = jsonData['response']['body']['items']['item']
+                getTourPointData(sort_data, yyyymm, jsonResult)
 
-                    nPage = math.ceil(nTotal/100)
+                nPage = math.ceil(nTotal/100)
 
-                    if (nPagenum == nPage):
-                        break
+            else:
+                break
 
-                    nPagenum += 1
+    # jsonResult.sort(key=lambda x: x['num'], reverse=True)
+    jsonResult.sort(key=lambda x: x['natCd'])
 
-                else:
-                    break
-
-    with open('%s인_방문객_%d_%d.json' % (natKorNm, nStartYear, nEndYear-1), 'w', encoding='utf8') as outfile:
+    with open('전 세계_방문객_%d_%d.json' % (nSearchYear, nSearchMonth), 'w', encoding='utf8') as outfile:
         retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
 
         outfile.write(retJson)
 
-    print('%s인_방문객_%d_%d.json SAVED' % (natKorNm, nStartYear, nEndYear-1))
+    print('전 세계_방문객_%d_%d.json SAVED' % (nSearchYear, nSearchMonth))
+    pprint(jsonResult)
 
 if __name__ == '__main__':
     main()
