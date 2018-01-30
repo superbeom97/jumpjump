@@ -20,6 +20,7 @@ day_time = time.strftime("%H%M", time.localtime(time.time()))
 check_time = time.strftime("%M%S", time.localtime(time.time()))
 x_coodinate = "89"
 y_coodinate = "91"
+numofrows = "100"
 
 def print_device_status(device_name, devcie_status):
     print("%s 상태: " % device_name, end="")
@@ -64,15 +65,16 @@ def get_request_url(url):
         print("[%s] Error for URL : %s" % (datetime.datetime.now(), url))
         return None
 
-def getWeatherURL(yyyymmdd, day_time, x_coodinate, y_coodinate):
+def getWeatherURL(yyyymmdd, day_time, x_coodinate, y_coodinate, numofrows):
 
     end_point = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData"
 
     parameters = "?_type=json&serviceKey=" + access_key
-    parameters += "?base_date=" + yyyymmdd
+    parameters += "&base_date=" + yyyymmdd
     parameters += "&base_time=" + day_time
     parameters += "&nx=" + x_coodinate
     parameters += "&ny=" + y_coodinate
+    parameters += "&numOfRows=" + numofrows
 
     url = end_point + parameters
     retData = get_request_url(url)
@@ -84,10 +86,10 @@ def getWeatherURL(yyyymmdd, day_time, x_coodinate, y_coodinate):
 def get_realtime_weather_info():
     print("<<실시간 기상정보 업데이트를 실시합니다!!>>\n".center(30))
 
-    jsonData = getWeatherURL(yyyymmdd, day_time, x_coodinate, y_coodinate)
+    jsonData = getWeatherURL(yyyymmdd, day_time, x_coodinate, y_coodinate, numofrows)
 
     if (jsonData['response']['header']['resultMsg'] == 'OK'):
-        for prn_data in jsonData['response']['body']['items']:
+        for prn_data in jsonData['response']['body']['items']['item']:
             jsonResult.append({'baseDate':prn_data.get('baseDate'),
                                'baseTime':prn_data.get('baseTime'),
                                'category':prn_data.get('category'),
@@ -109,8 +111,10 @@ def update_scheduler():
         if g_AI_Mode == False:
             continue
         else:
-            time.sleep(5)
-            get_realtime_weather_info()
+            if time.strftime("%M%S", time.localtime(time.time())) == "4500":
+                get_realtime_weather_info()
+                time.sleep(65)
+
 
 def smart_mode():
     global g_AI_Mode

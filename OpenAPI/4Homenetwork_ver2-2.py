@@ -66,7 +66,7 @@ def getWeatherURL(yyyymmdd, day_time, x_coodinate, y_coodinate):
     end_point = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData"
 
     parameters = "?_type=json&serviceKey=" + access_key
-    parameters += "?base_date=" + yyyymmdd
+    parameters += "&base_date=" + yyyymmdd
     parameters += "&base_time=" + day_time
     parameters += "&nx=" + x_coodinate
     parameters += "&ny=" + y_coodinate
@@ -84,7 +84,7 @@ def get_realtime_weather_info():
     jsonData = getWeatherURL(yyyymmdd, day_time, x_coodinate, y_coodinate)
 
     if (jsonData['response']['header']['resultMsg'] == 'OK'):
-        for prn_data in jsonData['response']['body']['items']:
+        for prn_data in jsonData['response']['body']['items']['item']:
             jsonResult.append({'baseDate':prn_data.get('baseDate'),
                                'baseTime':prn_data.get('baseTime'),
                                'category':prn_data.get('category'),
