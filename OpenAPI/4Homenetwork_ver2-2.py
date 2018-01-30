@@ -1,5 +1,6 @@
 ## [ver1] 실시간 날씨 정보 request 날리는 코드
 ## [ver2] 스마트홈 장비 제어 프로그램
+## [ver2-2] device들을 딕셔너리로 묶어서 짜 봄
 
 import urllib.request
 import datetime

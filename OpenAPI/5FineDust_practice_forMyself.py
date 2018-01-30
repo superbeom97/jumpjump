@@ -26,7 +26,7 @@ def getFineDustURL(yyyymmdd, searchdate):
     end_point = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
 
     parameters = "?_type=json&serviceKey=" + access_key
-    parameters += "&searchDate=" + urllib.parse.quote(searchdate)
+    parameters += "&searchDate=" + searchdate
 
 
     url = end_point + parameters
