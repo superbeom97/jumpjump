@@ -266,8 +266,7 @@ def Devices_AI():
 def smart_mode():
     global g_AI_Mode
     print("<<스마트 모드 메뉴입니다. 원하는 서비스의 번호를 입력하세요>>".center(45))
-    menu_num = int(input("1. 인공지능 모드 조회\n2. 인공지능 모드 상태 변경\n3. 실시간 기상정보 Update\n"
-                         "4. 강수 예보 시뮬레이션\n-> "))
+    menu_num = int(input("1. 인공지능 모드 조회\n2. 인공지능 모드 상태 변경\n3. 실시간 기상정보 Update\n-> "))
 
     if menu_num == 1:
         print("\n현재 인공지능 모드 : ", end="")
@@ -292,9 +291,6 @@ def smart_mode():
 
     elif menu_num == 3:
         get_realtime_weather_info()
-
-    elif menu_num == 4:
-        global g_Balcony_Windows
 
         total_weather = []
         with open("동구_신암동_초단기예보조회_%s.json" % (yyyymmdd), encoding='UTF8') as json_file:
