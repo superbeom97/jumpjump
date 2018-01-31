@@ -6,6 +6,7 @@
 ##        json 파일을 불러오는(읽는) 코드를 함수로 묶음
 ##        제습기 작동 범위 55 <= humidity_status_num <= 70 추가
 ##        기온을 받아 난방기 or 에어컨 작동
+##        함수 이름 정리
 
 import urllib.request
 import datetime
@@ -22,17 +23,18 @@ g_Balcony_Windows = False       ## 발코니(베란다) 창문
 g_Door = False                  ## 출입문
 g_AI_Mode = False               ## 인공지능 모드
 
-
 access_key = "mCMm44itfuyVU%2BFbA2UfUkg5e0mhiGe8cfc9MeGkjna99yT90ezvAOPMqZnYBczZRSliXsaBpyfIV9ic1Bpjmw%3D%3D"
 jsonResult = []
 yyyymmdd = time.strftime("%Y%m%d", time.localtime(time.time()))
 day_time = time.strftime("%H%M", time.localtime(time.time()))
 day_hour = time.strftime("%H", time.localtime(time.time()))
 day_min = time.strftime("%M", time.localtime(time.time()))
-last_thrid = "30"
-x_coodinate = "89"
-y_coodinate = "91"
-numofrows = "100"
+last_thrid = "30"       ## 기상 정보(동네예보정보 조회 서비스) json 파일 request 날릴 때, 항목
+x_coodinate = "89"      ## 기상 정보(동네예보정보 조회 서비스) json 파일 request 날릴 때, 항목
+y_coodinate = "91"      ## 기상 정보(동네예보정보 조회 서비스) json 파일 request 날릴 때, 항목
+numofrows = "100"       ## 기상 정보(동네예보정보 조회 서비스) json 파일 request 날릴 때, 항목
+sidoname = "대구"       ## 통합대기환경 정보(대기오염정보 조회 서비스) json 파일 request 날릴 때, 항목
+ver_info = "1.3"        ## 통합대기환경 정보(대기오염정보 조회 서비스) json 파일 request 날릴 때, 항목
 
 
 def Print_Device_fir_Status(device_name, devcie_status):    ## 장비 상태 출력 함수 1-1
@@ -82,7 +84,7 @@ def Control_Device():       ## 장비 제어 함수
 
     Check_Device_Status()
 
-def get_Request_URL(url):       ## request 보내는 함수
+def get_Weather_Request_URL(url):       ## 기상 정보(동네예보정보 조회 서비스) request 보내는 함수
     req = urllib.request.Request(url)
 
     try:
@@ -95,7 +97,7 @@ def get_Request_URL(url):       ## request 보내는 함수
         print("[%s] Error for URL : %s" % (datetime.datetime.now(), url))
         return None
 
-def get_WeatherURL(day_time):       ## request 보낼 url 만드는 함수
+def get_Weather_Make_URL(day_time):       ## 기상 정보(동네예보정보 조회 서비스) request 보내기 전, url 만드는 함수
     end_point = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData"
 
     parameters = "?_type=json&serviceKey=" + access_key
@@ -106,14 +108,14 @@ def get_WeatherURL(day_time):       ## request 보낼 url 만드는 함수
     parameters += "&numOfRows=" + numofrows
 
     url = end_point + parameters
-    retData = get_Request_URL(url)
+    retData = get_Weather_Request_URL(url)
     if (retData == None):
         return None
     else:
         return json.loads(retData)
 
-def Make_Weather_Json(day_time):     ## json 파일 생성하는 함수
-    jsonData = get_WeatherURL(day_time)
+def Make_Weather_Json(day_time):     ## 기상 정보(동네예보정보 조회 서비스) json 파일 생성하는 함수
+    jsonData = get_Weather_Make_URL(day_time)
 
     if (jsonData['response']['header']['resultMsg'] == 'OK'):
         for prn_data in jsonData['response']['body']['items']['item']:
@@ -133,7 +135,7 @@ def Make_Weather_Json(day_time):     ## json 파일 생성하는 함수
 
     print('동구_신암동_초단기예보조회_%s_%s.json SAVED\n' % (yyyymmdd, day_time))
 
-def get_Realtime_Weather_Info():        ## json 파일 만들기 전 함수
+def get_Realtime_Weather_Info():        ## 기상 정보(동네예보정보 조회 서비스) json 파일 만들기 전, 실시간 업데이트 확인 함수
     day_min_int = int(day_min)
     if 30 < day_min_int <= 59:      ## 실시간 업데이트가 있는지 없는지 확인,, 30분부터 59분까지는 실시간 정보 업데이트 됨
         day_time = time.strftime("%H%M", time.localtime(time.time()))
@@ -150,7 +152,7 @@ def get_Realtime_Weather_Info():        ## json 파일 만들기 전 함수
 
     return day_min_int
 
-def Read_Json():        ## json 파일을 불러오는(읽는) 함수
+def Read_Weather_Json():        ## 기상 정보(동네예보정보 조회 서비스) json 파일을 불러오는(읽는) 함수
     total_weather = []
     with open("동구_신암동_초단기예보조회_%s.json" % yyyymmdd, encoding='UTF8') as json_file:
         json_object = json.load(json_file)
@@ -246,26 +248,38 @@ def Control_Devices_AI(total_weather):        ## 인공지능 - 장비 제어 �
             window_status_num += window_status.get('fcstValue')     ## 강수 형태 (없음(0), 비(1), 비/눈(2), 눈(3))
             break
 
-    if window_status_num > 0:  ## 강수 확률이 있으면 창문을 닫아라
+    if g_Radiator == True:  ## 난방기가 작동 중이라면(강수 확률과는 상관 없이), 창문을 닫아라
         if g_Balcony_Windows == True:  ## 창문이 열려 있으면
             g_Balcony_Windows = not g_Balcony_Windows  ## 창문을 닫아라
-            print("강수 확률이 있어 열린 창문을 닫습니다:)")
+            print("난방기가 작동 중입니다. 열린 창문을 닫습니다:)")
             print(">> 발코니(베란다) 창문 상태 : ", end="")
             if g_Balcony_Windows == False: print("닫힘\n")
         else:  ## 창문이 닫혀 있으면
-            print("강수 확률이 있어 닫힌 창문 상태를 유지합니다:)")  ## 계속해서 창문을 닫아 놔라
+            print("난방기가 작동 중입니다. 닫힌 창문 상태를 유지합니다:)")  ## 계속해서 창문을 닫아 놔라
             print(">> 발코니(베란다) 창문 상태 : ", end="")
             if g_Balcony_Windows == False: print("닫힘\n")
-    else:  ## 강수 확률이 없으면 창문을 열어라
-        if g_Balcony_Windows == True:  ## 창문이 열려 있으면
-            print("햇살이 좋아 열린 창문 상태를 유지합니다:)")
-            print(">> 발코니(베란다) 창문 상태 : ", end="")
-            if g_Balcony_Windows == True: print("열림\n")
-        elif g_Balcony_Windows == False:  ## 창문이 닫혀 있으면
-            g_Balcony_Windows = not g_Balcony_Windows
-            print("햇살이 좋아 닫힌 창문을 엽니다:)")
-            print(">> 발코니(베란다) 창문 상태 : ", end="")
-            if g_Balcony_Windows == True: print("열림\n")
+
+    else:   ## 난방기가 작동 중이지 않고 + 강수 확률이 있을 경우
+        if window_status_num > 0:  ## 강수 확률이 있으면 창문을 닫아라
+            if g_Balcony_Windows == True:  ## 창문이 열려 있으면
+                g_Balcony_Windows = not g_Balcony_Windows  ## 창문을 닫아라
+                print("강수 확률이 있어 열린 창문을 닫습니다:)")
+                print(">> 발코니(베란다) 창문 상태 : ", end="")
+                if g_Balcony_Windows == False: print("닫힘\n")
+            else:  ## 창문이 닫혀 있으면
+                print("강수 확률이 있어 닫힌 창문 상태를 유지합니다:)")  ## 계속해서 창문을 닫아 놔라
+                print(">> 발코니(베란다) 창문 상태 : ", end="")
+                if g_Balcony_Windows == False: print("닫힘\n")
+        else:  ## 강수 확률이 없으면 창문을 열어라
+            if g_Balcony_Windows == True:  ## 창문이 열려 있으면
+                print("햇살이 좋아 열린 창문 상태를 유지합니다:)")
+                print(">> 발코니(베란다) 창문 상태 : ", end="")
+                if g_Balcony_Windows == True: print("열림\n")
+            elif g_Balcony_Windows == False:  ## 창문이 닫혀 있으면
+                g_Balcony_Windows = not g_Balcony_Windows
+                print("햇살이 좋아 닫힌 창문을 엽니다:)")
+                print(">> 발코니(베란다) 창문 상태 : ", end="")
+                if g_Balcony_Windows == True: print("열림\n")
 
 ################################### 가습기 / 제습기 인공지능 모드
     humidity_status_num = 0
@@ -335,12 +349,12 @@ def Control_Devices_AI(total_weather):        ## 인공지능 - 장비 제어 �
 
     print("===============================================================================")
 
-def Devices_AI():
+def Devices_AI():   ## 실시간 업데이트 정보 request -> json 파일 만들고 -> 장비 제어하는 함수
     get_Realtime_Weather_Info()
 
     if 30 < get_Realtime_Weather_Info() <= 59:  ## 실시간 업데이트가 있는지 없는지 확인,, 30분부터 59분까지는 실시간 정보 업데이트 됨
                                                 ## get_Realtime_Weather_Info() 하면 return -> day_min_int
-        total_weather = Read_Json()  ## json 파일을 불러오는 함수 - 인공지능 모드를 위해 json 파일의 정보를 읽어 오는
+        total_weather = Read_Weather_Json()  ## json 파일을 불러오는 함수 - 인공지능 모드를 위해 json 파일의 정보를 읽어 오는
 
         Control_Devices_AI(total_weather)   ## 장비 제어 함수
 
@@ -349,7 +363,7 @@ def Devices_AI():
         day_hour_int = day_hour_int - 1
         day_time = str(day_hour_int) + last_thrid
 
-        total_weather = Read_Json()  ## json 파일을 불러오는 함수 - 인공지능 모드를 위해 json 파일의 정보를 읽어 오는
+        total_weather = Read_Weather_Json()  ## json 파일을 불러오는 함수 - 인공지능 모드를 위해 json 파일의 정보를 읽어 오는
 
         Control_Devices_AI(total_weather)   ## 장비 제어 함수
 
@@ -385,7 +399,7 @@ def Smart_Mode():       ## 스마트 모드 메뉴 함수
 
         ## 실시간 정보 업데이트를 하는데, 인공지능 모드가 ON인 경우, 실시간 정보 업데이트 한 것을 토대로, 상황 분석 -> 장비 제어
         if g_AI_Mode == True:
-            total_weather = Read_Json()  ## json 파일을 불러오는 함수
+            total_weather = Read_Weather_Json()  ## json 파일을 불러오는 함수
 
             Control_Devices_AI(total_weather)  ## 장비 제어 함수
 
@@ -399,7 +413,7 @@ def Simulation_Mode():      ## 시뮬레이션 모드 메뉴
 
     get_Realtime_Weather_Info()     ## json 파일 만들기 전 함수
 
-    total_weather = Read_Json()     ## json 파일을 불러오는 함수
+    total_weather = Read_Weather_Json()     ## json 파일을 불러오는 함수
 
 ################################### 비오는 날 시뮬레이션
     if menu_num == 1:
