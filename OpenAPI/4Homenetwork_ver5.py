@@ -2,6 +2,7 @@
 ## [ver2] 스마트홈 장비 제어 프로그램
 ## [ver3] 인공지능 모드 ON -> 장비 제어
 ## [ver4] 시뮬레이션 추가
+## [ver5] 창문/가습기/제습기 작동 조건을 평균이 아닌 가장 가까운 예보 시간을 기준으로 함
 
 import urllib.request
 import datetime
@@ -30,17 +31,17 @@ y_coodinate = "91"
 numofrows = "100"
 
 
-def Print_Device_fir_Status(device_name, devcie_status):
+def Print_Device_fir_Status(device_name, devcie_status):    ## 장비 상태 출력 함수 1-1
     print("%s 상태: " % device_name, end="")
     if devcie_status == True: print("작동")
     else: print("정지")
 
-def Print_Device_snd_Status(device_name, devcie_status):
+def Print_Device_snd_Status(device_name, devcie_status):    ## 장비 상태 출력 함수 1-2
     print("%s 상태: " % device_name, end="")
     if devcie_status == True: print("열림")
     else: print("닫힘")
 
-def Check_Device_Status():
+def Check_Device_Status():      ## 장비 상태 확인 함수
     print("")
     print("===================================")
     Print_Device_fir_Status('난방기', g_Radiator)
@@ -52,7 +53,7 @@ def Check_Device_Status():
     print("===================================")
     print("")
 
-def Control_Device():
+def Control_Device():       ## 장비 제어 함수
     global  g_Radiator, g_Humidifier, g_Dehumidifier, g_Gas_Valve, g_Balcony_Windows, g_Door      ## 전역 변수를 비교나 어사인 하려면 함수 안에서 설정해 줘야 해!!
     Check_Device_Status()
     menu_num = int(input("<<상태 변경할 기기의 번호를 입력하세요>>\n"
@@ -74,7 +75,7 @@ def Control_Device():
 
     Check_Device_Status()
 
-def get_Request_URL(url):
+def get_Request_URL(url):       ## request 보내는 함수
     req = urllib.request.Request(url)
 
     try:
@@ -87,7 +88,7 @@ def get_Request_URL(url):
         print("[%s] Error for URL : %s" % (datetime.datetime.now(), url))
         return None
 
-def get_WeatherURL(day_time):
+def get_WeatherURL(day_time):       ## request 보낼 url 만드는 함수
     end_point = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData"
 
     parameters = "?_type=json&serviceKey=" + access_key
@@ -104,7 +105,7 @@ def get_WeatherURL(day_time):
     else:
         return json.loads(retData)
 
-def Make_Weater_Json(day_time):
+def Make_Weather_Json(day_time):     ## json 파일 생성하는 함수
     jsonData = get_WeatherURL(day_time)
 
     if (jsonData['response']['header']['resultMsg'] == 'OK'):
@@ -125,14 +126,12 @@ def Make_Weater_Json(day_time):
 
     print('동구_신암동_초단기예보조회_%s_%s.json SAVED\n' % (yyyymmdd, day_time))
 
-def get_Realtime_Weather_Info():
-    # 인공지능 모드가 ON인 경우에 실시간 정보를 분석하여 장비를 제어 할 조건이 된다면
-    # 장비를 제어한다.
+def get_Realtime_Weather_Info():        ## json 파일 만들기 전 함수
     day_min_int = int(day_min)
     if 30 < day_min_int <= 59:      ## 실시간 업데이트가 있는지 없는지 확인,, 30분부터 59분까지는 실시간 정보 업데이트 됨
         day_time = time.strftime("%H%M", time.localtime(time.time()))
         print("\n<<실시간 기상정보 업데이트를 실시합니다!!>>\n".center(30))
-        Make_Weater_Json(day_time)
+        Make_Weather_Json(day_time)
 
     elif 0 <= day_min_int <= 30:        ## 실시간 업데이트가 되지 않을 경우, 가장 최신인 한 시간 전껄로
         day_hour_int = int(day_hour)
@@ -140,11 +139,11 @@ def get_Realtime_Weather_Info():
         day_time = str(day_hour_int) + last_thrid
 
         print("\n<<가장 최신 기상정보 업데이트를 실시합니다!!>>\n".center(30))
-        Make_Weater_Json(day_time)
+        Make_Weather_Json(day_time)
 
     return day_min_int
 
-def Update_Scheduler():
+def Update_Scheduler():     ## 인공지능 모드 ON일 경우, 매 시 45분 10초 마다 실시간 정보를 업데이트 하도록 하는 함수
     while True:
         if g_AI_Mode == False:
             continue
@@ -153,18 +152,16 @@ def Update_Scheduler():
                 get_Realtime_Weather_Info()
                 time.sleep(5)
 
-def Print_Devices_AI(total_weather):
+def Control_Devices_AI(total_weather):        ## 인공지능 - 장비 제어 함수
     global g_Balcony_Windows, g_Humidifier, g_Dehumidifier
 
-    window_status_ls = []  ## 창문 인공지능 모드
-    window_status_num = 0
+    window_status_num = 0   ## 창문 인공지능 모드
     for window_status in total_weather:
         if window_status.get('category') == "PTY":
-            window_status_ls.append(window_status.get('fcstValue'))
             window_status_num += window_status.get('fcstValue')
-    window_average = window_status_num / len(window_status_ls)
+            break
 
-    if window_average > 0:  ## 강수 확률이 있으면 창문을 닫아라
+    if window_status_num > 0:  ## 강수 확률이 있으면 창문을 닫아라
         if g_Balcony_Windows == True:  ## 창문이 열려 있으면
             g_Balcony_Windows = not g_Balcony_Windows  ## 창문을 닫아라
             print("강수 확률이 있어 창문을 닫습니다:)")
@@ -185,18 +182,16 @@ def Print_Devices_AI(total_weather):
             print("발코니(베란다) 창문 상태 : ", end="")
             if g_Balcony_Windows == True: print("열림\n")
 
-    humidifier_status_ls = []  ## 가습기 / 제습기 인공지능 모드
-    humidifier_status_num = 0
+    humidity_status_num = 0   ## 가습기 / 제습기 인공지능 모드
     for humidity_status in total_weather:
         if humidity_status.get('category') == "REH":
-            humidifier_status_ls.append(humidity_status.get('fcstValue'))
-            humidifier_status_num += humidity_status.get('fcstValue')
-    humidity_average = humidifier_status_num / len(humidifier_status_ls)
+            humidity_status_num += humidity_status.get('fcstValue')
+            break
     print("==========================")
-    print("현재 습도 : %s%%".center(20) % humidity_average)
+    print("현재 습도 : %s%%".center(20) % humidity_status_num)
     print("==========================")
 
-    if humidity_average < 45:  ## 평균 습도가 45% 이하면 가습기를 켜라
+    if humidity_status_num < 45:  ## 평균 습도가 45% 이하면 가습기를 켜라
         if g_Humidifier == False:  ## 가습기가 꺼져 있으면
             g_Humidifier = not g_Humidifier  ## 가습기 켜라
             print("가습기를 작동시킵니다:)")
@@ -207,7 +202,7 @@ def Print_Devices_AI(total_weather):
             print("가습기 상태 : ", end="")
             if g_Humidifier == True: print("작동\n")
 
-    elif humidity_average >= 45 and humidity_average <= 55:
+    elif humidity_status_num >= 45 and humidity_status_num <= 55:
         if g_Humidifier == False:  ## 가습기가 꺼져 있으면
             print("작동 중인 가습기 상태를 유지합니다:)")  ## 계속 가습기를 꺼 놔라
             print("가습기 상태 : ", end="")
@@ -218,7 +213,7 @@ def Print_Devices_AI(total_weather):
             print("가습기 상태 : ", end="")
             if g_Humidifier == False: print("정지\n")
 
-    elif humidity_average > 55:  ## 평균 습도가 55% 이상이면 가습기를 꺼라
+    elif humidity_status_num > 55:  ## 평균 습도가 55% 이상이면 가습기를 꺼라
         if g_Humidifier == False:  ## 가습기가 꺼져 있으면
             print("정지된 가습기를 상태를 유지합니다:)")  ## 계속 가습기를 꺼 놔라
             print("가습기 상태 : ", end="")
@@ -229,7 +224,7 @@ def Print_Devices_AI(total_weather):
             print("가습기 상태 : ", end="")
             if g_Humidifier == False: print("정지\n")
 
-    if humidity_average > 70:
+    if humidity_status_num > 70:
         if g_Dehumidifier == False:  ## 제습기가 꺼져 있으면
             g_Dehumidifier = not g_Dehumidifier
             print("제습기를 작동시킵니다:)")  ## 제습기를 켜라
@@ -240,7 +235,7 @@ def Print_Devices_AI(total_weather):
             print("제습기 상태 : ", end="")
             if g_Dehumidifier == True: print("작동\n")
 
-    elif humidity_average < 55:
+    elif humidity_status_num < 55:
         if g_Dehumidifier == False:  ## 제습기가 꺼져 있으면
             print("정지된 제습기 상태를 유지합니다:)")  ## 계속해서 제습기를 꺼 놔라
             print("제습기 상태 : ", end="")
@@ -261,7 +256,7 @@ def Devices_AI():
             json_object = json.load(json_file)
             json_string = json.dumps(json_object)
             total_weather = json.loads(json_string)
-        Print_Devices_AI(total_weather)
+        Control_Devices_AI(total_weather)
 
     elif 0 <= get_Realtime_Weather_Info() <= 30:  ## 실시간 업데이트가 되지 않을 경우, 가장 최신인 한 시간 전껄로
         day_hour_int = int(day_hour)
@@ -272,17 +267,19 @@ def Devices_AI():
             json_object = json.load(json_file)
             json_string = json.dumps(json_object)
             total_weather = json.loads(json_string)
-        Print_Devices_AI(total_weather)
+        Control_Devices_AI(total_weather)
 
-def Smart_Mode():
+def Smart_Mode():       ## 스마트 모드 메뉴 함수
     global g_AI_Mode
     print("<<스마트 모드 메뉴입니다. 원하는 서비스의 번호를 입력하세요>>".center(45))
     menu_num = int(input("1. 인공지능 모드 조회\n2. 인공지능 모드 상태 변경\n3. 실시간 기상정보 Update\n-> "))
 
     if menu_num == 1:
-        print("\n현재 인공지능 모드 : ", end="")
+        print("\n===============================")
+        print("현재 인공지능 모드 : ", end="")
         if g_AI_Mode == True: print("작동")
         else: print("정지")
+        print("===============================\n")
 
     elif menu_num == 2:
         print("\n===============================")
@@ -302,9 +299,17 @@ def Smart_Mode():
     elif menu_num == 3:
         get_Realtime_Weather_Info()
 
+        ## 실시간 정보 업데이트를 하는데, 인공지능 모드가 ON인 경우, 실시간 정보 업데이트 한 것을 토대로, 상황 분석 -> 장비 제어
+        if g_AI_Mode == True:
+            with open("동구_신암동_초단기예보조회_%s.json" % yyyymmdd, encoding='UTF8') as json_file:
+                json_object = json.load(json_file)
+                json_string = json.dumps(json_object)
+                total_weather = json.loads(json_string)
+            Control_Devices_AI(total_weather)  ## 장비 제어 함수
+
     print("")
 
-def Simulation_Mode():
+def Simulation_Mode():      ## 시뮬레이션 모드 메뉴
     global g_Balcony_Windows, g_Humidifier, g_Dehumidifier
     print("<<시뮬레이션 모드 메뉴입니다. 원하는 서비스의 번호를 입력하세요>>".center(45))
     menu_num = int(input("1. 비오는 날 시뮬레이션\n2. 건조한 날 시뮬레이션\n3. 습한 날 시뮬레이션\n"
@@ -319,16 +324,14 @@ def Simulation_Mode():
         total_weather = json.loads(json_string)
 
     if menu_num == 1:
-        window_status_ls = []  ## 창문 인공지능 모드
-        window_status_num = 0
+        window_status_num = 0   ## 창문 인공지능 모드
         for window_status in total_weather:
             if window_status.get('category') == "PTY":
-                window_status_ls.append(window_status.get('fcstValue'))
                 window_status_num += window_status.get('fcstValue')
-        # window_average = window_status_num / len(window_status_ls)
-        window_average = 0
+                break
+        window_status_num = 0
 
-        if window_average == 0:  ## 강수 확률이 있으면 창문을 닫아라
+        if window_status_num == 0:  ## 강수 확률이 있으면 창문을 닫아라
             if g_Balcony_Windows == True:  ## 창문이 열려 있으면
                 g_Balcony_Windows = not g_Balcony_Windows  ## 창문을 닫아라
                 print("강수 확률이 있어 창문을 닫습니다:)")
@@ -350,16 +353,14 @@ def Simulation_Mode():
                 if g_Balcony_Windows == True: print("열림\n")
 
     elif menu_num == 2:
-        humidifier_status_ls = []
-        humidifier_status_num = 0
+        humidity_status_num = 0
         for humidity_status in total_weather:
             if humidity_status.get('category') == "REH":
-                humidifier_status_ls.append(humidity_status.get('fcstValue'))
-                humidifier_status_num += humidity_status.get('fcstValue')
-        humidity_average = humidifier_status_num / len(humidifier_status_ls)
-        print("현재 습도 : %s%%" % humidity_average)
+                humidity_status_num += humidity_status.get('fcstValue')
+                break
+        print("현재 습도 : %s%%" % humidity_status_num)
 
-        if humidity_average < 45:  ## 평균 습도가 45% 이하면 가습기를 켜라
+        if humidity_status_num < 45:  ## 평균 습도가 45% 이하면 가습기를 켜라
             if g_Humidifier == False:  ## 가습기가 꺼져 있으면
                 g_Humidifier = not g_Humidifier  ## 가습기 켜라
                 print("현재 습도가 낮습니다. 가습기를 작동시킵니다:)")
@@ -370,7 +371,7 @@ def Simulation_Mode():
                 print("가습기 상태 : ", end="")
                 if g_Humidifier == True: print("작동\n")
 
-        elif humidity_average >= 45 and humidity_average <= 55:
+        elif humidity_status_num >= 45 and humidity_status_num <= 55:
             if g_Humidifier == False:  ## 가습기가 꺼져 있으면
                 print("현재 습도는 적정 습도입니다. 작동 중인 가습기 상태를 유지합니다:)")  ## 계속 가습기를 꺼 놔라
                 print("가습기 상태 : ", end="")
@@ -381,31 +382,29 @@ def Simulation_Mode():
                 print("가습기 상태 : ", end="")
                 if g_Humidifier == False: print("정지\n")
 
-        elif humidity_average > 55:  ## 평균 습도가 55% 이상이면 가습기를 꺼라
+        elif humidity_status_num > 55:  ## 평균 습도가 55% 이상이면 가습기를 꺼라
             if g_Humidifier == False:  ## 가습기가 꺼져 있으면
-                print("현재 습도 : %s%%" % humidity_average)
+                print("현재 습도 : %s%%" % humidity_status_num)
                 print("현재 습도가 높습니다. 정지된 가습기 상태를 유지합니다:)")  ## 계속 가습기를 꺼 놔라
                 print("가습기 상태 : ", end="")
                 if g_Humidifier == False: print("정지\n")
             else:  ## 가습기가 켜져 있으면
                 g_Humidifier = not g_Humidifier
-                print("현재 습도 : %s%%" % humidity_average)
+                print("현재 습도 : %s%%" % humidity_status_num)
                 print("현재 습도가 높습니다. 가습기를 정지시킵니다:)")  ## 가습기를 꺼라
                 print("가습기 상태 : ", end="")
                 if g_Humidifier == False: print("정지\n")
 
     elif menu_num == 3:
-        humidifier_status_ls = []  ## 가습기 / 제습기 인공지능 모드
-        humidifier_status_num = 0
+        humidity_status_num = 0
         for humidity_status in total_weather:
             if humidity_status.get('category') == "REH":
-                humidifier_status_ls.append(humidity_status.get('fcstValue'))
-                humidifier_status_num += humidity_status.get('fcstValue')
-        # humidity_average = humidifier_status_num / len(humidifier_status_ls)
-        humidity_average = 75
-        print("현재 습도 : %s%%" % humidity_average)
+                humidity_status_num += humidity_status.get('fcstValue')
+                break
+        humidity_status_num = 75
+        print("현재 습도 : %s%%" % humidity_status_num)
 
-        if humidity_average > 70:
+        if humidity_status_num > 70:
             if g_Dehumidifier == False:  ## 제습기가 꺼져 있으면
                 g_Dehumidifier = not g_Dehumidifier
                 print("습도가 높습니다. 제습기를 작동시킵니다:)")  ## 제습기를 켜라
@@ -416,7 +415,7 @@ def Simulation_Mode():
                 print("제습기 상태 : ", end="")
                 if g_Dehumidifier == True: print("작동\n")
 
-        elif humidity_average < 55:
+        elif humidity_status_num < 55:
             if g_Dehumidifier == False:  ## 제습기가 꺼져 있으면
                 print("습도가 제습기 작동 범위 이하입니다. 정지된 제습기 상태를 유지합니다:)")  ## 계속해서 제습기를 꺼 놔라
                 print("제습기 상태 : ", end="")
@@ -428,17 +427,15 @@ def Simulation_Mode():
                 if g_Dehumidifier == False: print("정지\n")
 
     elif menu_num == 4:
-        humidifier_status_ls = []  ## 가습기 / 제습기 인공지능 모드
-        humidifier_status_num = 0
+        humidity_status_num = 0   ## 가습기 / 제습기 인공지능 모드
         for humidity_status in total_weather:
             if humidity_status.get('category') == "REH":
-                humidifier_status_ls.append(humidity_status.get('fcstValue'))
-                humidifier_status_num += humidity_status.get('fcstValue')
-        # humidity_average = humidifier_status_num / len(humidifier_status_ls)
-        humidity_average = 50
+                humidity_status_num += humidity_status.get('fcstValue')
+                break
+        humidity_status_num = 50
 
-        if 45 <= humidity_average and humidity_average <= 55:
-            print("\n현재 습도 : %s%%\n" % humidity_average)
+        if 45 <= humidity_status_num and humidity_status_num <= 55:
+            print("\n현재 습도 : %s%%\n" % humidity_status_num)
             if g_Humidifier == False:  ## 가습기가 꺼져 있으면
                 print("현재 습도는 적정 습도입니다. 정지된 가습기 상태를 유지합니다:)")  ## 계속 가습기를 꺼 놔라
                 print("가습기 상태 : ", end="")
