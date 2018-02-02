@@ -8,6 +8,7 @@
 ##        기온을 받아 난방기 or 에어컨 작동
 ##        함수 이름 정리
 ##        통합대기환경 정보(대기오염정보 조회 서비스) json 파일로 불러오기 -> 통합대기환경 / 미세먼지 정보 이용
+## [ver6 ~] -> DeviceControl_HomeNetwork.py
 
 import urllib.request
 import datetime
