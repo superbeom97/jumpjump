@@ -35,7 +35,8 @@ def get_jtbc_news_page_ID():
 
 page_id = get_jtbc_news_page_ID()
 from_date = "2018-02-01"
-to_date = "2018-02-02"
+range_date = "2018-02-02"
+to_date = "2018-02-03"
 num_statuses = "100"
 access_token = app_id + "|" + app_secret
 
@@ -57,10 +58,10 @@ try:
     if response.getcode() == 200:
         jsonResult = json.loads(response.read().decode('utf-8'))
 
-    with open('%s_facebook_%s_%s.json' % (page_name, from_date, to_date), 'w', encoding='utf8') as outfile:
+    with open('%s_facebook_%s_%s.json' % (page_name, from_date, range_date), 'w', encoding='utf8') as outfile:
         str_ = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
         outfile.write(str_)
-        print('%s_facebook_%s_%s.json SAVED' % (page_name, from_date, to_date))
+        print('%s_facebook_%s_%s.json SAVED' % (page_name, from_date, range_date))
 
 except Exception as e:
     print(e)
