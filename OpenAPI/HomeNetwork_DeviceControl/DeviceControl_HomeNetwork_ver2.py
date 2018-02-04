@@ -1,4 +1,4 @@
-## [ver2] 메인 메뉴에 인공지능 모드 추가
+## [ver2] 메인 메뉴에 인공지능 모드 추가 - 요리 레시피 검색 기능 추가
 
 ######################################## Smart Home Network ########################################
 
@@ -891,13 +891,13 @@ def Simulation_Mode():      ## 시뮬레이션 모드 메뉴
 
 ######################################## Entry_Point!!!!! ########################################
 while True:
-    # t = threading.Thread(target=Update_Scheduler)       ## 인공지능 모드 ON일 경우,
-    # t.daemon = True                 ## 매 시 45분 10초 마다 실시간 정보를 업데이트 하도록 하는 스레드
-    # t.start()
-    #
-    # t = threading.Thread(target=Window_Ventilation)     ## 환기 모드 작동
-    # t.daemon = True                 ## -> 2시간 창문 닫고 20분 창문 열도록(2시간마다 20분씩 창문 열어서 환기) 하는 스레드
-    # t.start()
+    t = threading.Thread(target=Update_Scheduler)       ## 인공지능 모드 ON일 경우,
+    t.daemon = True                 ## 매 시 45분 10초 마다 실시간 정보를 업데이트 하도록 하는 스레드
+    t.start()
+
+    t = threading.Thread(target=Window_Ventilation)     ## 환기 모드 작동
+    t.daemon = True                 ## -> 2시간 창문 닫고 20분 창문 열도록(2시간마다 20분씩 창문 열어서 환기) 하는 스레드
+    t.start()
 
 
     print("<< Smart Home Network Program >>\n".center(50))
