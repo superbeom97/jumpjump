@@ -1,9 +1,11 @@
 ## [ver2] 메인 메뉴에 인공지능 모드 추가 - 요리 레시피 검색 기능 추가
 ## [ver3] 요리 레시피 검색 기능 - 요리 맛집 검색 기능 추가
+## [ver4] 인공지능 모드 - 뉴스 보기 기능 추가 (현재 인기 뉴스 / 한 주간의 인기 뉴스 / 현재 인기 연예 뉴스 / 현재 인기 스포츠 뉴스)
 
 ######################################## Smart Home Network ########################################
 
-import urllib.request
+import urllib.request                       ## 소스 코드를 따기 위해 브라우저에 request 보내는
+from bs4 import BeautifulSoup               ## 따온 소스 코드는 XML 형식으로 저장 -> HTML로 바꿔 주는
 import datetime
 import time
 import json
@@ -284,7 +286,6 @@ def Ventilation_Mode():     ## 환기 모드가 꺼져 있는 상황에서, 켤 
         print("\n======================================")
         print("환기 모드 정지 상태를 유지합니다:)")
         print("======================================\n")
-
 
 def Control_Devices_AI(total_weather, total_atmosphere):        ## 인공지능 - 장비 제어 함수
     global g_Radiator, g_Airconditioner, g_Aircleaner, g_Balcony_Windows, g_Humidifier, g_Dehumidifier
@@ -629,6 +630,7 @@ def Smart_Mode():       ## 스마트 모드 메뉴 함수
 
 ##########################################################################################################
 ##########################################################################################################
+################################### 인공지능 모드 - 1. 요리 레피시 / 맛집 검색
 def Update_Json():  ## 따옴표가 <b> </b>로 출력돼서 다시 따옴표로 바꿔주는 작업 + 링크 주소가 잘못 나와서 다시 조합하는 작업 함수
     food_blog_ls = []
     with open('%s_%s_%s.json' % (inp_want_food, item_type, yyyymmdd), encoding='UTF8') as json_file:
@@ -752,6 +754,89 @@ def Food_recommendation():      ## 요리 레시피 / 맛집 추천해 주는 �
         print("바로 가기 ☞  %s\n" % prn_recipe.get('link'))
         print("=" * 150)
 
+################################### 인공지능 모드 - 2. 현재 뉴스 상위 1~20위 / 3. 한 주간의 상위 1~20위 뉴스 / 4. 현재 연예 뉴스 상위 1~20위
+def Print_News(each_today_news_info, news_num):      ## 현재 인기 뉴스 / 한 주간의 인기 뉴스 / 현재 인기 연예 뉴스 프린트 함수
+    news_title_link = each_today_news_info.a    ## <li class="num1"> 에 포함되어 있는 <a> 소스코드를 가져오는
+    print("<< %s 위 >>" % news_num)
+    print("제목 : %s" % news_title_link['title'])     ## <li class="num1"> 에 포함되어 있는 <a> 에 포함되어 있는 title 속성을 가져오는
+    print("바로 가기 ☞  http://news.naver.com%s\n" % news_title_link['href'])    ## <li class="num1"> 에 포함되어 있는 <a> 에 포함되어 있는 href 속성을 가져오는
+
+    ######## 또는 news_title_link로 새롭게 변수 지정할 필요 없이
+    # print("<< %s 위 >>" % news_num)
+    # print("제목 : %s" % each_today_news_info.a['title'])      ## 바로 each_today_news_info.a['title']) 이렇게 뽑아 내도 됨
+    # print("바로 가기 ☞ http://news.naver.com%s\n" % each_today_news_info.a['href'])
+
+def Print_Sports_News(each_today_news_info, news_num):      ## 현재 인기 스포츠 뉴스 프린트 함수
+    news_title_link = each_today_news_info.a    ## <li class="num1"> 에 포함되어 있는 <a> 소스코드를 가져오는
+    print("<< %s 위 >>" % news_num)
+    print("제목 : %s" % news_title_link['title'])     ## <li class="num1"> 에 포함되어 있는 <a> 에 포함되어 있는 title 속성을 가져오는
+    print("바로 가기 ☞  %s\n" % news_title_link['href'])    ## <li class="num1"> 에 포함되어 있는 <a> 에 포함되어 있는 href 속성을 가져오는
+
+
+def Response_News(soup, news_type):        ## (모든 소스코드에서) 상위 1~20의 뉴스를 뽑아 내는 함수
+    news_num = 0
+    while True:
+        news_num += 1
+        each_today_news_info = soup.find('li', attrs={'class': 'num%s' % news_num})  ## <li class="num1"> 에 포함되어 있는 소스코드를 가져오는
+
+        if news_type == 1:
+            Print_News(each_today_news_info, news_num)              ## 현재 인기 뉴스 / 한 주간의 뉴스 프린트 함수
+        elif news_type == 2:
+            Print_Sports_News(each_today_news_info, news_num)       ## 현재 인기 스포츠 뉴스 프린트 함수
+
+        if news_num == 3: break
+
+    while True:
+        news_num += 1
+        each_today_news_info = soup.find('li', attrs={'class': 'gnum%s' % news_num})
+
+        if news_type == 1:
+            Print_News(each_today_news_info, news_num)          ## 현재 인기 뉴스 / 한 주간의 뉴스 프린트 함수
+        elif news_type == 2:
+            Print_Sports_News(each_today_news_info, news_num)   ## 현재 인기 스포츠 뉴스 프린트 함수
+
+        if news_num == 20: break
+
+def Today_Top_News():       ## 현재 인기 뉴스 상위 1~20위를 보여 주는 함수
+    html = urllib.request.urlopen('http://news.naver.com/main/ranking/popularDay.nhn?rankingType=popular_day&sectionId=000&date=%s' % yyyymmdd)
+    soup = BeautifulSoup(html, 'html.parser')  ## 모든 소스코드를 따오는
+
+    print("")
+    print("<< 현재 인기 뉴스 상위 1 ~ 20위 목록입니다:) 관심 있는 뉴스는 바로 가기를 클릭해 주세요~ >>\n".center(75))
+
+    news_type = 1   ## 현재 인기 뉴스 / 한 주간의 인기 뉴스 / 현재 인기 연예 뉴스의 타입은 '1' - 링크 주소가 달라서 구분
+    Response_News(soup, news_type)     ## (모든 소스코드에서) 상위 1~20의 뉴스를 뽑아 내는 함수
+
+def Week_Top_News():        ## 한 주간의 상위 1~20위 뉴스를 보여 주는 함수
+    html = urllib.request.urlopen('http://news.naver.com/main/ranking/popularWeek.nhn?rankingType=popular_week&sectionId=000&date=%s' % yyyymmdd)
+    soup = BeautifulSoup(html, 'html.parser')  ## 모든 소스코드를 따오는
+
+    print("")
+    print("<< 지난 한 주간의 인기 뉴스 상위 1 ~ 20위 목록입니다:) 관심 있는 뉴스는 바로 가기를 클릭해 주세요~ >>\n".center(75))
+
+    news_type = 1   ## 현재 인기 뉴스 / 한 주간의 인기 뉴스 / 현재 인기 연예 뉴스의 타입은 '1' - 링크 주소가 달라서 구분
+    Response_News(soup, news_type)     ## (모든 소스코드에서) 상위 1~20의 뉴스를 뽑아 내는 함수
+
+def Ent_Top_News():         ## 현재 인기 연예 뉴스 상위 1~20위를 보여 주는 함수
+    html = urllib.request.urlopen('http://news.naver.com/main/ranking/popularDay.nhn?rankingType=popular_day&sectionId=106')
+    soup = BeautifulSoup(html, 'html.parser')  ## 모든 소스코드를 따오는
+
+    print("")
+    print("<< 현재 인기 연예 뉴스 상위 1 ~ 20위 목록입니다:) 관심 있는 뉴스는 바로 가기를 클릭해 주세요~ >>\n".center(75))
+
+    news_type = 1   ## 현재 인기 뉴스 / 한 주간의 인기 뉴스 / 현재 인기 연예 뉴스의 타입은 '1' - 링크 주소가 달라서 구분
+    Response_News(soup, news_type)         ## (모든 소스코드에서) 상위 1~20의 뉴스를 뽑아 내는 함수
+
+def Sports_Top_News():      ## 현재 인기 스포츠 뉴스 상위 1~20위를 보여 주는 함수
+    html = urllib.request.urlopen('http://news.naver.com/main/ranking/popularDay.nhn?rankingType=popular_day&sectionId=107&date=%s' % yyyymmdd)
+    soup = BeautifulSoup(html, 'html.parser')  ## 모든 소스코드를 따오는
+
+    print("")
+    print("<< 현재 인기 스포츠 뉴스 상위 1 ~ 20위 목록입니다:) 관심 있는 뉴스는 바로 가기를 클릭해 주세요~ >>\n".center(75))
+
+    news_type = 2   ## 현재 인기 스포츠 뉴스의 타입은 '2' - 링크 주소가 달라서 구분
+    Response_News(soup, news_type)         ## (모든 소스코드에서) 상위 1~20의 뉴스를 뽑아 내는 함수
+
 
 ######################################## AI_Mode ########################################
 def Integrated_AI_Mode():       ## 인공지능 모드
@@ -763,10 +848,19 @@ def Integrated_AI_Mode():       ## 인공지능 모드
 
     print("")
     print("<< 인공지능 모드 메뉴입니다. 원하는 서비스의 번호를 입력하세요 >>\n".center(50))
-    menu_num = int(input("1. [Food] 나 배고파!!\n2. [News] 나 한 주간 핫한 소식이 궁금해!!\n-> "))
+    menu_num = int(input("1. [Food] 나 배고파!!\n2. [News] 나 현재 소식이 궁금해!!\n3. [News] 나 한 주간의 핫한 소식이 궁금해!!\n"
+                         "4. [Entertainment] 나 핫한 연예 소식이 궁금해!!\n5. [Sports] 나 핫한 스포츠 소식이 궁금해!!\n-> "))
 
     if menu_num == 1:
         Food_recommendation()       ## 요리 레시피 / 맛집 추천해 주는 함수
+    elif menu_num == 2:
+        Today_Top_News()            ## 현재 인기 뉴스 상위 1~20위를 보여 주는 함수
+    elif menu_num == 3:
+        Week_Top_News()             ## 한 주간의 상위 1~20위 뉴스를 보여 주는 함수
+    elif menu_num == 4:
+        Ent_Top_News()              ## 현재 인기 연예 뉴스 상위 1~20위를 보여 주는 함수
+    elif menu_num == 5:
+        Sports_Top_News()           ## 현재 인기 스포츠 뉴스 상위 1~20위를 보여 주는 함수
 
 
 ##########################################################################################################
