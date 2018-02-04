@@ -55,7 +55,7 @@ print(soup.dt.a['title'])
 def Response_News():
     news_title_link = each_today_news_info.a
     print("<< %s 위 >>" % news_num)
-    print("제목 : %s" % news_title_link['title'])
+    print("제목 : %s" % news_title_link['title'])     ##  <a href='' title=''> 처럼 a와 href, title이 하나의 < > 안에 있을 때, a['href'] 식으로 뽑아야 하는!!
     print("바로 가기 ☞ http://news.naver.com%s\n" % news_title_link['href'])
 
     ######## 또는 news_title_link로 새롭게 변수 지정할 필요 없이
