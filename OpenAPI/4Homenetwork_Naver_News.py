@@ -1,3 +1,5 @@
+###################################### 네이버 실시간 뉴스 랭킹 Web Crawling
+
 import urllib.request                       ## 소스 코드를 따기 위해 브라우저에 request 보내는
 from bs4 import BeautifulSoup               ## 따온 소스 코드는 XML 형식으로 저장 -> HTML로 바꿔 주는
 import time
