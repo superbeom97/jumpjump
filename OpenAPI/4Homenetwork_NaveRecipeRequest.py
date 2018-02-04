@@ -13,13 +13,14 @@ want_food = urllib.parse.quote(inp_want_food)
 recipe_food = urllib.parse.quote(" 레시피")
 research_food = want_food + recipe_food
 display_recipe = "10"    ## 검색 결과 출력 건수 지정 - 10 ~ 100
-page_recipe = "50"        ## 검색 시작 위치로 최대 1000까지 가능 - 1 ~ 1000
+# page_recipe = "50"        ## 검색 시작 위치로 최대 1000까지 가능 - 1 ~ 1000
 sort_recipe = "sim"     ## 정렬 옵션 : sim (유사도순), date (날짜순)
 
 end_point = "https://openapi.naver.com/v1/search/blog"
 
 parameters = "?query=" + research_food      ## 검색을 원하는 문자열로서 UTF-8로 인코딩
 parameters += "&display=" + display_recipe   ## 검색 결과 출력 건수 지정
+# parameters += "&start=" + page_recipe   ## 검색 결과 출력 건수 지정
 parameters += "&sim=" + sort_recipe   ## 정렬 옵션 : sim (유사도순), date (날짜순)
 
 url = end_point + parameters
@@ -51,10 +52,18 @@ with open("%s_recipe_naver_블로그.json" % inp_want_food, encoding='UTF8') as 
 
 for change_str in recipe_blog_ls.get('items'):
     ########## 따옴표가 <b> </b>로 출력돼서 다시 따옴표로 바꿔주는 작업
-    if '<b>' in change_str.get('title') or '</b>' in change_str.get('title'):
+    if '&quot;' in change_str.get('title') or '&lt;' in change_str.get('title') or '&gt;' in change_str.get('title') or \
+                    '<b>' in change_str.get('title') or '</b>' in change_str.get('title'):
+        change_str['title'] = change_str.get('title').replace("&quot;", "'")
+        change_str['title'] = change_str.get('title').replace("&lt;", "<")
+        change_str['title'] = change_str.get('title').replace("&gt;", ">")
         change_str['title'] = change_str.get('title').replace("<b>", "")
         change_str['title'] = change_str.get('title').replace("</b>", "")
-    if '<b>' in change_str.get('description') or '</b>' in change_str.get('description'):
+    if '&quot;' in change_str.get('description') or '&lt;' in change_str.get('description') or '&gt;' in change_str.get(
+            'description') or '<b>' in change_str.get('description') or '</b>' in change_str.get('description'):
+        change_str['description'] = change_str.get('description').replace('&quot;', "'")
+        change_str['description'] = change_str.get('description').replace('&lt;', "<")
+        change_str['description'] = change_str.get('description').replace('&gt;', ">")
         change_str['description'] = change_str.get('description').replace('<b>', "")
         change_str['description'] = change_str.get('description').replace('</b>', "")
 
