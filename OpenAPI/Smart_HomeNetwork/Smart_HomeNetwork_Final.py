@@ -10,7 +10,7 @@ import json
 import threading
 
 g_Radiator = False              ## 난방기
-g_Airconditioner = False       ## 에어컨
+g_Airconditioner = False        ## 에어컨
 g_Aircleaner = False            ## 공기청정기
 g_Humidifier = False            ## 가습기
 g_Dehumidifier = False          ## 제습기
