@@ -1,5 +1,5 @@
 ####################################### <a href="~~" title="~~"> 처럼 하나의 < > 안에 있는 속성 빼내는 법 #######################################
-############################### type - "bs4.element.Tag"에서 속성 빼내는 법
+############################### type - "bs4.element.Tag"에서 속성 빼내는 법 ###############################
 
 ######################### 네이버 랭킹뉴스에서 Top 1~20위 뉴스의 제목과 링크만 뽑아내기
 import urllib.request                       ## 소스 코드를 따기 위해 브라우저에 request 보내는
@@ -119,3 +119,35 @@ for each_video in today_video_lowlink:          ## 4~20위 - <div class="cds_typ
         print("제목 : %s" % each_video.img.get('alt'))  ## <div class="cds_type"> 하위 <img alt="이세영, 이승기의 영혼 조정! 이제 영원히 날 지키게 될 거예요"> 에서 제목 뽑아내기
         print("바로 가기 ☞  %s\n" % check_link)        ## <dl class="cds_info"> 하위 <a href="http://tv.naver.com/v/2659232/list/67096"> 에서 링크 뽑아내기
     if video_num == 20: break
+
+
+############################### type - "bs4.element.ResultSet"에서 속성 빼내는 법 ###############################
+######################### 유튜브 음악 검색 - 영상 제목과 링크만 뽑아내기
+import urllib.request
+from bs4 import BeautifulSoup
+
+print("")
+print("<< 음악 감상 모드입니다:) >>\n".center(40))
+inp_want_music = input("듣고 싶은 노래 제목이나 가수 이름을 입력해 주세요 : ")
+
+html = urllib.request.urlopen('https://www.youtube.com/results?search_query=%s' % urllib.parse.quote(inp_want_music))
+soup = BeautifulSoup(html, 'html.parser')  ## 모든 소스코드를 따오는
+
+## 모든 소스코드에서 <h3 class="yt-lockup-title "> 하위 소스코드만 따오는
+music_info = soup.findAll('h3', attrs={'class': 'yt-lockup-title '})
+
+print("")
+print("<< '%s' 노래 목록입니다:) 원하시는 노래는 바로 가기를 클릭해 주세요~ >>\n".center(65) % inp_want_music)
+
+music_count = 0
+while True:
+    music_count += 1
+
+    ## music_info = soup.findAll('h3', attrs={'class': 'yt-lockup-title '})가 리스트로 이루어져 있음
+    ## 리스트에서 하나씩 뽑아 <a aria-describedby="description-id-841094" class="yt-uix-tile-link yt-ui-ellipsis yt-ui-ellipsis-2 yt-uix-sessionlink spf-link " data-sessionlink="itct=CFkQ3DAYACITCJXFm4jrjdkCFQRYYAodGLMBsSj0JFIG7J2066Oo" dir="ltr" href="/watch?v=QLAmTkqzSPs" rel="spf-prefetch" title="이루 - 흰눈">이루 - 흰눈</a>
+    print("제목 : %s" % music_info[music_count].a.get('title'))   ## <a>에 포함되어 있는 title="이루 - 흰눈"을 뽑아라
+    print("바로 가기 ☞  https://www.youtube.com%s\n\n" % music_info[music_count].a.get('href'))     ## <a>에 포함되어 있는 href="/watch?v=QLAmTkqzSPs"를 뽑아라
+
+    if music_count == 10: break     ## 노래 10개 추천하고 종료해라
+
+
