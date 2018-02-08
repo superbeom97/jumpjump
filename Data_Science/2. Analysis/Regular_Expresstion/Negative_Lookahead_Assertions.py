@@ -17,7 +17,7 @@ for file_name in file_name_candidates:
     check_match(p,file_name)
 
 # Step2] 확장자가 bat 파일 제외
-p = re.compile(".*[.][^b].*$")
+p = re.compile(".*[.][^b].*$")      ## 문자 클래스 [] 안에 있는 '^'는 반대(not)라는 의미
 print("\n두번째 정규식 테스트: .*[.][^b].*$")        ## -> 하지만 확장자 bar 파일도 제외되는
 for file_name in file_name_candidates:
     check_match(p,file_name)
