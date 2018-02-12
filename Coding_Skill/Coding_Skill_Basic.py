@@ -1,4 +1,4 @@
-from pprint import pprint  ## print할 때 사용하면, 그 형식 그대로 보여줌 (예, JSon_ 파일)
+from pprint import pprint  ## print할 때 사용하면, 그 형식 그대로 보여줌 (예, JSon 파일)
 
 ################################## 1. 리스트 내에서 서로 비교할 때 사용!! ##################################
 ## if change_num_index == len(change_num_ls) - 1:      # step_by가 리스트 change_num_ls의 마지막 자릿 수인지 확인
@@ -187,7 +187,7 @@ def Only_One(sort_news):
 
 ## Entry Point!!
 data = []
-with open("jtbcnews_facebook_2018-01-24_2018-01-25.JSon_", encoding='UTF8') as json_file:
+with open("jtbcnews_facebook_2018-01-24_2018-01-25.JSon", encoding='UTF8') as json_file:
     json_object = json.load(json_file)
     json_string = json.dumps(json_object)
     data = json.loads(json_string)
@@ -196,7 +196,7 @@ with open("jtbcnews_facebook_2018-01-24_2018-01-25.JSon_", encoding='UTF8') as j
 
 ######################## [ver2] ver1을 그냥 sort(), reverse()만 써서 간략화 함
 data = []
-with open("jtbcnews_facebook_2018-01-24_2018-01-25.JSon_", encoding='UTF8') as json_file:
+with open("jtbcnews_facebook_2018-01-24_2018-01-25.JSon", encoding='UTF8') as json_file:
     json_object = json.load(json_file)
     json_string = json.dumps(json_object)
     data = json.loads(json_string)
