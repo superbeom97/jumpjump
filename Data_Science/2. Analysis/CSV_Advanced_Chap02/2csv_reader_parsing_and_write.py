@@ -15,4 +15,4 @@ with open(input_file, 'r', newline='') as csv_in_file:
         filereader = csv.reader(csv_in_file, delimiter=',')
         filewriter = csv.writer(csv_out_file, delimiter=',')    ## filewriter 변수를 선언하고
         for row_list in filereader:
-            filewriter.writerow(row_list)       ## writerow() -> 각 행의 값을 리스트 자료형으로 출력 파일에 써라
+            filewriter.writerow(row_list)       ## ☆ writerow() -> 각 행의 값을 리스트 자료형으로 출력 파일에 써라
