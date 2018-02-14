@@ -11,5 +11,6 @@ output_file = sys.argv[2]
 
 header_list = ['Supplier Name', 'Invoice Number', 'Part Number', 'Cost', 'Purchase Date']
 data_frame = pd.read_csv(input_file, header=None, names=header_list)
+## header=None만 있으면 헤더 행에 0 1 2 3 4 가 쓰임 -> 거기에 이름 names를 지정해서 헤더 행에 쓸 수 있음
 
 data_frame.to_csv(output_file, index=False)

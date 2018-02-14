@@ -13,8 +13,12 @@ output_file = sys.argv[2]
 
 data_frame = pd.read_csv(input_file, header=None)
 
+## drop() : 행의 인덱스 값 또는 열의 헤더를 기반으로 행 또는 열을 삭제
 data_frame = data_frame.drop([0,1,2,16,17,18])
-data_frame.columns = data_frame.iloc[0]
+data_frame.columns = data_frame.iloc[0]     ## 데이터가 시작되는 0행을 열 헤더로 지정
+## data_frame.iloc[0] : 열의 헤더들 -> data_frame.columns(데이터가 시작되는 0행)에 써라
 data_frame = data_frame.reindex(data_frame.index.drop(3))
+## drop(3) : 3은 원래 헤더 행의 인덱스이므로 데이터 인덱스에서 제외시키기 위해
+## -> 제외시키지 않으면 인덱스 3에 있는 원래 열 헤더 행까지 데이터에 포함되므로, 헤더 행이 두 번 들어가게 됨
 
 data_frame.to_csv(output_file, index=False)
