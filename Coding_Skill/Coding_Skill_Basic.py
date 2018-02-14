@@ -219,3 +219,19 @@ for prn in link_num_ls:
     print("공유 수 : %s" % prn[0])
     print("기사 제목 : %s" % prn[1])
     print("링크 : %s\n" % prn[2])
+
+
+################################## 4. startswith() : 어떤 문자로 시작하는지 체크!! ##################################
+### startswith() 함수를 사용하여 정규 표현식을 사용하지 않고, 데이터를 검색(정규 표현식 대신 사용 가능)
+## 문자열 데이터 타입에 대해, 대상 문자열이 어떤 문자로 시작하는지를 체크
+
+## 정규 표현식 : pattern = re.compile(r'(?P<my_pattern_group>^001-.*)', re.IGNORECASE)
+## startswith() : data_frame_value_matches_pattern = data_frame.ix[data_frame['Invoice Number'].str.startswith("001-"), :]
+## ↳ Data_Science - 2. Analysis - CSV_Advanced_Chap02 - 5pandas_value_matches_pattern.py
+
+print('[Absolutely]'.startswith('A'))
+## >> False
+print('[Absolutely]'.startswith('['))
+## >> True
+print('[Absolutely]'.startswith('[Abso'))
+## >> True
