@@ -1,0 +1,12 @@
+Transaction_date,Product,Price,Payment_Type,Name,City,State,Country,Account_Created,Last_Login,Latitude,Longitude
+1/5/09 2:42,Product1,1200,Diners,Stacy,New York                    ,NY,United States,1/5/09 2:23,1/5/09 4:59,40.71417,-74.00639
+1/6/09 5:02,Product1,1200,Diners,barbara,Hyderabad,Andhra Pradesh,India,1/6/09 2:41,1/6/09 7:52,17.3833333,78.4666667
+1/7/09 8:08,Product1,1200,Diners,Bryan Kerrene,New York                    ,NY,United States,1/7/09 7:39,1/7/09 12:38,40.71417,-74.00639
+1/8/09 3:56,Product1,1200,Mastercard,Katherine,New York                    ,NY,United States,1/8/09 3:33,1/8/09 6:19,40.71417,-74.00639
+1/6/09 14:03,Product1,1200,Visa,Fie,New York                    ,NY,United States,5/1/08 8:26,1/17/09 11:44,40.71417,-74.00639
+1/18/09 17:04,Product2,3600,Visa,Abdul-L,New York                    ,NY,United States,1/18/09 16:58,1/18/09 16:58,40.71417,-74.00639
+1/18/09 17:39,Product2,3600,Visa,jiyoung,New York                    ,NY,United States,1/18/09 17:34,1/18/09 17:34,40.71417,-74.00639
+1/21/09 14:55,Product1,1200,Diners,john,New York                    ,NY,United States,1/21/09 10:23,1/21/09 20:34,40.71417,-74.00639
+1/5/09 0:46,Product1,1200,Amex,Lisa,Gurgaon,Haryana,India,1/2/09 3:03,1/27/09 0:17,28.4666667,77.0333333
+1/11/09 6:01,Product1,1200,Mastercard,Anna,New York                    ,NY,United States,1/1/09 10:24,2/3/09 4:25,40.71417,-74.00639
+1/6/09 10:34,Product1,1200,Mastercard,Anja,New York                    ,NY,United States,1/6/09 10:03,2/13/09 14:41,40.71417,-74.00639

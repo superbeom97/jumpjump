@@ -15,7 +15,7 @@ input_path = sys.argv[1]
 output_file = sys.argv[2]
 
 first_file = True
-for input_file in glob.glob(os.path.join(input_path, 'sales_*')):
+for input_file in glob.glob(os.path.join(input_path, 'sales_*')): ## => input_path 경로에 있는 'sales_*'가 포함된 파일을 하나의 리스트로 만들어라!!
     print(os.path.basename(input_file))
     with open(input_file, 'r', newline='') as csv_in_file:
         with open(output_file, 'a', newline='') as csv_out_file:
@@ -26,6 +26,6 @@ for input_file in glob.glob(os.path.join(input_path, 'sales_*')):
                     filewriter.writerow(row)
                 first_file = False
             else:
-                header = next(filereader)
+                header = next(filereader)   ## 각 파일의 헤더 행을 변수에 할당하면서, 헤더 행을 처리되지 않게 하기 위해
                 for row in filereader:
                     filewriter.writerow(row)

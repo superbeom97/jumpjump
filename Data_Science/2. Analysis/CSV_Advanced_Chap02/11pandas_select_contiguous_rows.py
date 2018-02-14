@@ -12,6 +12,7 @@ input_file = sys.argv[1]
 output_file = sys.argv[2]
 
 data_frame = pd.read_csv(input_file, header=None)
+## header=None을 쓰지 않으면 첫 번째 행인 I don't care about this row,,,,가 헤더로 읽혀 -> header=None을 통해 막음
 
 ## drop() : 행의 인덱스 값 또는 열의 헤더를 기반으로 행 또는 열을 삭제
 data_frame = data_frame.drop([0,1,2,16,17,18])
