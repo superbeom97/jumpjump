@@ -10,6 +10,6 @@ import sys
 input_file = sys.argv[1]
 output_file = sys.argv[2]
 
-data_frame = pd.read_csv(input_file)
-data_frame_column_by_index = data_frame.iloc[:, [0, 3]]
+data_frame = pd.read_csv(input_file)                        ## iloc는 정수 기반 위치(integer location)라는 뜻
+data_frame_column_by_index = data_frame.iloc[:, [0, 3]]     ## iloc 명령을 사용하여 인덱스 값을 기반으로 열을 선택
 data_frame_column_by_index.to_csv(output_file, index=False)

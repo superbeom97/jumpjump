@@ -8,7 +8,7 @@ import sys
 input_file = sys.argv[1]
 output_file = sys.argv[2]
 
-important_dates = ['1/20/14', '1/30/14']
+important_dates = ['1/20/14', '1/30/14']  ## 관심 값을 포함하는 변수를 만들고, 코드에서 그 변수를 참조하도록 하는 것이 좋다.
 
 with open(input_file, 'r', newline='') as csv_in_file:
     with open(output_file, 'w', newline='') as csv_out_file:

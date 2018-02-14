@@ -12,4 +12,14 @@ output_file = sys.argv[2]
 
 data_frame = pd.read_csv(input_file)
 data_frame_value_matches_pattern = data_frame.ix[data_frame['Invoice Number'].str.startswith("001-"), :]
+## startswith() 함수를 사용하여 정규 표현식을 사용하지 않고 데이터를 검색(기본 파이썬 예제에서도 정규 표현식 대신 사용 가능)
 data_frame_value_matches_pattern.to_csv(output_file, index=False)
+
+
+### startswith() 함수
+## 문자열 데이터 타입에 대해, 대상 문자열이 어떤 문자로 시작하는지를 체크
+## print('[Absolutely]'.startswith('A'))
+## >> False
+## print('[Absolutely]'.startswith('['))
+## >> True
+## print('[Absolutely]'.startswith('[Abso'))

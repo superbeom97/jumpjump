@@ -11,7 +11,9 @@ import sys
 input_file = sys.argv[1]
 output_file = sys.argv[2]
 
-pattern = re.compile(r'(?P<my_pattern_group>^001-.*)', re.IGNORECASE)
+pattern = re.compile(r'(?P<my_pattern_group>^001-.*)', re.IGNORECASE)   ## re 모듈의 compile() 함수를 사용 -> 정규 표현식 변수 생성
+## re.IGNORECASE or re.I : 대/소문자에 관계 없이 매치할 수 있도록 한다.
+## ^001-.* : '-'뒤에는 어떠한 문자열이 와도 상관없으며, '001-'로 시작한다면 그 길이 역시 상관없다.
 
 with open(input_file, 'r', newline='') as csv_in_file:
     with open(output_file, 'w', newline='') as csv_out_file:
@@ -21,5 +23,7 @@ with open(input_file, 'r', newline='') as csv_in_file:
         filewriter.writerow(header)
         for row_list in filereader:
             invoice_number = row_list[1]
-            if pattern.search(invoice_number):
+            if pattern.search(invoice_number):  ## re 모듈의 search() 함수 양식
+                                                ## 예) p = re.compile('(ABC)+')
+                                                ##     m = p.search("ABCABCABC OK?")
                 filewriter.writerow(row_list)
