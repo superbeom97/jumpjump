@@ -18,5 +18,5 @@ with open(input_file, 'r', newline='') as csv_in_file:
         filewriter.writerow(header)
         for row_list in filereader:
             a_date = row_list[4]
-            if a_date in important_dates:
-                filewriter.writerow(row_list)
+            if a_date in important_dates: ## a_date 변수에 들어 있는 Purchase Date 열의 데이터 값이 important_dates에 포함되는가
+                filewriter.writerow(row_list)   ## 포함된다면, 출력 파일에 기록

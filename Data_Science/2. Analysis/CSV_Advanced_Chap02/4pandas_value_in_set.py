@@ -12,5 +12,7 @@ data_frame = pd.read_csv(input_file)
 
 important_dates = ['1/20/14', '1/30/14']
 data_frame_value_in_set = data_frame.loc[data_frame['Purchase Date'].isin(important_dates), :]
+                                                                    ## isin() -> 포함되어 있는가(is in)
+## => data_frame['Purchase Date']가 important_dates에 포함되어 있는 것들을 data_frame_value_in_set에 할당해라
 
 data_frame_value_in_set.to_csv(output_file, index=False)
