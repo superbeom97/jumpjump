@@ -227,7 +227,7 @@ for prn in link_num_ls:
 
 ## 정규 표현식 : pattern = re.compile(r'(?P<my_pattern_group>^001-.*)', re.IGNORECASE)
 ## startswith() : data_frame_value_matches_pattern = data_frame.ix[data_frame['Invoice Number'].str.startswith("001-"), :]
-## ↳ Data_Science - 2. Analysis - CSV_Advanced_Chap02 - 5pandas_value_matches_pattern.py
+## ↳ Data_Science - 2_Analysis - CSV_Advanced_Chap02 - 5pandas_value_matches_pattern.py
 
 print('[Absolutely]'.startswith('A'))
 ## >> False

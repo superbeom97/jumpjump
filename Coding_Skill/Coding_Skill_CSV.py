@@ -6,7 +6,7 @@ import glob     ## glob 모듈 : 특정 패턴과 일치하는 모든 경로명�
 
 ## 정규 표현식 : pattern = re.compile(r'(?P<my_pattern_group>^001-.*)', re.IGNORECASE)
 ## startswith() : data_frame_value_matches_pattern = data_frame.ix[data_frame['Invoice Number'].str.startswith("001-"), :]
-## ↳ Data_Science - 2. Analysis - CSV_Advanced_Chap02 - 5pandas_value_matches_pattern.py
+## ↳ Data_Science - 2.Analysis - CSV_Advanced_Chap02 - 5pandas_value_matches_pattern.py
 
 print('[Absolutely]'.startswith('A'))
 ## >> False
@@ -19,13 +19,13 @@ print('[Absolutely]'.startswith('[Abso'))
 ################################## 2. 경로에 있는 여러 파일 불러오기 ##################################
 ## for input_file in glob.glob(os.path.join(input_path, 'sales_*')):
 ## => input_path 경로에 있는 'sales_*'가 포함된 파일을 하나의 리스트로 만들어라!!
-## ↳ Data_Science - 2. Analysis - CSV_Advanced_Chap02 - 8csv_reader_counts_for_multiple_files.py
+## ↳ Data_Science - 2.Analysis - CSV_Advanced_Chap02 - 8csv_reader_counts_for_multiple_files.py
 
 ### 2.9 여러 개의 CSV 파일 읽기 - 2.9.1 전체 파일 개수 및 각 파일의 행 및 열 개수 계산 - 기본 파이썬 코드
 ## 파이썬의 내장된 glob 모듈을 소개하고, 앞서 소개한 예제들을 토대로 여러 개의 CSV 파일을 처리하는 방법을 알아보자
 ## -> 행과 열의 개수를 세어보는 간단한 일부터 시작해보자
 ## 'Run >> Edit Configurations'에서 'Script parameters'에 'sales_*' 파일이 있는 경로를 " " 안에 입력
-## -> "D:\Python_workspace\jumpjump\Data_Science\2. Analysis\CSV_Advanced_Chap02"
+## -> "D:\Python_workspace\jumpjump\Data_Science\2.Analysis\CSV_Advanced_Chap02"
 
 # !/usr/bin/env python3
 import csv

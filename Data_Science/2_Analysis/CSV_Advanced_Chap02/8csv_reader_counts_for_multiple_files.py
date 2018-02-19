@@ -2,7 +2,7 @@
 ## 파이썬의 내장된 glob 모듈을 소개하고, 앞서 소개한 예제들을 토대로 여러 개의 CSV 파일을 처리하는 방법을 알아보자
 ## -> 행과 열의 개수를 세어보는 간단한 일부터 시작해보자
 ## 'Run >> Edit Configurations'에서 'Script parameters'에 'sales_*' 파일이 있는 경로를 " " 안에 입력
-## -> "D:\Python_workspace\jumpjump\Data_Science\2. Analysis\CSV_Advanced_Chap02"
+## -> "D:\Python_workspace\jumpjump\Data_Science\2_Analysis\CSV_Advanced_Chap02"
 
 # !/usr/bin/env python3
 import csv
