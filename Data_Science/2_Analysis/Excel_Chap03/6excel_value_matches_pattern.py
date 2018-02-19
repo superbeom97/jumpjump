@@ -1,4 +1,5 @@
 ### 3.2 단일 워크시트 처리 - 2 특정 행 필터링하기 - 패턴을 활용한 필터링 - 기본 파이썬 코드
+## Customer Name 열이 대문자 J로 시작하는 행을 필터링
 
 # !/usr/bin/env python3
 import re
