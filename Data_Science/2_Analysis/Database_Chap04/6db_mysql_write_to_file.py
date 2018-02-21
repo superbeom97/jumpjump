@@ -1,4 +1,6 @@
 ### 4.2 NySQL 데이터베이스 - 2 테이블 검색 및 결과물을 CSV 파일로 출력하기
+## Suppliers 데이터베이스 테이블에서 특정 레코드를 검색하고, 이 결과를 CSV 파일로 저장해 보자!
+## ↳ Cost열이 700보다 큰 레코드를 출력해 보자!
 
 # !/usr/bin/env python3
 import csv
