@@ -9,7 +9,7 @@ import sqlite3  ## 별도의 서버 처리 과정이 필요 없는 디스크 기
 
 # 메모리에 SQLite3 데이터베이스를 만든다.
 # 네 가지 속성을 지닌 sales 테이블을 만든다.
-                                    ## :memory:는 휘발성, 여기서만 사용하고 삭제되는 -> 저장하려면 다른 문자열 사용해야 한다.
+                                    ## ↱ :memory:는 휘발성, 여기서만 사용하고 삭제되는 -> 저장하려면 다른 문자열 사용해야 한다.
 con = sqlite3.connect(':memory:')   ## sqlite3을 이용하려면 데이터베이스를 나타내는 접속 객체(con)를 생성해야 한다.
 query = """CREATE TABLE sales
             (customer VARCHAR(20),

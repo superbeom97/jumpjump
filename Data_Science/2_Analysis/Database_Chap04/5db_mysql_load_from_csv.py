@@ -25,9 +25,9 @@ for row in file_reader:
         if column_index < 4:
             data.append(str(row[column_index]).lstrip('$').replace(',', '').strip())
         else:
-            a_date = datetime.date(datetime.strptime(str(row[column_index]), '%m/%d/%Y'))
+            a_date = datetime.date(datetime.strptime(str(row[column_index]), '%m/%d/%y'))
             # %Y를 쓰면 연도를 2016으로 저장하고, %y를 쓰면 16로 저장한다.
-            a_date = a_date.strftime('%Y-%m-%d')
+            a_date = a_date.strftime('%y-%m-%d')
             data.append(a_date)
     print(data)
     c.execute("""INSERT INTO Suppliers VALUES (%s, %s, %s, %s, %s);""", data)
