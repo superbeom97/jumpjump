@@ -8,7 +8,7 @@ plt.style.use('ggplot')
 fig, axes = plt.subplots(nrows=1, ncols=2)
 ax1, ax2 = axes.ravel()
 
-data_frame = pd.DataFrame(np.random.rand(5, 3),
+data_frame = pd.DataFrame(np.random.rand(5, 3),     ## 3개 값에 대한 5개의 그룹
                   index=['Customer 1', 'Customer 2', 'Customer 3', 'Customer 4', 'Customer 5'],
                   columns=pd.Index(['Metric 1', 'Metric 2', 'Metric 3'], name='Metrics'))
 

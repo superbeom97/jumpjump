@@ -9,7 +9,7 @@ plt.style.use('ggplot')
 mu1, mu2, sigma = 100, 130, 15  ## x1의 평균 = 100, x2의 평균 = 130 // sigma는 ??
 
 ## 난수 생성 함수를 사용하여 정규분포를 따르는 두 개의 변수 x1과 x2를 만든다.
-x1 = mu1 + sigma*np.random.randn(10000)    ## ???
+x1 = mu1 + sigma*np.random.randn(10000)    ## randn() 함수의 범위 : -1 ~ +1 // 범위가 0~9,999가 아니라 10,000개의 데이터를 생성해 줌
 x2 = mu2 + sigma*np.random.randn(10000)    ## ???
 
 fig = plt.figure()  ## 그림을 만들고

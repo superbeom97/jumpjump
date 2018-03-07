@@ -5,7 +5,7 @@ from numpy.random import randn
 import matplotlib.pyplot as plt
 
 plt.style.use('ggplot')
-plot_data1 = randn(50).cumsum()     ## randn() 함수를 사용하여 임의의 데이터를 만든다.
+plot_data1 = randn(50).cumsum()     ## randn() 함수를 사용하여 임의의 데이터를 만든다. -> 랜덤으로 50개를 만든다.
 plot_data2 = randn(50).cumsum()
 plot_data3 = randn(50).cumsum()
 plot_data4 = randn(50).cumsum()

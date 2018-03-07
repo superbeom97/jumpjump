@@ -25,13 +25,18 @@ plt.show()
 
 # 쌍별 이변량 산점도
 iris = sns.load_dataset("iris")
-sns.pairplot(iris)
+print(iris.head(100))
+# sns.pairplot(iris) ↴
+sns.pairplot(iris, hue="species")   ## hue='species' : 색깔까지 더해서
 plt.show()
 
 tips = sns.load_dataset("tips")
 
 # 여러 변수에 대한 상자그림
-sns.factorplot(x="time", y="total_bill", hue="smoker", col="day", data=tips, kind="box",size=4, aspect=.5)
+tips = sns.load_dataset('tips')
+print(tips.head(100))
+# sns.factorplot(x="time", y="total_bill", hue="smoker", col="day", data=tips, kind="box",size=4, aspect=.5)    ## 흡연 기준으로 -> hue="smoker"
+sns.factorplot(x="time", y="total_bill", hue="sex", col="day", data=tips, kind="box",size=4, aspect=.5)         ## 성별 기준으로 -> hue="sex"
 plt.show()
 
 # 부트스트랩 신뢰구간을 포함한 선형회귀모형

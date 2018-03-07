@@ -8,7 +8,7 @@ x = np.arange(start=1., stop=15., step=1.)
 y_linear = x + 5 * np.random.randn(14)
 # y_quadratic = x**2 + 10. * np.random.randn(14.)
 y_quadratic = x**2 + 10 * np.random.randn(14)
-fn_linear = np.poly1d(np.polyfit(x, y_linear, deg=1))
+fn_linear = np.poly1d(np.polyfit(x, y_linear, deg=1))   ## 실데이터를 기반으로 추정치? 연결 선들을 만들어 주는
 fn_quadratic = np.poly1d(np.polyfit(x, y_quadratic, deg=2))
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
