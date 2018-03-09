@@ -85,7 +85,7 @@ lm = ols(my_formula, data=wine).fit()
 
 print(lm.summary())
 print("\nQuantities you can extract from the result:\n%s" % dir(lm))
-print("\nCoefficients:\n%s" % lm.params)
+print("\nCoefficients:\n%s" % lm.params)    ## coefficient : 계수 (y=ax+b 일 때 a는 계수, b는 고정 상수, x는 고정 변수, y는 종속 변수)
 print("\nCoefficient Std Errors:\n%s" % lm.bse)
 print("\nAdj. R-squared:\n%.2f" % lm.rsquared_adj)
 print("\nF-statistic: %.1f  P-value: %.2f" % (lm.fvalue, lm.f_pvalue))
