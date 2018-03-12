@@ -50,7 +50,7 @@ print('tstat: %.3f  pvalue: %.4f' % (tstat, pvalue))
 
 ## 3 상관 관계 분석
 # 모든 변수 쌍 사이의 상관계수 구하기
-print(wine.corr())
+print(wine.corr())      ## corr() :  모든 변수 쌍 사이의 상관계수를 구한다.
 
 # 변수 간 관계 살펴보기
 def take_sample(data_frame, replace=False, n=200):
