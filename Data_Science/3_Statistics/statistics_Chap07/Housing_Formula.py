@@ -21,8 +21,7 @@ my_formula = 'price ~ lotsize + bedrooms + bathrms + stories + driveway + recroo
              'airco + garagepl + prefarea'
 
 
-lm = ols(my_formula, data=housing).fit()
-# 또는 lm = glm(my_formula, data=housing, family=sm.families.Gaussian()).fit()
+lm = ols(my_formula, data=housing).fit_regularized()  ## ols : 선형회귀분석 그래프를 만들어 주는 ?? // fit : 모델을 만들기 위해서 사용하는 함수
 
 print(lm.summary())
 print("\nQuantities you can extract from the result:\n%s" % dir(lm))
@@ -38,10 +37,10 @@ print("\nNumber of obs: %d  Number of fitted values: %s" % (lm.nobs, len(lm.fitt
 dependent_variable = housing['price']
 independet_variables = housing[housing.columns.difference(['price'])]
 independet_variables_standardized = (independet_variables - independet_variables.mean()) / independet_variables.std()
-housing_standardized = pd.concat([dependent_variable, independet_variables_standardized], axis=1)
+housing_standardized = pd.concat([dependent_variable, independet_variables_standardized], axis=1)   ## 변수 표준화
 print(housing_standardized)
 
-lm_standardized = ols(my_formula, data=housing_standardized).fit()
+lm_standardized = ols(my_formula, data=housing_standardized).fit()  ## 선형 모델이 딱 나오는
 print(lm_standardized.summary())
 
 
