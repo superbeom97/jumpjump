@@ -243,3 +243,36 @@ for z in [0, 3, 7]:     ## 범위에 특정 값만도 넣을 수 있구나
 ## >> 0
 ## >> 3
 ## >> 7
+
+
+################################## 6. lambda & map ##################################
+import re
+
+a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+b = lambda x: str(x) if x == 1 else float(x) if x == 2 else x
+print(list(map(b, a)))
+## >> 결과값은 어떻게 될까?
+
+####### 여기서 쓰인 lambda와 map에 대해서도 해석해 보자!
+csv = []
+with open('iris.csv', 'r', encoding='utf-8') as fp:
+    ## 한 줄씩 읽어 들이기
+    for line in fp:
+        line = line.strip()         ## 줄바꿈 제거
+        cols = line.split(',')      ## 쉼표로 자르기
+        ## 문자열 데이터를 숫자로 변환하기
+        fn = lambda n : float(n) if re.match(r'^[0-9\.]+$', n) else n   ## \.과 $를 왜 넣었을까?
+        # fn = lambda n : float(n) if re.match(r'^[0-9]', n) else n     ## 없어도 상관 없는데
+        cols = list(map(fn, cols))
+
+
+################################## 7. random 모듈 ##################################
+import random
+
+print(random.random())          ## 0에서 1 사이의 부동 소수를 랜덤으로 생성 (0 <= 난수 < 1)
+print(random.uniform(2,5))      ## random.uniform(a,b) : a <= N <= b 범위에서 부동 소수를 랜덤으로 생성
+
+a = [1,2,3,4,5,6,7,8,9]
+random.shuffle(a)               ## random.shuffle(x) : 리스트 x의 항목의 순서를 랜덤하게 섞는다.
+print(a)

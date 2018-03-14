@@ -37,8 +37,9 @@ white_wine = wine.ix[wine['type']=='white', 'quality']
 
 sns.set_style("dark")
 print(sns.distplot(red_wine, norm_hist=True, kde=False, color="red", label="Red wine"))
-print(sns.distplot(red_wine, norm_hist=True, kde=False, color="red", label="Red wine"))
-plt.utils.axlabel("Quality Score", "Density")
+print(sns.distplot(white_wine, norm_hist=True, kde=False, color="white", label="White wine"))
+plt.xlabel("Quality Score")
+plt.ylabel("Density")
 plt.title("Distribution of Quality by Wine Type")
 plt.legend()
 plt.show()

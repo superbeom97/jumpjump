@@ -1,5 +1,7 @@
-for z in [0, 3, 7]:
-    print(z)
-## >> 0
-## >> 3
-## >> 7
+import random
+print(random.random())
+print(random.uniform(2,5))
+
+a = [1,2,3,4,5,6,7,8,9]
+random.shuffle(a)
+print(a)
