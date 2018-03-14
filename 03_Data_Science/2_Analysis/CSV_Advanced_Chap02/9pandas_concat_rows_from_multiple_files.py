@@ -3,7 +3,7 @@
 ## 앞 절에서 작성한 세 개의 CSV 파일을 사용하여 여러 개의 파일 속에 있는 데이터를 하나로 합치는 방법을 살펴보자
 ## -> 여라 입력 파일 속 데이터를 하나의 출력 파일로 수직으로 합쳐보자
 ## 'Run >> Edit Configurations'에서 'Script parameters'에
-## -> "D:\Python_workspace\jumpjump\Data_Science\2_Analysis\CSV_Advanced_Chap02" output_files\\9output
+## -> "D:\Python_workspace\jumpjump\03_Data_Science\2_Analysis\CSV_Advanced_Chap02" output_files\\9output
 
 ## (팬더스) 기본 프로세스는 각 입력 파일을 데이터프레임으로 읽어 들이고 all_data_frame 리스트에 추가한 다음
 ## concat() 함수를 사용하여 모든 데이터프레임을 하나의 데이터프레임으로 합친다.
