@@ -27,7 +27,7 @@ plt.xlabel('Draw')
 plt.ylabel('Random Number')
 plt.legend(loc='best')  ## 그래프의 범례를 만드는 코드 -> ※1 loc='best' : 그래프에서 최상의 위치에 자동적으로 범례가 배치
 plt.savefig('line_plot.png', dpi=400, bbox_inches='tight')
-# plt.show()
+plt.show()
 
 
 ### ※1 loc='' : 그래프 상의 범례 위치

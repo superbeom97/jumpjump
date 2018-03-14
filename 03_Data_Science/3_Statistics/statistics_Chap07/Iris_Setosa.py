@@ -26,7 +26,7 @@ print("\nCoefficient Std Errors:\n%s" % logit_model.bse)
 # 기존 데이터셋의 첫 10개 값을 가지고 '새로운' 관측값 데이터셋을 만듦
 # sample_index_list=[2,5,7,9,40,55,78,99,101,102]
 # new_observations = iris.ix[iris.index.isin(sample_index_list), independent_variables.columns]
-new_observations = iris.ix[iris.index.isin(range(150)), independent_variables.columns]
+new_observations = iris.ix[iris.index.isin(range(100)), independent_variables.columns]
 new_observations_with_constant = sm.add_constant(new_observations, prepend=True)
 y_predicted = logit_model.predict(new_observations_with_constant)
 y_predicted_rounded = [round(score, 2) for score in y_predicted]
