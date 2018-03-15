@@ -5,11 +5,13 @@ def to_csv(name, maxdata):
     lbl_f = open("./mnist/"+name+"-labels-idx1-ubyte", "rb")
     img_f = open("./mnist/"+name+"-images-idx3-ubyte", "rb")
     csv_f = open("./mnist/"+name+".csv", "w", encoding="utf-8")
+
     ## 헤더 정보 읽기 --- (※1)
-    mag, lbl_count = struct.unpack(">ll", lbl_f.read(8))    ## ">||" : 데이터를 읽어 들이기 위한 문법 정보 ??
-    mag, img_count = struct.unpack(">ll", img_f.read(8))    ## -> 데이터를 읽어 들일 때 사용
-    rows, cols = struct.unpack(">ll", img_f.read(8))
+    mag, lbl_count = struct.unpack(">II", lbl_f.read(8))    ## ">||" : 데이터를 읽어 들이기 위한 문법 정보 ??
+    mag, img_count = struct.unpack(">II", img_f.read(8))    ## -> 데이터를 읽어 들일 때 사용
+    rows, cols = struct.unpack(">II", img_f.read(8))
     pixels = rows * cols
+
     ## 이미지 데이터를 읽고 CSV로 저장하기 --- (※2)
     res = []
     for idx in range(lbl_count):
@@ -19,6 +21,7 @@ def to_csv(name, maxdata):
         sdata = list(map(lambda n: str(n), bdata))
         csv_f.write(str(label)+",")
         csv_f.write(",".join(sdata)+"\r\n")
+
         ## 잘 저장됐는지 이미지 파일로 저장해서 테스트하기 --- (※3)
         if idx < 10:
             s = "P2 28 28 255 \n"
@@ -29,6 +32,7 @@ def to_csv(name, maxdata):
     csv_f.close()
     lbl_f.close()
     img_f.close()
+
 ## 결과를 파일로 출력하기 --- (※4)
 to_csv("train", 1000)
 # to_csv("train", 60000)
