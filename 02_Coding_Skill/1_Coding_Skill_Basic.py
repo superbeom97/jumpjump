@@ -274,5 +274,12 @@ print(random.random())          ## 0에서 1 사이의 부동 소수를 랜덤�
 print(random.uniform(2,5))      ## random.uniform(a,b) : a <= N <= b 범위에서 부동 소수를 랜덤으로 생성
 
 a = [1,2,3,4,5,6,7,8,9]
-random.shuffle(a)               ## random.shuffle(x) : 리스트 x의 항목의 순서를 랜덤하게 섞는다.
+random.shuffle(a)               ## random.shuffle(x) : 리스트를 인자로 받아, 리스트 x의 항목의 순서를 랜덤하게 섞는다.
 print(a)
+
+b = random.randint(0,10)        ## random.randint(a,b) : 두 개의 숫자형을 인자로 받아, a 이상 b 이하의 정수 반환
+print(b)
+
+c = random.choice('+-*')        ## random.choice() : 설정한 범위 내에서, 하나의 값 반환
+print(c)
+print(random.choice(a))

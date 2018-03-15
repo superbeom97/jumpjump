@@ -12,8 +12,9 @@ churn = pd.read_csv('churn.csv', sep=',', header=0)
 
 churn.columns = [heading.lower() for heading in churn.columns.str.replace(' ','_').str.replace("\'", "").str.strip('?')]
 
-churn['churn01'] = np.where(churn['churn'] == 'True.', 1., 0.)
-print(churn.head())
+churn['churn01'] = np.where(churn['churn'] == 'True.', 1., 0.)      ## np.where(X, arr, brr) : X가 True 이면 arr, False 이면 brr
+print(churn.head())     ## head() : 5개만 출력, head(20) 처럼 괄호 안에 숫자를 넣으면 그 갯수만큼 출력
+# print(churn.head(20))
 
 # 그룹별 기술통계 구하기
 print(churn.groupby(['churn'])[['day_charge', 'eve_charge', 'night_charge', 'intl_charge', 'account_length', 'custserv_calls']].agg(['count', 'mean', 'std']))

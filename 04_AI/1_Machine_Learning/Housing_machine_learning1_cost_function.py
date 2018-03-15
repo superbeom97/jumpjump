@@ -34,13 +34,12 @@ housing_model.fit(x, y)
 t = 0
 while True:
     if t != 540:
-        # housing_price_predict_list.append(housing_model.predict(x.head())[t])     ## x.head()를 사용하게 되면 t를 5개밖에 못 써_한정적
-        housing_price_predict_list.append(housing_model.predict(x)[t])
+        housing_price_predict_list.append(housing_model.predict(x.head())[t])     ## head() : 5개만 출력, head(20) 처럼 괄호 안에 숫자를 넣으면 그 갯수만큼 출력
         t += 1
     else:
         break
 
-print(housing_price_predict_list)
+# print(housing_price_predict_list)
 
 A = housing_price_datalist
 B = housing_price_predict_list
