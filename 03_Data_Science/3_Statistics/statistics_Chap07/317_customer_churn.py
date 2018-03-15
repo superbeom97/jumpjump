@@ -74,9 +74,9 @@ print(grouped.apply(get_stats).unstack())
 
 ##################################### intl_plan 와 vmail_plan 열에 대한 이진형 지시변수를 만들고,
 ##################################### churn 열과 병합하여 새로운 데이터프레임을 생성하기
-intl_dummies = pd.get_dummies(churn['intl_plan'], prefix='intl_plan')
+intl_dummies = pd.get_dummies(churn['intl_plan'], prefix='intl_plan')       ## prefix : 접두사로 붙임
 vmail_dummies = pd.get_dummies(churn['vmail_plan'], prefix='vmail_plan')
-churn_with_dummies = churn[['churn']].join([intl_dummies, vmail_dummies])
+churn_with_dummies = churn[['churn']].join([intl_dummies, vmail_dummies])   ## join() : churn 열과 새로운 이진형 지시변수를 병합
 print(churn_with_dummies.head())
 
 
