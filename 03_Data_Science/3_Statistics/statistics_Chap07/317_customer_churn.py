@@ -30,13 +30,13 @@ print(churn.head())     ## head() : 5개만 출력, head(20) 처럼 괄호 안�
 
 ## """churn 열의 값을 기준으로""" 전체 데이터를 유지 고객과 이탈 고객으로 그룹화한다. - groupby : 설정한 column에 대해서 그룹별로 묶어주는 작업
 ## 그 다음, 그룹별로 6개의 열에 대해 세 가지 통계량(개수, 평균, 표준편차)을 산출한다. - agg(aggregate) : 사용하여 그룹별로 집계를 위한 작업을 해줘야 함
-print("")
+print("\n")
 print("<< 그룹별 기술통계 구하기 >>\n".center(60))                                                                    ## count : 개수, mean : 평균, std : 표준편차
 print(churn.groupby(['churn'])[['day_charge', 'eve_charge', 'night_charge', 'intl_charge', 'account_length', 'custserv_calls']].agg(['count', 'mean', 'std']))
 
 
 ##################################### 변수별로 서로 다른 통계량 구하기
-print("")
+print("\n")
 print("<< 변수별로 서로 다른 통계량 구하기 >>\n".center(60))
 print(churn.groupby(['churn']).agg({'day_charge' : ['mean', 'std'],     ## mean : 평균, std : 표준편차
                                     'eve_charge' : ['mean', 'std'],
@@ -48,6 +48,9 @@ print(churn.groupby(['churn']).agg({'day_charge' : ['mean', 'std'],     ## mean 
 
 ##################################### 새로운 변수 total_charges를 기준으로 그룹화한 뒤,
 ##################################### ★ 그룹별 통계량 구하기 ★
+print("\n")
+print("<< total_charges를 기준으로 그룹화한 뒤, 그룹별 통계량 구하기 >>\n".center(60))
+
 ## day_charge, eve_charge, night_charge, intl_charge 열의 데이터를 합산하여 새로운 변수 total_charges를 만든다.
 churn['total_charges'] = churn['day_charge'] + churn['eve_charge'] + churn['night_charge'] + churn['intl_charge']
 ## cut(X, 5, precision=2) -- cut(X) : X 변수의 데이터를 나눈다 // 5 : """폭이 같은""" 5개의 구간으로 // precision=2 : 소수점 둘째자리까지
@@ -65,6 +68,9 @@ print(grouped.apply(get_stats).unstack())     ## unstack() : 가로로 출력 ->
 
 ##################################### account_length 열의 """사분위수"""를 기준(관측값의 """개수"""를 거의 동일하게)으로 분할한 뒤,
 ##################################### ★ 그룹별 통계량 구하기 ★
+print("\n")
+print("<< account_length 열의 사분위수를 기준으로 분할한 뒤, 그룹별 통계량 구하기 >>\n".center(60))
+
 factor_qcut = pd.qcut(churn.account_length, [0., 0.25, 0.5, 0.75, 1.])      ## qcut() : 정수 또는 사분위수를 담은 배열을 인수로 취한다.
 # factor_qcut = pd.qcut(churn.account_length, 4)                            ## 따라서 [0., 0.25, 0.5, 0.75, 1.] 대신 정수 4를 사용하여 사분위수 지정도 가능
 # factor_qcut = pd.qcut(churn.account_length, 10)   ## 정수 10을 사용하여 십분위수를 지정할 수도 있다.
@@ -74,22 +80,38 @@ print(grouped.apply(get_stats).unstack())
 
 ##################################### intl_plan 와 vmail_plan 열에 대한 이진형 지시변수를 만들고,
 ##################################### churn 열과 병합하여 새로운 데이터프레임을 생성하기
+print("\n")
+print("<< intl_plan/vmail_plan -> 이진형 지시변수 -> churn 열과 병합 >>\n".center(60))
+
 intl_dummies = pd.get_dummies(churn['intl_plan'], prefix='intl_plan')       ## prefix : 접두사로 붙임
 vmail_dummies = pd.get_dummies(churn['vmail_plan'], prefix='vmail_plan')
+## get_dummies(A) : 이진형 지시변수를 만듦 - A가 있으면 1, 없으면 0
+## intl_plan과 vmail_plan의 경우 값이 yes와 no, 두 가지가 있다 -> 각각에 대해 두 개의 열을 만들어 준다.
+## 'intl_plan_no'에선 no가 있으면 1, yes가 있으면 0 // 'intl_plan_yes'에선 yes가 있으면 1, no가 있으면 0
+
 churn_with_dummies = churn[['churn']].join([intl_dummies, vmail_dummies])   ## join() : churn 열과 새로운 이진형 지시변수를 병합
 print(churn_with_dummies.head())
 
 
-# ##################################### total_charges를 사분위수로 분할하고, 이진형 지시변수를 만들고,
-# ##################################### 새로운 더미변수를 churn 데이터프레임에 추가하기
-# qcut_names = ['1st_quartile', '2nd_quartile', '3rd_quartile', '4th_quartile']
-# total_charges_quartiles = pd.qcut(churn.total_charges, 4, labels=qcut_names)
-# dummies = pd.get_dummies(total_charges_quartiles, prefix='total_charges')
-# churn_with_dummies = churn.join(dummies)
-# print(churn_with_dummies.head())
-#
-#
-# ##################################### 피벗 테이블 생성하기
-# print(churn.pivot_table(['total_charges'], index=['churn', 'custserv_calls']))
-# print(churn.pivot_table(['total_charges'], index=['churn'], columns=['custserv_calls']))
-# print(churn.pivot_table(['total_charges'], index=['custserv_calls'], columns=['churn'], aggfunc='mean', fill_value='NaN', margins=True))
+##################################### total_charges를 사분위수로 분할하고, 이진형 지시변수를 만들고,
+##################################### 새로운 더미변수를 churn 데이터프레임에 추가하기
+print("\n")
+print("<< total_charges 사분위수로 분할 - 이진형 지시변수 - churn 데이터프레임에 추가 >>\n".center(60))
+
+qcut_names = ['1st_quartile', '2nd_quartile', '3rd_quartile', '4th_quartile']
+total_charges_quartiles = pd.qcut(churn.total_charges, 4, labels=qcut_names)    ##  total_charges 열을 사분위수를 기준으로 분할하고,
+dummies = pd.get_dummies(total_charges_quartiles, prefix='total_charges')       ##  labels : 분할된 각 사분위수에 qcut_name에서 지정한 이름을 붙인다.
+## total_charge의 경우, intl_plan과 vmail_plan과 다르게 하나의 값만 있다 -> 각각에 대해 하나의 열만 만들어 준다.
+
+churn_with_dummies = churn.join(dummies)    ## join() : 이 4개의 변수를 churn 데이터프레임에 추가
+print(churn_with_dummies.head())    ## 각각의 데이터들이 들어 있는 사분위수에 1이 찍힘 - 이해가 안 되면 밑의 세 코드를 실행해 볼 것!
+
+# factor_qcut = pd.qcut(churn.total_charges, 4)      ## qcut() : 정수 또는 사분위수를 담은 배열을 인수로 취한다.
+# grouped = churn.custserv_calls.groupby(factor_qcut)
+# print(grouped.apply(get_stats).unstack())
+
+
+##################################### 피벗 테이블 생성하기 - ???
+print(churn.pivot_table(['total_charges'], index=['churn', 'custserv_calls']))
+print(churn.pivot_table(['total_charges'], index=['churn'], columns=['custserv_calls']))
+print(churn.pivot_table(['total_charges'], index=['custserv_calls'], columns=['churn'], aggfunc='mean', fill_value='NaN', margins=True))
