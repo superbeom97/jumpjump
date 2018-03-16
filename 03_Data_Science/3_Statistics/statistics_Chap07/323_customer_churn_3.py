@@ -138,39 +138,68 @@ logit_model = sm.Logit(dependent_variable, independent_variables_with_constant).
 ### 해석 ???
 print(logit_model.summary)
 print("\nQuantities you can extract from the result:\n%s" % dir(logit_model))   ## logit_model에서 추출할 수 있는 모든 통계량을 리스트 형태로 출력
-print("\nCoefficients:\n%s" % logit_model.params)               ## 계수들 ??
+print("\nCoefficients:\n%s" % logit_model.params)               ## 로지스틱 회구모형의 계수들
 print("\ntotal_charges's coefficient:\n%s" % logit_model.params[3])                ## 인덱스 또는 이름을 이용하여 개별 회귀계수를 추출할 수 있다.
 print("\ntotal_charges's coefficient:\n%s" % logit_model.params['total_charges'])
 print("\nCoefficient Std Errors:\n%s" % logit_model.bse)        ## 계수 표준편차들 오류 ??
 
 
 ##################################### 2 회귀계수 해석
-def inverse_logit(model_formula):
+### 로지스틱 회귀는 S자 곡선이므로 독립변수가 한 단위만큼 변할 때, 기대되는 종속변수의 변화가 일정하지 않다.
+### 회귀계수가 종속변수의 성공 확률에 미치는 영향을 파악하기 위해서는 모형 평가의 기준, 즉 오즈(odds)가 필요
+### 기준 오즈는 모든 독립변수가 0인 경우에 성공 확률에 미치는 영향을 나타낸다.
+### 기준 오즈 값은 그 자체로서는 그다지 의미가 없으므로, 먼저 모든 독립변수를 평균으로 설정하여 모형을 평가해야 한다.
+
+## 이러한 ★ 로짓 함수의 역함수를 ★ 로지스틱 함수라고 부른다.
+## 특히, 이러한 함수의 형태를 ★ 시그모이드(sigmoid) 함수라고 한다.
+def inverse_logit(model_formula):                   ## 선형회귀모형의 연속형 예측값을 0과 1 사이의 확률로 변환하는 함수
     from math import exp
     return (1.0 / (1.0 + exp(-model_formula)))
+    # return (1.0 / (1.0 + np.exp(-model_formula)))     ## numpy를 임포트 했다면 굳이 exp를 임포트 할 필요 없음
+                                                        ## numpy 안에 exp 함수가 포함되어 있다.
 
+## 모든 독립변수를 평균으로 설정했을 때의 예측값을 추정
 at_means = float(logit_model.params[0]) + \
            float(logit_model.params[1])*float(churn['account_length'].mean()) + \
            float(logit_model.params[2])*float(churn['custserv_calls'].mean()) + \
            float(logit_model.params[3])*float(churn['total_charges'].mean())
+## logit_model.params[0] = const              ↳ 해당 열(독립변수)의 계수에, 해당 열(독립변수)의 평균을 곱해서 더하는 건가?
+## logit_model.params[1] = account_length     로지스틱 회귀모형의 계수들
+## logit_model.params[2] = custserv_calls
+## logit_model.params[3] = total_charges
+## churn['account_length'].mean() : 독립변수들의 평균(이 라인은 'account_length'의 평균)
 
-print(churn['acoount_length'].mean())
-print(churn['custserv_calls'].mean())
-print(churn['total_charges'].mean())
-print(at_means)
+print("churn['account_length'].mean() : ", churn['account_length'].mean())
+print("churn['custserv_calls'].mean() : ", churn['custserv_calls'].mean())
+print("churn['total_charges'].mean() : ", churn['total_charges'].mean())
+print("at_means : ", at_means)
+
+## at_means 값을 로지스틱 함수에 입력했을 때 출력되는 결과를 소수점 세 자리로 출력
 print("P of churn when ind. vars are their mean: %.3f" % inverse_logit(at_means))
+## -> -2.068(at_means)의 로짓 역함수를 취하면 0.112(inverse_logit(at_means))이고,
+##   따라서 "이탈 고객 사이"에서 "account_length, custserv_call, total_charges의 평균이 똑같을 확률"은 "11.2%" 라고 말할 수 있다.
 
+
+## 독립변수 중 "하나의 단위 변화에 대한 종속변수의 변화를 평가"하려면,
+## 독립변수 중 하나를 "평균에 가까운 값"으로 변경하여 확률의 차이를 평가할 수 있다.
+## 예를 들어, custserv_calls 열을 기준으로 살펴보자.
 cust_serv_mean = float(logit_model.params[0]) + \
                  float(logit_model.params[1])*float(churn['account_length'].mean()) + \
                  float(logit_model.params[2])*float(churn['custserv_calls'].mean()) + \
                  float(logit_model.params[3])*float(churn['total_charges'].mean())
 
+## custserv_calls의 평균에서 1을 빼라
+## (고객 서비스 호출 한 단위 증가시키려면 +1이 아닌, -1이구나!! 아니면 그냥 평균에 가까운 값으로 변경하려고 -1을 한 건가??)
 cust_serv_mean_minus_one = float(logit_model.params[0]) + \
                            float(logit_model.params[1])*float(churn['account_length'].mean()) + \
-                           float(logit_model.params[2])*float(churn['custserv_calls'].mean()) + \
+                           float(logit_model.params[2])*float(churn['custserv_calls'].mean()-1.0) + \
                            float(logit_model.params[3])*float(churn['total_charges'].mean())
 
-print(cust_serv_mean)
-print(churn['custserv_calls'].mean()-1.0)
-print(cust_serv_mean_minus_one)
+print("cust_serv_mean : ", cust_serv_mean)
+print("churn['custserv_calls'].mean()-1.0 : ", churn['custserv_calls'].mean()-1.0)
+print("cust_serv_mean_minus_one : ", cust_serv_mean_minus_one)
+
+## 둘 모두 로지스틱 함수를 취하여 cust_serv_mean의 추정값에서 cust_serv_means_minus_one의 추정값을 뺀다.
 print("Probability of churn when account length changes by 1: %.3f" % (inverse_logit(cust_serv_mean) - inverse_logit(cust_serv_mean_minus_one)))
+## ↳ 0.037이 나온다. -> "custserv_calls의 평균 근처"에서 "고객 서비스 호출이 한 단위 증가"하는 경우,
+##                     "이탈 확률이 3.72% 증가"한다고 말할 수 있다.

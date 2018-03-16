@@ -138,7 +138,7 @@ logit_model = sm.Logit(dependent_variable, independent_variables_with_constant).
 ### 해석 ???
 print(logit_model.summary)
 print("\nQuantities you can extract from the result:\n%s" % dir(logit_model))   ## logit_model에서 추출할 수 있는 모든 통계량을 리스트 형태로 출력
-print("\nCoefficients:\n%s" % logit_model.params)                   ## 계수들 ??
+print("\nCoefficients:\n%s" % logit_model.params)                   ## 로지스틱 회구모형의 계수들
 print("\ntotal_charges's coefficient:\n%s" % logit_model.params[3])                ## 인덱스 또는 이름을 이용하여 개별 회귀계수를 추출할 수 있다.
 print("\ntotal_charges's coefficient:\n%s" % logit_model.params['total_charges'])
 print("\nCoefficient Std Errors:\n%s" % logit_model.bse)          ## 계수 표준편차들 오류 ??
